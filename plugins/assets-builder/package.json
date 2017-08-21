@@ -1,0 +1,14 @@
+{
+  "name": "assets-builder",
+  "version": "1.0.0",
+  "description": "Assets builder",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Ozz",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "glob": "^7.1.2",
+    "twig": "^1.10.5"
+  }
+}
