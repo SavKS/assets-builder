@@ -9,6 +9,7 @@
   "dependencies": {},
   "devDependencies": {
     "glob": "^7.1.2",
-    "twig": "^1.10.5"
+    "twig": "^1.10.5",
+    "lodash": "^4.17.4"
   }
 }

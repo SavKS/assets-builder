@@ -6,23 +6,21 @@ const lodash = require('lodash');
 
 Twig.cache(false);
 
-function Templater(config, staticPath, browserSync) {
-    this.config = config;
+function Templater(config, staticPath, reloadBrowserSync) {
+    this.config = lodash.defaultsDeep({
+        source: './layouts/_includes',
+        output: './layouts/render'
+    }, config);
+    
     this.staticPath = staticPath;
-    this.browserSync = browserSync;
+    this.browserSync = reloadBrowserSync;
 
-    this.sourcePath = Path.resolve(this.staticPath, this.config.source);
+    this.entry = Path.resolve(this.staticPath, this.config.source);
     this.outputPath = Path.resolve(this.staticPath, this.config.output);
-
-    this.debounceRender = lodash.debounce(function() {
-        this.render();
-
-        this.browserSync.reload();
-    }, 300)
 }
 
 Templater.prototype.render = function () {
-    glob(this.sourcePath + '/*.twig', {}, (err, files) => {
+    glob(this.entry + '/*.twig', {}, (err, files) => {
         files.forEach((filePath) => {
             const publicPath = Path.resolve(
                 this.outputPath,
@@ -41,7 +39,12 @@ Templater.prototype.init = function () {
 };
 
 Templater.prototype.change = function () {
-    this.debounceRender();
+    this.render();
+    this.browserSync();
 };
+
+Templater.prototype.watchPath = function () {
+    return Path.resolve(this.staticPath, this.config.source);
+}
 
 module.exports = Templater;
