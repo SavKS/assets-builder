@@ -16,7 +16,10 @@ function AssetsBuilder(config) {
     this.config = config;
 
     this.changedCss = [];
-    this.browserSync = require('browser-sync').create();
+
+    this.browserSync = this.config.disableBrowserSync !== true ?
+        require('browser-sync').create() :
+        null;
 }
 
 AssetsBuilder.prototype.apply = function (compiler) {
@@ -32,53 +35,57 @@ AssetsBuilder.prototype.apply = function (compiler) {
         };
 
         setTimeout(() => {
-            console.log(
-                '\n#######################################'
-                + '\n############# BrowserSync #############'
-                + '\n#######################################\n'
-            );
-
-            this.browserSync.init(
-                lodash.merge(
-                    browserSyncConfig,
-                    this.config.browserSync || {}
-                )
-            );
-
             const templater = new Templater(
                 this.config.templater,
                 this.config.staticPath,
                 this.reloadBrowser.bind(this),
             );
 
-            const watcher = chokidar.watch(
-                getWatchPath([
-                    templater
-                ]),
-                {
-                    persistent: true
-                }
-            );
+            if (this.browserSync !== null) {
+                console.log(
+                    '\n#######################################'
+                    + '\n############# BrowserSync #############'
+                    + '\n#######################################\n'
+                );
 
-            watcher.on('change', (path) => {
-                if (/\.twig$/i.test(path)) {
-                    templater.change();
-                }
-            });
+                this.browserSync.init(
+                    lodash.merge(
+                        browserSyncConfig,
+                        this.config.browserSync || {}
+                    )
+                );
+
+                this.browserSync.emitter.on('service:running', () => {
+                    templater.init();
+                });
+
+                const watcher = chokidar.watch(
+                    getWatchPath([
+                        templater
+                    ]),
+                    {
+                        persistent: true
+                    }
+                );
+
+                watcher.on('change', (path) => {
+                    if (/\.twig$/i.test(path)) {
+                        templater.change();
+                    }
+                });
+            } else {
+                templater.init();
+            }
 
             process.on('uncaughtException', function (err) {
                 console.log(err)
             });
-
-            this.browserSync.emitter.on('service:running', () => {
-                templater.init();
-            })
         }, 0);
     });
 
     compiler.plugin('done', (compiled) => {
         init();
-        
+
         lodash.each(compiled.compilation.assets, (data, fileName) => {
             if (!data.emitted) {
                 return;
@@ -92,7 +99,7 @@ AssetsBuilder.prototype.apply = function (compiler) {
                 default:
                     this.reloadBrowser();
             }
-        })
+        });
     });
 };
 
@@ -121,7 +128,9 @@ AssetsBuilder.prototype.pushToCssStack = function (file) {
 
     this.changedCss[this.changedCss.length] = file;
 
-    this.injectCss();
+    if (this.browserSync !== null) {
+        this.injectCss();
+    }
 }
 
 AssetsBuilder.prototype.injectCss = lodash.debounce(function () {
@@ -130,6 +139,10 @@ AssetsBuilder.prototype.injectCss = lodash.debounce(function () {
 }, 100);
 
 AssetsBuilder.prototype.reloadBrowser = lodash.debounce(function () {
+    if (this.browserSync === null) {
+        return;
+    }
+
     this.browserSync.reload();
 }, 100);
 
