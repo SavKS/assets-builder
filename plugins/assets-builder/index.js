@@ -1,5 +1,3 @@
-const fs = require('fs');
-const Path = require('path');
 const lodash = require('lodash');
 const chokidar = require('chokidar');
 const PrettyError = require('pretty-error');

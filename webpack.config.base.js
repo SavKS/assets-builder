@@ -10,6 +10,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const DynamicPublicPathPlugin = require('dynamic-public-path-webpack-plugin');
+const SpritesmithPlugin = require('webpack-spritesmith');
 const argv = require('optimist').argv;
 
 const AssestsBuilder = require('./plugins/assets-builder');
@@ -25,11 +26,12 @@ const vueModules = lodash.reduce(glob.sync('./static/src/modules/**/*.js'), (sta
 let config = {
     entry: lodash.assign({
         'index': './static/src/js/index',
-        'style': './static/src/css/style.scss'
+        'style': './static/src/scss/style.scss'
     }, vueModules),
     output: {
         path: path.resolve(__dirname, './static/build/js'),
-        filename: '[name].js',
+        filename: '[name].[chunkhash].js',
+        chunkFilename: '[name].[chunkhash].js',
         publicPath: '/'
     },
     module: {
@@ -50,6 +52,10 @@ let config = {
             {
                 test: /\.blade.php$/,
                 loader: 'svg-loader'
+            },
+            {
+                test: /\.png$/,
+                loaders: ['file-loader?name=i/[hash].[ext]']
             }
         ],
         rules: [
@@ -57,12 +63,12 @@ let config = {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: 'css-loader?importLoaders=1',
+                    use: 'scss-loader?importLoaders=1',
                 }),
             },
             {
                 test: /\.(sass|scss)$/,
-                use: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+                use: ExtractTextPlugin.extract(['scss-loader', 'sass-loader'])
             }
         ]
     },
@@ -100,6 +106,19 @@ let config = {
         new DynamicPublicPathPlugin({
             externalGlobal: 'window.Laravel.cdn',
             chunkName: 'manifest'
+        }),
+        new SpritesmithPlugin({
+            src: {
+                cwd: path.resolve(__dirname, 'static/src/img/ui-icons'),
+                glob: '*.png'
+            },
+            retina: {
+                targetImage: path.resolve(__dirname, 'static/src/img/sprites/ui-icons@2x.png'),
+            },
+            target: {
+                image: path.resolve(__dirname, 'static/src/img/sprites/ui-icons.png'),
+                css: path.resolve(__dirname, 'static/src/scss/style.scss')
+            }
         })
     ],
     resolve: {

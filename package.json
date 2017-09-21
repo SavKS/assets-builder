@@ -23,6 +23,7 @@
     "css-loader": "^0.28.5",
     "dynamic-public-path-webpack-plugin": "^1.0.3",
     "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "glob": "^7.1.2",
     "gulp": "^3.9.1",
@@ -42,6 +43,7 @@
     "webpack-assets-manifest": "^1.0.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-notifier": "^1.5.0"
+    "webpack-notifier": "^1.5.0",
+    "webpack-spritesmith": "^0.3.3"
   }
 }
