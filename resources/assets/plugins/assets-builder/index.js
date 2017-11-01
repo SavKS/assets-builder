@@ -16,29 +16,12 @@ Twig.cache(false);
 function AssetsBuilder(config) {
     this.config = config;
 
-    this.cssFiles = [];
-
     this.changedCss = [];
 
     this.browserSync = this.config.disableBrowserSync !== true ?
         require('browser-sync').create() :
         null;
-
-    this.manifestPath = Path.resolve(
-        this.config.staticPath,
-        lodash.get(this.config, 'manifest', './build/manifest.json')
-    );
-
-    this.manifestFile = null;
 }
-
-AssetsBuilder.prototype.manifest =  function (fresh = false) {
-    if (this.manifestFile === null || fresh) {
-        this.manifestFile = require(this.manifestPath);
-    }
-
-    return this.manifestFile;
-};
 
 AssetsBuilder.prototype.apply = function (compiler) {
 
@@ -56,8 +39,7 @@ AssetsBuilder.prototype.apply = function (compiler) {
             const templater = new Templater(
                 this.config.templater,
                 this.config.staticPath,
-                this.reloadBrowser.bind(this),
-                this.manifest.bind(this),
+                this.reloadBrowser.bind(this)
             );
 
             if (this.browserSync !== null) {
@@ -103,8 +85,6 @@ AssetsBuilder.prototype.apply = function (compiler) {
     });
 
     compiler.plugin('done', (compiled) => {
-        this.manifest();
-
         init();
 
         lodash.each(compiled.compilation.assets, (data, fileName) => {

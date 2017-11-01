@@ -1,7 +1,0 @@
-{
-  "build/css/app.css": "src/css/app.css",
-  "build/js/app.js": "build/js/app.0a3ef3288d55b6272d5d.js",
-  "build/js/gallery.js": "build/js/gallery.2e3656d3f73588f79dcf.js",
-  "build/js/index.js": "build/js/index.b0d91ee3744adc2971a2.js",
-  "build/js/vendor.js": "build/js/vendor.21b862dc219bb41358c2.js"
-}

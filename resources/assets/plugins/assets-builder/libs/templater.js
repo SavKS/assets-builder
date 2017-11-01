@@ -6,7 +6,7 @@ const lodash = require('lodash');
 
 Twig.cache(false);
 
-function Templater(config, staticPath, reloadBrowserSync, manifest) {
+function Templater(config, staticPath, reloadBrowserSync) {
     this.config = lodash.defaultsDeep({
         source: Path.resolve('./src/layouts'),
         output: Path.resolve('../../static/layouts')
@@ -27,17 +27,8 @@ function Templater(config, staticPath, reloadBrowserSync, manifest) {
         '/'
     );
 
-    Twig.extendFilter('static', (value, args) => {
+    Twig.extendFilter('static', (value) => {
         let path = value;
-        const withOutHash = args && args[0];
-
-        if (!withOutHash) {
-            path = lodash.get(
-                manifest(),
-                lodash.trimStart(value, '/'),
-                value
-            );
-        }
 
         return `${staticPathPrefix}/${path}`;
     });
