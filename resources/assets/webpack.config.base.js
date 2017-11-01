@@ -7,14 +7,14 @@ const FriendlyErrors = require('friendly-errors-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const CleanupPlugin = require('./plugins/cleanup');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const DynamicPublicPathPlugin = require('dynamic-public-path-webpack-plugin');
 const argv = require('optimist').argv;
 
 const AssestsBuilder = require('./plugins/assets-builder');
 
-const vueModules = lodash.reduce(glob.sync('./src/modules/**/*.js'), (state, file) => {
+const vueModules = lodash.reduce(glob.sync('./src/js/modules/**/*.js'), (state, file) => {
     const parts = file.split('/');
 
     state[parts[parts.length - 2].replace('.js', '')] = file;
@@ -22,10 +22,28 @@ const vueModules = lodash.reduce(glob.sync('./src/modules/**/*.js'), (state, fil
     return state;
 }, {});
 
+const manifestReplacer = function (key, value) {
+    let finalKey = key;
+    let finalValue = value;
+
+    if (/\.js$/.test(key)) {
+        finalKey = 'build/js/' + lodash.trimStart(key, '/');
+        finalValue = 'build/js/' + lodash.trimStart(value, '/');
+    } else if (/\.css/.test(key)) {
+        finalKey = 'build/css/' + lodash.trimStart(key, '/');
+        finalValue = value.replace('../../', '');
+    }
+
+    return {
+        key: finalKey,
+        value: finalValue
+    }
+};
+
 let config = {
     entry: lodash.assign({
         'index': './src/js/index',
-        'style': './src/scss/app.scss'
+        'app': './src/scss/app.scss'
     }, vueModules),
     output: {
         path: path.resolve(__dirname, '../../static/build/js'),
@@ -72,22 +90,31 @@ let config = {
         ]
     },
     plugins: [
-        new WebpackCleanupPlugin(),
+        new CleanupPlugin({
+            otherFolders: [
+                path.resolve(__dirname, '../../static/build/css')
+            ]
+        }),
         new ProgressPlugin,
         new FriendlyErrors,
         new WebpackNotifierPlugin,
         new AssestsBuilder({
             staticPath: path.resolve('../../static'),
-            cssPath: './build/css/app.css',
+            cssPath: './build/css',
+            manifest: './build/manifest.json',
             disableBrowserSync: argv.watch !== true
         }),
         new ExtractTextPlugin({
-            filename: '../../build/css/app.[chunkhash].css',
+            filename: '../../build/css/app.[hash].css',
+            allChunks: true
+        }),
+        new ExtractTextPlugin({
+            filename: '../../src/css/app.css',
             allChunks: true
         }),
         new WebpackAssetsManifest({
             output: '../manifest.json',
-            replacer: null,
+            customize: manifestReplacer,
             space: 2,
             writeToDisk: false,
             fileExtRegex: /\.\w{2,4}\.(?:map|gz)$|\.\w+$/i,

@@ -1,7 +1,7 @@
 {
-  "name": "assets-builder",
+  "name": "cleanup",
   "version": "1.0.0",
-  "description": "Assets builder",
+  "description": "Cleanup",
   "main": "index.js",
   "scripts": {},
   "author": "Ideil",
@@ -10,6 +10,8 @@
   "devDependencies": {
     "glob": "^7.1.2",
     "twig": "^1.10.5",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "minimatch": "3.0.3",
+    "recursive-readdir-sync": "1.0.6"
   }
 }

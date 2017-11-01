@@ -3,6 +3,9 @@ const chokidar = require('chokidar');
 const PrettyError = require('pretty-error');
 const handler = new PrettyError;
 const vfs = require('vinyl-fs');
+const Path = require('path');
+const through = require('through2');
+const path = require('path');
 
 const Twig = require('twig');
 
@@ -13,12 +16,29 @@ Twig.cache(false);
 function AssetsBuilder(config) {
     this.config = config;
 
+    this.cssFiles = [];
+
     this.changedCss = [];
 
     this.browserSync = this.config.disableBrowserSync !== true ?
         require('browser-sync').create() :
         null;
+
+    this.manifestPath = Path.resolve(
+        this.config.staticPath,
+        lodash.get(this.config, 'manifest', './build/manifest.json')
+    );
+
+    this.manifestFile = null;
 }
+
+AssetsBuilder.prototype.manifest =  function (fresh = false) {
+    if (this.manifestFile === null || fresh) {
+        this.manifestFile = require(this.manifestPath);
+    }
+
+    return this.manifestFile;
+};
 
 AssetsBuilder.prototype.apply = function (compiler) {
 
@@ -37,6 +57,7 @@ AssetsBuilder.prototype.apply = function (compiler) {
                 this.config.templater,
                 this.config.staticPath,
                 this.reloadBrowser.bind(this),
+                this.manifest.bind(this),
             );
 
             if (this.browserSync !== null) {
@@ -82,6 +103,8 @@ AssetsBuilder.prototype.apply = function (compiler) {
     });
 
     compiler.plugin('done', (compiled) => {
+        this.manifest();
+
         init();
 
         lodash.each(compiled.compilation.assets, (data, fileName) => {
@@ -94,7 +117,7 @@ AssetsBuilder.prototype.apply = function (compiler) {
                     this.pushToCssStack(data.existsAt);
                     break;
 
-                case /\manifest.json$/i.test(fileName):
+                case /manifest.json$/i.test(fileName):
                     break;
 
                 default:
@@ -127,7 +150,7 @@ AssetsBuilder.prototype.pushToCssStack = function (file) {
         return;
     }
 
-    this.changedCss[this.changedCss.length] = file;
+    this.changedCss[ this.changedCss.length ] = file;
 
     if (this.browserSync !== null) {
         this.injectCss();
@@ -135,7 +158,10 @@ AssetsBuilder.prototype.pushToCssStack = function (file) {
 }
 
 AssetsBuilder.prototype.injectCss = lodash.debounce(function () {
-    this.changedCss.forEach((file) => vfs.src(file).pipe(this.browserSync.stream()))
+    this.changedCss.forEach((file) => vfs.src(file).pipe(
+        this.browserSync.stream()
+    ));
+
     this.changedCss = [];
 }, 100);
 
@@ -148,3 +174,29 @@ AssetsBuilder.prototype.reloadBrowser = lodash.debounce(function () {
 }, 100);
 
 module.exports = AssetsBuilder;
+
+
+function _stringBuilder(options, oldBase) {
+    var prefix = options.prefix || '';
+    var suffix = options.suffix || '';
+    var getExtname = path.extname(oldBase);
+    var extname = options.extname || getExtname;
+    var basename = options.basename || oldBase;
+    basename = getExtname ? basename : basename;
+    return prefix + basename + suffix + extname;
+};
+
+function streamRename(options) {
+    options = options || {};
+    return through.obj(function(chunk, enc, callback) {
+        var oldBase;
+        var arr = chunk.path.split('/');
+        var root = options.root || chunk.base;
+        root = arr.indexOf(path.basename(root));
+        oldBase = arr[root + 1];
+        arr[root + 1] = _stringBuilder(options, oldBase);
+        chunk.path = arr.join('/');
+        this.push(chunk);
+        callback();
+    });
+};

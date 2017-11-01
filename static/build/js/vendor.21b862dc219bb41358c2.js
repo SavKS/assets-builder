@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		2: 0
+/******/ 		3: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"style","1":"index"}[chunkId]||chunkId) + "." + {"0":"ace7e7c32c447156c34b","1":"b0d91ee3744adc2971a2"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"app","1":"index","2":"gallery"}[chunkId]||chunkId) + "." + {"0":"0a3ef3288d55b6272d5d","1":"b0d91ee3744adc2971a2","2":"2e3656d3f73588f79dcf"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -152,7 +152,13 @@
 /* 1 */
 /***/ (function(module, exports) {
 
-eval("\n\n//////////////////\n// WEBPACK FOOTER\n// ./src/js/index.js\n// module id = 1\n// module chunks = 2\n\n//# sourceURL=webpack:///./src/js/index.js?");
+eval("\n\n//////////////////\n// WEBPACK FOOTER\n// ./src/js/index.js\n// module id = 1\n// module chunks = 3\n\n//# sourceURL=webpack:///./src/js/index.js?");
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+eval("console.log(5);\n\n//////////////////\n// WEBPACK FOOTER\n// ./src/js/modules/gallery/index.js\n// module id = 2\n// module chunks = 3\n\n//# sourceURL=webpack:///./src/js/modules/gallery/index.js?");
 
 /***/ })
 /******/ ]);
