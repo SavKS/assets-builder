@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "pub-prod": "NODE_ENV=production webpack --config webpack.config.pub.prod.js",
-    "pub-dev": "NODE_ENV=production webpack --config webpack.config.pub.dev.js",
-    "pub-watch": "NODE_ENV=production webpack --watch --config webpack.config.pub.dev.js",
+    "pub-dev": "NODE_ENV=develop webpack --config webpack.config.pub.dev.js",
+    "pub-watch": "NODE_ENV=develop webpack --watch --config webpack.config.pub.dev.js",
     "src-prod": "NODE_ENV=production webpack --config webpack.config.src.prod.js",
-    "src-dev": "NODE_ENV=production webpack --config webpack.config.src.dev.js",
-    "src-watch": "NODE_ENV=production webpack --watch --config webpack.config.src.dev.js"
+    "src-dev": "NODE_ENV=develop webpack --config webpack.config.src.dev.js",
+    "src-watch": "NODE_ENV=develop webpack --watch --config webpack.config.src.dev.js"
   },
   "author": "Ideil",
   "license": "ISC",
@@ -22,6 +22,7 @@
     "clean-webpack-plugin": "^0.1.16",
     "compression-webpack-plugin": "^1.0.1",
     "css-loader": "^0.28.5",
+    "cssnano": "^3.10.0",
     "dynamic-public-path-webpack-plugin": "^1.0.3",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
@@ -35,6 +36,7 @@
     "postcss-loader": "^2.0.8",
     "postcss-nested": "^2.1.2",
     "postcss-nesting": "^4.1.0",
+    "postcss-node-sass": "^1.2.0",
     "postcss-sass": "^0.2.0",
     "postcss-scss": "^1.0.2",
     "pretty-error": "^2.1.1",

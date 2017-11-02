@@ -59,7 +59,22 @@ let config = {
             },
             {
                 test: /\.(sass|scss)$/,
-                use: ExtractTextPlugin.extract(['postcss-loader', 'sass-loader'])
+                use: ExtractTextPlugin.extract({
+                    use: [
+                        {
+                            loader: 'postcss-loader',
+                            options: {
+                                sourceMap: process.env.NODE_ENV === 'develop' ? 'inline' : false
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: process.env.NODE_ENV === 'develop' ? 'inline' : false
+                            }
+                        }
+                    ]
+                })
             }
         ]
     },
