@@ -8,11 +8,12 @@ const WebpackNotifierPlugin = require('webpack-notifier');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const DynamicPublicPathPlugin = require('dynamic-public-path-webpack-plugin');
+const ImportOnce = require('node-sass-import-once');
 
 const jsModules = lodash.reduce(glob.sync('./src/js/modules/**/*.js'), (state, file) => {
     const parts = file.split('/');
 
-    state[parts[parts.length - 2].replace('.js', '')] = file;
+    state[ parts[ parts.length - 2 ].replace('.js', '') ] = file;
 
     return state;
 }, {});
@@ -26,43 +27,26 @@ let config = {
         publicPath: '/'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.vue$/,
-                loaders: ['vue-loader']
+                loader: 'vue-loader'
             },
             {
                 test: /\.js$/,
-                loaders: ['babel-loader'],
-                exclude: [/node_modules/]
+                loader: 'babel-loader',
+                exclude: [ /node_modules/ ]
             },
             {
                 test: /\.svg$/,
                 loader: 'svg-loader'
             },
             {
-                test: /\.blade.php$/,
-                loader: 'svg-loader'
-            },
-            {
-                test: /\.png$/,
-                loaders: ['file-loader?name=i/[hash].[ext]']
-            }
-        ],
-        rules: [
-            {
-                test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'postcss-loader?importLoaders=1'
-                })
-            },
-            {
                 test: /\.(sass|scss)$/,
                 use: ExtractTextPlugin.extract({
                     use: [
                         {
-                            loader: 'postcss-loader',
+                            loader: 'postcss-loader?importLoaders=1',
                             options: {
                                 sourceMap: process.env.NODE_ENV === 'develop' ? 'inline' : false
                             }
@@ -70,7 +54,13 @@ let config = {
                         {
                             loader: 'sass-loader',
                             options: {
-                                sourceMap: process.env.NODE_ENV === 'develop' ? 'inline' : false
+                                sourceMap: process.env.NODE_ENV === 'develop' ? 'inline' : false,
+                                importer: ImportOnce,
+                                importOnce: {
+                                    index: false,
+                                    css: false,
+                                    bower: false
+                                }
                             }
                         }
                     ]

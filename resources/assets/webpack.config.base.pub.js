@@ -61,4 +61,6 @@ webpackConfig.plugins.push(
     }),
 );
 
+webpackConfig.resolve.alias.vue = path.resolve('./node_modules/vue/dist/vue.runtime.esm.js');
+
 module.exports = webpackConfig;
