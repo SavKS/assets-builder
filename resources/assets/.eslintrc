@@ -42,7 +42,8 @@
     "globals": {
         "$": false,
         "require": false,
-        "__dirname": true
+        "__dirname": true,
+        "process": true
     },
     "plugins": [
         "vue"

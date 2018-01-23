@@ -1,4 +1,4 @@
-import urlHelper from '@plugins/location/libs/url';
+import urlHelper from '@plugins/location/url';
 
 const routes = {
     rootUrl: window.App.baseURL,

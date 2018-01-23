@@ -1,1 +1,34 @@
-webpackJsonp([1],[],[1]);
+webpackJsonp([0,1],{
+
+/***/ 102:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n//\n\nexports.default = {\n    props: {\n        data: {\n            required: true,\n            type: Object\n        }\n    },\n    computed: {\n        className: function className() {\n            return _defineProperty({}, this.$props.data.attributes.class, true);\n        },\n        width: function width() {\n            return this.$props.data.attributes.width;\n        },\n        height: function height() {\n            return this.$props.data.attributes.height;\n        },\n        viewBox: function viewBox() {\n            return this.$props.data.attributes.viewBox;\n        },\n        content: function content() {\n            return this.$props.data.content;\n        }\n    },\n    methods: {\n        handleClick: function handleClick($event) {\n            this.$emit('click', $event);\n        }\n    }\n};\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./src/js/components/SvgImage.vue\n// module id = 102\n// module chunks = 0\n\n//# sourceURL=webpack:///./src/js/components/SvgImage.vue?./node_modules/babel-loader/lib!./node_modules/vue-loader/lib/selector.js?type=script&index=0");
+
+/***/ }),
+
+/***/ 261:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("Object.defineProperty(__webpack_exports__, \"__esModule\", { value: true });\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_SvgImage_vue__ = __webpack_require__(102);\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_SvgImage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_SvgImage_vue__);\n/* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_SvgImage_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_SvgImage_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_56757ca3_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_SvgImage_vue__ = __webpack_require__(263);\nvar disposed = false\nvar normalizeComponent = __webpack_require__(262)\n/* script */\n\n\n/* template */\n\n/* template functional */\nvar __vue_template_functional__ = false\n/* styles */\nvar __vue_styles__ = null\n/* scopeId */\nvar __vue_scopeId__ = null\n/* moduleIdentifier (server only) */\nvar __vue_module_identifier__ = null\nvar Component = normalizeComponent(\n  __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_SvgImage_vue___default.a,\n  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_56757ca3_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_SvgImage_vue__[\"a\" /* default */],\n  __vue_template_functional__,\n  __vue_styles__,\n  __vue_scopeId__,\n  __vue_module_identifier__\n)\nComponent.options.__file = \"src/js/components/SvgImage.vue\"\n\n/* hot reload */\nif (false) {(function () {\n  var hotAPI = require(\"vue-hot-reload-api\")\n  hotAPI.install(require(\"vue\"), false)\n  if (!hotAPI.compatible) return\n  module.hot.accept()\n  if (!module.hot.data) {\n    hotAPI.createRecord(\"data-v-56757ca3\", Component.options)\n  } else {\n    hotAPI.reload(\"data-v-56757ca3\", Component.options)\n  }\n  module.hot.dispose(function (data) {\n    disposed = true\n  })\n})()}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Component.exports);\n\n\n//////////////////\n// WEBPACK FOOTER\n// ./src/js/components/SvgImage.vue\n// module id = 261\n// module chunks = 0\n\n//# sourceURL=webpack:///./src/js/components/SvgImage.vue?");
+
+/***/ }),
+
+/***/ 263:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("var render = function() {\n  var _vm = this\n  var _h = _vm.$createElement\n  var _c = _vm._self._c || _h\n  return _c(\"svg\", {\n    class: _vm.className,\n    attrs: {\n      width: _vm.width,\n      height: _vm.height,\n      viewBox: _vm.viewBox,\n      xmlns: \"http://www.w3.org/2000/svg\"\n    },\n    domProps: { innerHTML: _vm._s(_vm.content) },\n    on: { click: _vm.handleClick }\n  })\n}\nvar staticRenderFns = []\nrender._withStripped = true\nvar esExports = { render: render, staticRenderFns: staticRenderFns }\n/* harmony default export */ __webpack_exports__[\"a\"] = (esExports);\nif (false) {\n  module.hot.accept()\n  if (module.hot.data) {\n    require(\"vue-hot-reload-api\")      .rerender(\"data-v-56757ca3\", esExports)\n  }\n}\n\n//////////////////\n// WEBPACK FOOTER\n// ./node_modules/vue-loader/lib/template-compiler?{\"id\":\"data-v-56757ca3\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./src/js/components/SvgImage.vue\n// module id = 263\n// module chunks = 0\n\n//# sourceURL=webpack:///./src/js/components/SvgImage.vue?./node_modules/vue-loader/lib/template-compiler?%7B%22id%22:%22data-v-56757ca3%22,%22hasScoped%22:false,%22buble%22:%7B%22transforms%22:%7B%7D%7D%7D!./node_modules/vue-loader/lib/selector.js?type=template&index=0");
+
+/***/ }),
+
+/***/ 98:
+/***/ (function(module, exports) {
+
+eval("function webpackEmptyContext(req) {\n\tthrow new Error(\"Cannot find module '\" + req + \"'.\");\n}\nwebpackEmptyContext.keys = function() { return []; };\nwebpackEmptyContext.resolve = webpackEmptyContext;\nmodule.exports = webpackEmptyContext;\nwebpackEmptyContext.id = 98;\n\n//////////////////\n// WEBPACK FOOTER\n// /home/savks/Work/Docker/Other/webpack/static/src/img/svg ^\\.\\/.*\\.svg$\n// module id = 98\n// module chunks = 0 1\n\n//# sourceURL=webpack:////home/savks/Work/Docker/Other/webpack/static/src/img/svg_^\\.\\/.*\\.svg$?");
+
+/***/ })
+
+},[266]);

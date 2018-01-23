@@ -21,7 +21,7 @@
             className() {
                 return {
                     [this.$props.data.attributes.class]: true
-                }
+                };
             },
             width() {
                 return this.$props.data.attributes.width;
