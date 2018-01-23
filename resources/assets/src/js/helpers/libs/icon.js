@@ -1,3 +1,3 @@
 export default function (name) {
-    return require(`../../../../views/svg/${name}.blade.php`);
+    return require(`@base/static/src/img/svg/${name}.svg`);
 }

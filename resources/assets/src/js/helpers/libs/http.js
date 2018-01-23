@@ -1,11 +1,10 @@
 import axios from 'axios';
 
 import parseQuery from 'query-string';
-
-import { LOGIN } from '../../constants/routes';
+import router from '@routes';
 
 const http  = axios.create({
-    baseURL: '/api',
+    baseURL: '/',
     headers: {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
@@ -13,7 +12,9 @@ const http  = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-    config.headers['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
+    if (window.App.csrfToken && config.method === 'post') {
+        config.headers['X-CSRF-TOKEN'] = window.App.csrfToken;
+    }
 
     return config;
 });
@@ -34,7 +35,7 @@ http.interceptors.response.use((response) => {
                 ...query
             });
 
-            document.location.href = `${document.location.origin}${LOGIN}?${queryString}`;
+            document.location.href = router;
             break;
     }
 

@@ -1,61 +1,69 @@
-import _get from 'lodash/get';
+import _has from 'lodash/has';
+import _some from 'lodash/some';
 
 let __Vue = null;
+let __store = null;
 
-const mixin = {
-    methods: {
-        runProcess(process, promise, errorOnly = false, params = {}) {
-            this.$store.dispatch('taskManager/run', {
-                process,
-                promise,
-                errorOnly,
-                params
-            });
-        },
-        inProcess(process) {
-            return _get(
-                this.$store.state.taskManager.processes,
-                `${process}.status`,
-                false
-            );
-        }
+const taskManager = {
+    run(name, promise, params = {}) {
+        __store.dispatch('taskManager/run', {
+            name,
+            promise,
+            params
+        });
     },
+    status(name, includeParents = false) {
+        const activeProcesses = __store.state.taskManager.processes || {};
+
+        if (!includeParents) {
+            return _has(activeProcesses, name);
+        }
+
+        return _some(activeProcesses, (process) => {
+            return process.name === name
+                || process.name.indexOf(`${name}.`) !== -1;
+        });
+    }
 };
 
 export default {
-    use: (Vue) => {
+    install(Vue) {
         __Vue = Vue;
 
-        __Vue.mixin(mixin);
+        __Vue.prototype.$taskManager = taskManager;
     },
-    mixin,
     storeRegister(store) {
+        __store = store;
+
         store.registerModule('taskManager', {
             namespaced: true,
             state: {
                 processes: {}
             },
             mutations: {
-                create: (state, { process, params }) => {
-                    __Vue.set(state.processes, process, {
-                        status: true,
-                        ...params
+                create: (state, { name, data }) => {
+                    __Vue.set(state.processes, name, {
+                        name,
+                        data
                     });
                 },
-                kill: (state, process) => {
-                    __Vue.delete(state.processes, process);
+                kill: (state, name) => {
+                    __Vue.delete(state.processes, name);
                 }
             },
             actions: {
-                run: ({ commit }, { process, promise, errorOnly = false, params }) => {
-                    commit('create', { process, params })
+                run: ({ commit }, { process: name, promise, params = {} }) => {
+                    commit('create', {
+                        name,
+                        data: params.data || {}
+                    });
 
-                    if (errorOnly) {
-                        promise.catch(() => commit('kill', process));
+                    if (params.errorOnly) {
+                        promise.catch(() => commit('kill', name));
                     } else {
                         promise
-                            .then(() => commit('kill', process))
-                            .catch(() => commit('kill', process))
+                            .then(() => commit('kill', name))
+                            .catch(() => commit('kill', name))
                         ;
                     }
 

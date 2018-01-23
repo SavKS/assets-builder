@@ -8,6 +8,7 @@ import _isPlainObject from "lodash/isPlainObject";
 import _isArray from "lodash/isArray";
 import _isString from "lodash/isString";
 import _isFunction from "lodash/isFunction";
+import _identity from "lodash/identity";
 
 import Get from './Requests/Get';
 import Post from './Requests/Post';
@@ -16,14 +17,15 @@ let __store;
 let __config = {};
 let __Vue;
 let __models = {};
-let __forms = function (name) {};
+let __forms = function (name) {
+};
 
 const __parameters = {};
 const __filters = {};
 
 export default {
     registerFilter: (name, filter) => {
-        __filters[name] = filter;
+        __filters[ name ] = filter;
     },
     config(config = {}) {
         __config = _merge({}, __config, config);
@@ -40,6 +42,17 @@ export default {
         }).bind(Vue);
 
         Vue.prototype.$forms = __forms;
+        Vue.prototype.$thisForm = function (resource = null) {
+            if (typeof this.$options.form === 'undefined') {
+                throw new Error('Form name not defined');
+            }
+
+            return resource !== null ?
+                this.$forms[ this.$options.form ][ resource ] :
+                this.$forms[ this.$options.form ];
+        };
+
+        Vue.$forms = __forms;
     },
     storeRegister(store) {
         __store = store;
@@ -51,10 +64,11 @@ export default {
                 edited: {},
                 errors: {},
                 empty: {},
-                update: 0
+                update: 0,
+                responses: {}
             },
             mutations: {
-                register: (state, {name, fields, defaults = {}}) => {
+                register: (state, { name, fields, defaults = {} }) => {
                     if (__models.hasOwnProperty(name)) {
                         return false;
                     }
@@ -66,9 +80,9 @@ export default {
                             fields,
                             (state, key) => {
                                 const defaultValue = _get(defaults, key, null);
-                                
+
                                 if (_isPlainObject(defaultValue)) {
-                                    state[key] = defaultValue.value || null;
+                                    state[ key ] = defaultValue.value || null;
 
                                     if (_isArray(defaultValue.filters)
                                         && defaultValue.filters.length
@@ -76,18 +90,18 @@ export default {
                                         _set(
                                             __parameters,
                                             `${name}.${key}.filters`,
-                                            [...defaultValue.filters]
+                                            [ ...defaultValue.filters ]
                                         );
                                     } else if (_isFunction(defaultValue.filters)) {
                                         _set(
                                             __parameters,
                                             `${name}.${key}.filters`,
-                                            [defaultValue.filters]
+                                            [ defaultValue.filters ]
                                         );
                                     }
 
                                 } else {
-                                    state[key] = defaultValue;
+                                    state[ key ] = defaultValue;
                                 }
 
                                 return state;
@@ -96,59 +110,62 @@ export default {
                         )
                     );
 
-                    __models[name] = __createModel(name, fields);
+                    __models[ name ] = __createModel(name, fields);
 
                     Object.defineProperty(__forms, name, {
                         configurable: true,
-                        get: function() {
+                        get: function () {
                             if (!__models.hasOwnProperty(name)) {
                                 throw new Error(`Form [${name}] does not exists`);
                             }
 
-                            return __models[name];
+                            return __models[ name ];
                         }
                     });
                 },
-                set: (state, {name, field, value}) => {
+                set: (state, { name, field, value }) => {
                     if (!state.edited.hasOwnProperty(name)) {
                         __Vue.set(state.edited, name, {});
                     }
 
-                    __Vue.set(state.edited[name], field, value);
+                    __Vue.set(state.edited[ name ], field, value);
                 },
-                fill: (state, {name, fields}) => {
+                fill: (state, { name, fields }) => {
                     __Vue.set(state.edited, name, fields);
                 },
-                setDefault: (state, {name, field, value}) => {
+                setDefault: (state, { name, field, value }) => {
                     if (!state.defaults.hasOwnProperty(name)) {
                         __Vue.set(state.defaults, name, {});
                     }
 
-                    __Vue.set(state.defaults[name], field, value || null);
+                    __Vue.set(state.defaults[ name ], field, value || null);
                 },
                 reset: (state, name) => {
                     __Vue.delete(state.edited, name);
                     __Vue.delete(state.errors, name);
                 },
-                remove: (state, {name, field}) => {
+                remove: (state, { name, field }) => {
                     if (!state.edited.hasOwnProperty(name)) {
                         return;
                     }
 
-                    __Vue.delete(state.edited[name], field);
+                    __Vue.delete(state.edited[ name ], field);
                 },
                 destroy: (state, name) => {
                     __Vue.delete(__models, name);
                     __Vue.delete(state.defaults, name);
                     __Vue.delete(state.edited, name);
 
-                    delete __forms[name];
+                    delete __forms[ name ];
                 },
                 fillErrors: (state, { name, errors }) => {
                     __Vue.set(state.errors, name, errors);
                 },
                 clearErrors: (state, name) => {
                     __Vue.delete(state.errors, name);
+                },
+                setResponse: (state, { name, data }) => {
+                    __Vue.set(state.responses, name, data);
                 }
             },
             actions: {
@@ -176,6 +193,9 @@ export default {
                 clearErrors: ({ commit }, name) => {
                     commit('clearErrors', name);
                 },
+                setResponse: ({ commit }, payload) => {
+                    commit('setResponse', payload);
+                }
             },
         });
     }
@@ -193,10 +213,16 @@ function __createModel(name, fields) {
     return new __Vue({
         __store,
         computed: {
+            name: () => name,
             errors() {
-                let storage = __store.state[__getNamespace()];
+                let storage = __store.state[ __getNamespace() ];
 
                 return _get(storage.errors, name, {});
+            },
+            response() {
+                let storage = __store.state[ __getNamespace() ];
+
+                return _get(storage.responses, name, null);
             },
             data() {
                 return __createDataModel(name, fields);
@@ -207,7 +233,7 @@ function __createModel(name, fields) {
                 __store.dispatch(__getAction('destroy'), name);
             },
             remove(field) {
-                __store.dispatch(__getAction('remove'), {name, field});
+                __store.dispatch(__getAction('remove'), { name, field });
             },
             reset() {
                 __store.dispatch(__getAction('reset'), name);
@@ -235,12 +261,12 @@ function __createModel(name, fields) {
                 let data = _reduce(
                     fields,
                     (state, field) => {
-                        const value = this.data[field];
+                        const value = this.data[ field ];
 
                         if (!filter
                             || (filter && filter(value, field))
                         ) {
-                            state[field] = value;
+                            state[ field ] = value;
                         }
 
                         return state;
@@ -251,7 +277,7 @@ function __createModel(name, fields) {
                 return data;
             },
             hasChanges(field) {
-                let storage = __store.state[__getNamespace()];
+                let storage = __store.state[ __getNamespace() ];
 
                 if (!field) {
                     return !!Object.keys(
@@ -270,23 +296,23 @@ function __createModel(name, fields) {
                     });
                 };
 
-                if (['post', 'put', 'patch'].indexOf(method.toLowerCase()) !== -1) {
+                if ([ 'post', 'put', 'patch' ].indexOf(method.toLowerCase()) !== -1) {
                     return new Post(this, http, errorsResolver);
                 }
 
                 return new Get(this, http, errorsResolver);
             },
-            submit(method, url, config = {}, filter) {
+            submit(method, url, config = {}, filter = _identity) {
                 const http = _get(__config, 'httpClient', require('axios'));
                 const params = filter ? this.serialize(filter) : this.serialize(filter);
                 let response;
 
-                if (['post', 'put', 'patch'].indexOf(method) !== -1) {
-                    response = http[method](url, params, config);
+                if ([ 'post', 'put', 'patch' ].indexOf(method) !== -1) {
+                    response = http[ method ](url, params, config);
                 } else {
                     config.params = params;
 
-                    response = http[method](url, config);
+                    response = http[ method ](url, config);
                 }
 
                 response.catch((data) => {
@@ -298,6 +324,13 @@ function __createModel(name, fields) {
                     }
                 });
 
+                response.then(({ data }) => {
+                    __store.dispatch(__getAction('setResponse'), {
+                        name,
+                        data
+                    });
+                });
+
                 return response;
             }
         }
@@ -305,7 +338,7 @@ function __createModel(name, fields) {
 }
 
 function __getDefault(name, field) {
-    let storage = __store.state[__getNamespace()];
+    let storage = __store.state[ __getNamespace() ];
 
     return _get(
         storage.defaults,
@@ -315,7 +348,7 @@ function __getDefault(name, field) {
 }
 
 function __getEdited(name, field) {
-    let storage = __store.state[__getNamespace()];
+    let storage = __store.state[ __getNamespace() ];
 
     return _get(
         storage.edited,
@@ -329,13 +362,13 @@ function __createDataModel(name, fields) {
         computed: _reduce(
             fields,
             (state, key) => {
-                state[key] = {
-                    get: () =>  __getValue(name, key),
+                state[ key ] = {
+                    get: () => __getValue(name, key),
                     set(value) {
-                        let storage = __store.state[__getNamespace()];
+                        let storage = __store.state[ __getNamespace() ];
                         let filters = _get(__parameters, `${name}.${key}.filters`);
                         const defaultValue = _get(storage.defaults, `${name}.${key}`);
-                        
+
                         if (filters) {
                             value = __applyFilters(value, filters, __getValue(name, key));
                         }
@@ -343,7 +376,7 @@ function __createDataModel(name, fields) {
                         if (value === defaultValue
                             || (defaultValue === null && value === '')
                         ) {
-                            __store.dispatch(__getAction('remove'), {name, field: key});
+                            __store.dispatch(__getAction('remove'), { name, field: key });
                         } else {
                             __store.dispatch(__getAction('set'), {
                                 field: key,
@@ -377,11 +410,11 @@ function __applyFilters(value, filters, oldValue) {
     }
 
     if (filters.length === 1) {
-        return __applyFilter(value, filters[0], oldValue);
+        return __applyFilter(value, filters[ 0 ], oldValue);
     }
 
-    const _filters = [...filters];
-    const first = _filters.splice(0, 1)[0];
+    const _filters = [ ...filters ];
+    const first = _filters.splice(0, 1)[ 0 ];
 
     return _filters.reduce((carry, filter) => {
         return __applyFilter(carry, filter, oldValue);
@@ -403,5 +436,5 @@ function __getRegisteredFilter(name) {
         throw Error(`Filter [${name}] not registered`);
     }
 
-    return __filters[name];
+    return __filters[ name ];
 }

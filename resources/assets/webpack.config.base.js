@@ -18,7 +18,7 @@ const jsModules = lodash.reduce(glob.sync('./src/js/modules/**/*.js'), (state, f
     return state;
 }, {});
 
-let config = {
+module.exports = {
     entry: lodash.assign({
         'index': './src/js/index',
         'app': './src/scss/app.scss'
@@ -68,6 +68,11 @@ let config = {
             }
         ]
     },
+    externals: {
+        'jquery': 'jQuery',
+        '$': 'jQuery',
+        'perfect-scrollbar': 'PerfectScrollbar'
+    },
     plugins: [
         new ProgressPlugin,
         new FriendlyErrors,
@@ -80,19 +85,24 @@ let config = {
             }
         }),
         new DynamicPublicPathPlugin({
-            externalGlobal: 'window.Laravel.cdn',
+            externalGlobal: 'window.App.cdn',
             chunkName: 'manifest'
         })
     ],
     resolve: {
         alias: {
-            '@root': path.resolve('src'),
-            '@components': path.resolve('src/components'),
-            '@constants': path.resolve('src/constants'),
-            '@helpers': path.resolve('src/helpers'),
-            '@modules': path.resolve('src/modules')
+            '@base': path.resolve(__dirname, '../../'),
+            '@root': path.resolve(__dirname, './src/js'),
+            '@store': path.resolve(__dirname, './src/js/store'),
+            '@plugins': path.resolve(__dirname, './src/js/plugins'),
+            '@components': path.resolve(__dirname, './src/js/components'),
+            '@constants': path.resolve(__dirname, './src/js/constants'),
+            '@routes': path.resolve(__dirname, './src/js/routes'),
+            '@helpers': path.resolve(__dirname, './src/js/helpers'),
+            '@modules': path.resolve(__dirname, './src/js/modules'),
+            '@mixins': path.resolve(__dirname, './src/js/mixins'),
+            '@vendor': path.resolve(__dirname, './src/js/vendor'),
+            '@svg': path.resolve(__dirname, '../../static/src/svg')
         }
     }
 };
-
-module.exports = config;

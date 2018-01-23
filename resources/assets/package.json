@@ -29,6 +29,7 @@
         "inputmask": "^3.3.11",
         "lodash": "^4.17.4",
         "nouislider": "^11.0.0",
+        "query-string": "^5.0.1",
         "script-loader": "^0.7.2",
         "sprintf-js": "^1.1.1",
         "svg-loader": "^0.0.2",

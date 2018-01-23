@@ -1,3 +1,5 @@
+import Vue from 'vue';
+
 import _each from 'lodash/each';
 import _clone from 'lodash/clone';
 

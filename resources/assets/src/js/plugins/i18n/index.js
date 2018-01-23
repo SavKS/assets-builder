@@ -1,12 +1,25 @@
 import _get from 'lodash/get';
+import _isArray from 'lodash/isArray';
 import _merge from 'lodash/merge';
+import print from 'sprintf-js';
 
 let __config = {};
 
 export default {
     install(Vue) {
-        Vue.prototype.$t = function (text) {
+        Vue.prototype.$t = function (text, scope) {
             return this.$store.getters['i18n/translate'](text);
+        };
+
+        Vue.prototype.$ti = function (text, args, scope) {
+            if (!_isArray(args)) {
+                throw Error('Arguments must bee array');
+            }
+
+            return print.sprintf(
+                this.$t(text),
+                ...args
+            );
         };
     },
     storeRegister(store) {
@@ -39,7 +52,3 @@ export default {
         __config = _merge({}, __config, config);
     }
 };
-
-// export default function (text) {
-//     return text;
-// };

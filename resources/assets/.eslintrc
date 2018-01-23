@@ -41,7 +41,8 @@
     },
     "globals": {
         "$": false,
-        "require": false
+        "require": false,
+        "__dirname": true
     },
     "plugins": [
         "vue"
