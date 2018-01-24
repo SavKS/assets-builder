@@ -5,7 +5,7 @@ module.exports = (webpackConfig) => {
         hints: false
     };
 
-    webpackConfig.devtool = 'eval';
+    webpackConfig.devtool = 'inline-source-map';
 
     webpackConfig.plugins.push(
         new webpack.DefinePlugin({

@@ -13,6 +13,8 @@ import SvgImage from '@components/SvgImage.vue';
 
 Vue.component('svg-image', SvgImage);
 
+import '../scss/app.scss';
+
 VueForm.config({
     httpClient: http
 });

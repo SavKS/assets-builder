@@ -22,7 +22,7 @@ const manifestReplacer = function (key, value) {
     return {
         key: finalKey,
         value: finalValue
-    }
+    };
 };
 
 webpackConfig.output = {
@@ -30,13 +30,13 @@ webpackConfig.output = {
 
     path: path.resolve(__dirname, '../../static/pub/js'),
     filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].[chunkhash].js',
+    chunkFilename: '[name].[chunkhash].js'
 };
 
 webpackConfig.plugins.push(
     new CleanupPlugin({
         otherFolders: [
-            path.resolve(__dirname, '../../static/pub/css'),
+            path.resolve(__dirname, '../../static/pub/css')
         ]
     })
 );

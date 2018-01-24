@@ -6,9 +6,9 @@ const glob = require('glob');
 const FriendlyErrors = require('friendly-errors-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const DynamicPublicPathPlugin = require('dynamic-public-path-webpack-plugin');
-const ImportOnce = require('node-sass-import-once');
+
+const utils = require('./utils');
 
 const jsModules = lodash.reduce(glob.sync('./src/js/modules/**/*.js'), (state, file) => {
     const parts = file.split('/');
@@ -20,8 +20,7 @@ const jsModules = lodash.reduce(glob.sync('./src/js/modules/**/*.js'), (state, f
 
 module.exports = {
     entry: lodash.assign({
-        'index': './src/js/index',
-        'app': './src/scss/app.scss'
+        'index': './src/js/index'
     }, jsModules),
     output: {
         publicPath: '/'
@@ -40,33 +39,14 @@ module.exports = {
             {
                 test: /\.svg$/,
                 loader: 'svg-loader'
-            },
-            {
-                test: /\.(sass|scss)$/,
-                use: ExtractTextPlugin.extract({
-                    use: [
-                        {
-                            loader: 'postcss-loader?importLoaders=1',
-                            options: {
-                                sourceMap: process.env.NODE_ENV === 'develop' ? 'inline' : false
-                            }
-                        },
-                        {
-                            loader: 'sass-loader',
-                            options: {
-                                sourceMap: process.env.NODE_ENV === 'develop' ? 'inline' : false,
-                                importer: ImportOnce,
-                                importOnce: {
-                                    index: false,
-                                    css: false,
-                                    bower: false
-                                }
-                            }
-                        }
-                    ]
-                })
             }
-        ]
+        ].concat(
+            utils.styleLoaders({
+                sourceMap: process.env.NODE_ENV === 'develop',
+                extract: true,
+                usePostCSS: true
+            })
+        )
     },
     externals: {
         'jquery': 'jQuery',
@@ -81,7 +61,7 @@ module.exports = {
             name: 'vendor',
             minChunks: (module) => {
                 return module.resource
-                    && /\.(js|css|es6|svg)$/.test(module.resource);
+                    && /\.(js|svg)$/.test(module.resource);
             }
         }),
         new DynamicPublicPathPlugin({
