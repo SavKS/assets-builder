@@ -38,7 +38,9 @@ Templater.prototype.render = function () {
     let data = {};
 
     if (this.config.dataFile) {
-        data = require(this.config.dataFile);
+        data = JSON.parse(
+            fs.readFileSync(this.config.dataFile)
+        );
     }
 
     glob(this.entry + '/*.twig', {}, (err, files) => {
