@@ -70,7 +70,15 @@ AssetsBuilder.prototype.apply = function (compiler) {
                 );
 
                 watcher.on('change', (path) => {
-                    if (/\.twig$/i.test(path)) {
+                    const dataFileName = lodash.get(
+                        this.config,
+                        'templater.dataFile',
+                        'datafile.json'
+                    );
+
+                    if (/\.twig$/i.test(path)
+                        || lodash.endsWith(path, dataFileName)
+                    ) {
                         templater.change();
                     }
                 });
@@ -79,7 +87,7 @@ AssetsBuilder.prototype.apply = function (compiler) {
             }
 
             process.on('uncaughtException', function (err) {
-                console.log(err)
+                console.log(err);
             });
         }, 0);
     });
@@ -122,7 +130,7 @@ function getWatchPath(nodes) {
         }
 
         return carry;
-    }, [])
+    }, []);
 }
 
 AssetsBuilder.prototype.pushToCssStack = function (file) {
@@ -135,7 +143,7 @@ AssetsBuilder.prototype.pushToCssStack = function (file) {
     if (this.browserSync !== null) {
         this.injectCss();
     }
-}
+};
 
 AssetsBuilder.prototype.injectCss = lodash.debounce(function () {
     this.changedCss.forEach((file) => vfs.src(file).pipe(
@@ -168,13 +176,13 @@ function _stringBuilder(options, oldBase) {
 
 function streamRename(options) {
     options = options || {};
-    return through.obj(function(chunk, enc, callback) {
+    return through.obj(function (chunk, enc, callback) {
         var oldBase;
         var arr = chunk.path.split('/');
         var root = options.root || chunk.base;
         root = arr.indexOf(path.basename(root));
-        oldBase = arr[root + 1];
-        arr[root + 1] = _stringBuilder(options, oldBase);
+        oldBase = arr[ root + 1 ];
+        arr[ root + 1 ] = _stringBuilder(options, oldBase);
         chunk.path = arr.join('/');
         this.push(chunk);
         callback();

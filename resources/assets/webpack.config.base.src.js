@@ -49,7 +49,10 @@ webpackConfig.plugins.push(
 webpackConfig.plugins.push(
     new AssestsBuilder({
         staticPath: path.resolve('../../static'),
-        disableBrowserSync: argv.watch !== true
+        disableBrowserSync: argv.watch !== true,
+        templater: {
+            dataFile: path.resolve(__dirname, './src/layouts/datafile.json')
+        }
     }),
 );
 

@@ -35,6 +35,12 @@ function Templater(config, staticPath, reloadBrowserSync) {
 }
 
 Templater.prototype.render = function () {
+    let data = {};
+
+    if (this.config.dataFile) {
+        data = require(this.config.dataFile);
+    }
+
     glob(this.entry + '/*.twig', {}, (err, files) => {
         files.forEach((filePath) => {
             const publicPath = Path.resolve(
@@ -42,12 +48,12 @@ Templater.prototype.render = function () {
                 Path.basename(filePath).replace(/\.twig$/, '.html')
             );
 
-            Twig.renderFile(filePath, this.config.data, (err, html) => {
+            Twig.renderFile(filePath, data, (err, html) => {
                 fs.writeFileSync(publicPath, html);
             });
         });
     });
-}
+};
 
 Templater.prototype.init = function () {
     this.render();
@@ -60,6 +66,6 @@ Templater.prototype.change = function () {
 
 Templater.prototype.watchPath = function () {
     return Path.resolve(this.staticPath, this.config.source);
-}
+};
 
 module.exports = Templater;
