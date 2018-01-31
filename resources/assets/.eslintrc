@@ -44,7 +44,8 @@
         "require": false,
         "__dirname": true,
         "process": true,
-        "exports": true
+        "exports": true,
+        "module": true
     },
     "plugins": [
         "vue"
