@@ -39,9 +39,13 @@ Cleanup.prototype.apply = function (compiler) {
 };
 
 function getFiles(fromPath, currentFiles = []) {
-    return readDirSync(fromPath).filter(function (file) {
-        return currentFiles, file, currentFiles.indexOf(file) === -1;
-    });
+    if (!fs.existsSync(fromPath)) {
+        return [];
+    }
+
+    return readDirSync(fromPath).filter(
+        (file) => currentFiles.indexOf(file) === -1
+    );
 }
 
 module.exports = Cleanup;

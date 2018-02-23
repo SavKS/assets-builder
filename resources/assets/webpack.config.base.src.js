@@ -14,7 +14,7 @@ webpackConfig.output = {
 
     path: path.resolve(__dirname, '../../static/src/js'),
     filename: '[name].js',
-    chunkFilename: '[name].js',
+    chunkFilename: '[name].js'
 };
 
 webpackConfig.performance = {
@@ -34,14 +34,14 @@ webpackConfig.plugins.push(
 webpackConfig.plugins.push(
     new CleanupPlugin({
         otherFolders: [
-            path.resolve(__dirname, '../../static/src/css'),
+            path.resolve(__dirname, '../../static/src/css')
         ]
     })
 );
 
 webpackConfig.plugins.push(
     new ExtractTextPlugin({
-        filename: '../../src/css/app.css',
+        filename: '../../src/css/[name].css',
         allChunks: true
     })
 );

@@ -10,18 +10,13 @@ const DynamicPublicPathPlugin = require('dynamic-public-path-webpack-plugin');
 
 const utils = require('./utils');
 
-const jsModules = lodash.reduce(glob.sync('./src/js/modules/**/*.js'), (state, file) => {
-    const parts = file.split('/');
-
-    state[ parts[ parts.length - 2 ].replace('.js', '') ] = file;
-
-    return state;
-}, {});
-
 module.exports = {
-    entry: lodash.assign({
-        'index': './src/js/index'
-    }, jsModules),
+    entry: {
+        app: lodash.concat(
+            './src/js/index.js',
+            glob.sync('./src/js/modules/*/*.js')
+        )
+    },
     output: {
         publicPath: '/'
     },
@@ -66,7 +61,7 @@ module.exports = {
         }),
         new DynamicPublicPathPlugin({
             externalGlobal: 'window.App.cdn',
-            chunkName: 'manifest'
+            chunkName: 'vendor'
         })
     ],
     resolve: {

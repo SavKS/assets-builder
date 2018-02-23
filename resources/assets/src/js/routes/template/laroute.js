@@ -1,7 +1,7 @@
 import urlHelper from '@root/plugins/location/libs/url';
 
 const routes = {
-    rootUrl: window.Laravel.baseURL,
+    rootUrl: window.App.baseURL,
     routes: $ROUTES$,
     prefix: '$PREFIX$',
 
@@ -11,7 +11,7 @@ const routes = {
         if (!route) {
             return;
         }
-        
+
         return `/${urlHelper(route.uri, parameters)}`;
     },
 

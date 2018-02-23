@@ -43,7 +43,7 @@ webpackConfig.plugins.push(
 
 webpackConfig.plugins.push(
     new ExtractTextPlugin({
-        filename: '../../pub/css/app.[hash].css',
+        filename: '../../pub/css/[name].[hash].css',
         allChunks: true
     })
 );
