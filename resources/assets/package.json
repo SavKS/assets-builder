@@ -5,12 +5,12 @@
     "description": "Test",
     "main": "index.js",
     "scripts": {
-        "pub-prod": "NODE_ENV=production webpack --config webpack.config.pub.prod.js",
-        "pub-dev": "NODE_ENV=develop webpack --config webpack.config.pub.dev.js",
-        "pub-watch": "NODE_ENV=develop webpack --watch --config webpack.config.pub.dev.js",
-        "src-prod": "NODE_ENV=production webpack --config webpack.config.src.prod.js",
-        "src-dev": "NODE_ENV=develop webpack --config webpack.config.src.dev.js",
-        "src-watch": "NODE_ENV=develop webpack --watch --config webpack.config.src.dev.js"
+        "pub-prod": "cross-env NODE_ENV=production webpack --config webpack.config.pub.prod.js",
+        "pub-dev": "cross-env NODE_ENV=develop webpack --config webpack.config.pub.dev.js",
+        "pub-watch": "cross-env NODE_ENV=develop webpack --watch --config webpack.config.pub.dev.js",
+        "src-prod": "cross-env NODE_ENV=production webpack --config webpack.config.src.prod.js",
+        "src-dev": "cross-env NODE_ENV=develop webpack --config webpack.config.src.dev.js",
+        "src-watch": "cross-env NODE_ENV=develop webpack --watch --config webpack.config.src.dev.js"
     },
     "author": "Ideil",
     "license": "ISC",
@@ -22,6 +22,7 @@
         "babel-preset-stage-0": "^6.24.1",
         "bootstrap": "^4.0.0",
         "circular-dependency-plugin": "^4.4.0",
+        "cross-env": "^5.1.4",
         "deep-for-each": "^2.0.2",
         "dotenv": "^5.0.0",
         "eslint-config-crockford": "^2.0.0",
