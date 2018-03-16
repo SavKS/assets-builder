@@ -1,0 +1,62 @@
+//# Typography
+//
+//*
+
+
+//## Headings
+//
+//*
+
+// h1, .h1,
+// h2, .h2,
+// h3, .h3 {
+//     margin-top: offset(lg);
+//     margin-bottom: $offset;
+// }
+
+
+//## Text
+//
+//*
+
+// p {
+//     margin-bottom: $offset;
+// }
+
+
+//## Lists
+//
+//*
+
+//### Unordered and Ordered lists
+
+// ul,
+// ol {
+//     margin-bottom: $offset;
+// }
+
+//### Determination list
+
+// dl {
+//     margin-bottom: $offset;
+// }
+
+
+//## Forms
+//
+//*
+
+textarea {
+    resize: vertical;
+}
+
+
+//## Misc
+//
+//*
+
+abbr[title] {
+    text-decoration: none;
+    border-bottom: 0;
+    cursor: inherit !important;
+}
