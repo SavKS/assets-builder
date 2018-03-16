@@ -10,7 +10,8 @@
         "pub-watch": "cross-env NODE_ENV=develop webpack --watch --config webpack.config.pub.dev.js",
         "src-prod": "cross-env NODE_ENV=production webpack --config webpack.config.src.prod.js",
         "src-dev": "cross-env NODE_ENV=develop webpack --config webpack.config.src.dev.js",
-        "src-watch": "cross-env NODE_ENV=develop webpack --watch --config webpack.config.src.dev.js"
+        "src-watch": "cross-env NODE_ENV=develop webpack --watch --config webpack.config.src.dev.js",
+        "init-eslint": "npm -g i eslint vue-eslint-parser eslint-config-crockford babel-eslint"
     },
     "author": "Ideil",
     "license": "ISC",
