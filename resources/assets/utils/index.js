@@ -7,14 +7,16 @@ exports.cssLoaders = function (options) {
     const cssLoader = {
         loader: 'css-loader',
         options: {
-            sourceMap: options.sourceMap
+            sourceMap: options.sourceMap,
+            url: false
         }
     };
 
     const postcssLoader = {
         loader: 'postcss-loader',
         options: {
-            sourceMap: options.sourceMap
+            sourceMap: options.sourceMap,
+            url: false
         }
     };
 
@@ -26,7 +28,8 @@ exports.cssLoaders = function (options) {
             loaders.push({
                 loader: loader + '-loader',
                 options: Object.assign({}, loaderOptions, {
-                    sourceMap: options.sourceMap
+                    sourceMap: options.sourceMap,
+                    url: false
                 })
             });
         }
