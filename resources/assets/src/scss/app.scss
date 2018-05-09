@@ -42,19 +42,19 @@
 @import "vendor/bootstrap/carousel";
 @import "vendor/bootstrap/utilities";
 @import "vendor/bootstrap/print";
-
-
-//## Vendor
 //
-//*
-
-
-
-
-//## Application
 //
-//*
-
+////## Vendor
+////
+////*
+//
+//
+//
+//
+////## Application
+////
+////*
+//
 @import "components/bs-misc";
 @import "components/scaffolding";
 @import "components/type";
@@ -62,3 +62,15 @@
 @import "components/app-banner";
 @import "components/app-footer";
 @import "components/utilities";
+
+@font-face {
+  font-family: 'lg';
+  src: url("../fonts/lg.eot?n1z373");
+  src: url("../fonts/lg.eot?#iefixn1z373") format("embedded-opentype"), url("../fonts/lg.woff?n1z373") format("woff"), url("../fonts/lg.ttf?n1z373") format("truetype"), url("../fonts/lg.svg?n1z373#lg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'lg';
+}

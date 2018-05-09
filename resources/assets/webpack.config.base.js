@@ -9,6 +9,7 @@ const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const DynamicPublicPathPlugin = require('dynamic-public-path-webpack-plugin');
 
 const utils = require('./utils');
+const externals = require('./externals');
 
 module.exports = {
     entry: {
@@ -32,8 +33,37 @@ module.exports = {
                 exclude: [ /node_modules/ ]
             },
             {
-                test: /\.svg$/,
-                loader: 'svg-loader'
+                test: /\.(png|jpe?g|gif)(\?.*)?$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[hash:16].[ext]',
+                        outputPath: '../../img',
+                        publicPath: '../../img'
+                    }
+                }
+            },
+            {
+                test: /\.(eot|woff|woff2|ttf)(\?.*)?$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[hash:16].[ext]',
+                        outputPath: '../../fonts',
+                        publicPath: '../../fonts'
+                    }
+                }
+            },
+            {
+                test: /\.(svg)(\?.*)?$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[path][name].[hash:16].[ext]',
+                        outputPath: '../../',
+                        publicPath: '../../'
+                    }
+                }
             }
         ].concat(
             utils.styleLoaders({
@@ -43,11 +73,7 @@ module.exports = {
             })
         )
     },
-    externals: {
-        'jquery': 'jQuery',
-        '$': 'jQuery',
-        'perfect-scrollbar': 'PerfectScrollbar'
-    },
+    externals,
     plugins: [
         new ProgressPlugin,
         new FriendlyErrors,
@@ -56,6 +82,7 @@ module.exports = {
             name: 'vendor',
             minChunks: (module) => {
                 return module.resource
+                    && !/\.(png|jpe?g|gif)$/.test(module.resource)
                     && /\.(js|svg)$/.test(module.resource);
             }
         }),
@@ -65,6 +92,7 @@ module.exports = {
         })
     ],
     resolve: {
+        extensions: ['.js', '.json', '.vue'],
         alias: {
             '@base': path.resolve(__dirname, '../../'),
             '@root': path.resolve(__dirname, './src/js'),

@@ -51,7 +51,15 @@ webpackConfig.plugins.push(
         staticPath: path.resolve('../../static'),
         disableBrowserSync: argv.watch !== true,
         templater: {
-            dataFile: path.resolve(__dirname, './src/layouts/datafile.json')
+            dataFile: path.resolve(__dirname, './src/layouts/datafile.json'),
+            urlRules: [
+                {
+                    test: /\.(png|jpe?g|gif)(\?.*)?$/,
+                    from: path.resolve(__dirname, './src/layouts'),
+                    to: path.resolve(__dirname, '../../static/img/zzz'),
+                    publicPath: '../../img/zzz'
+                }
+            ]
         }
     }),
 );

@@ -1,7 +1,38 @@
-{% extends '_templates/base.twig' %}
+<!DOCTYPE html><html class="no-js"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> | Website Name</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block content %}
-    <style>
+    
+    
+
+    <link rel="stylesheet" href="../../src/css/app.css">
+
+    
+    <script src="../../vendor/modernizr.min.js"></script>
+
+    <script>
+        window.App = {
+            baseUrl: '/',
+            staticUrl: '/',
+            cdn: '../../src/js/'
+        }
+    </script>
+</head>
+
+    <body>
+        <header class="c-banner">
+            <p>Application banner content</p>
+
+<img src="../../img/zzz/brand-1.6de9e1855814453d.jpg" alt="">
+        </header>
+
+        <img src="../../img/zzz/brand-1.6de9e1855814453d.jpg" alt="">
+
+        <main>
+                <style>
         .c-addon-group {
             max-width: 100%;
             width: 300px;
@@ -40,8 +71,8 @@
 
         <h4>Addons based on BS form controls</h4>
         <div class="c-addon-group c-addon-right">
-            {#<img src="/src/img/zzz/atom/puzzle-20x22.png" alt="" class="c-addon" role="presentation">#}
-            <input class="form-control"></input>
+            
+            <input class="form-control">
         </div>
         <hr>
 
@@ -49,7 +80,7 @@
         <h2>Links</h2>
         <h3>Standart links</h3>
 
-        <h4>Default (CMS content) link</h4>
+        <h4>Default (CMS&#xA0;content) link</h4>
         <a href="#">Default</a>
 
         <h4>Text link</h4>
@@ -119,18 +150,18 @@
                 <div class="c-file">
                     <input type="file" id="fileUpload" class="js-file" accept="" value="">
                     <span class="btn btn-default btn-sm">Upload file</span>
-                    <span class="c-file-name js-file-name">file is not selected…</span>
+                    <span class="c-file-name js-file-name">file is not selected&#x2026;</span>
                 </div>
             </div>
         </form>
         <hr>
 
-        <h2>RUB symbol (₽)</h2>
-        <span class="c-rub" aria-label="рубль"></span>
+        <h2>RUB symbol (&#x20BD;)</h2>
+        <span class="c-rub" aria-label="&#x440;&#x443;&#x431;&#x43B;&#x44C;"></span>
         <hr>
 
         <h2>Required label</h2>
-        <lable class="is-required">Required control's lalbe</lable>
+        <lable class="is-required">Required control&apos;s lalbe</lable>
         <hr>
 
         <h2>Loading</h2>
@@ -141,9 +172,23 @@
 
         <h2>Slick</h2>
         <ul class="c-carousel js-carousel">
-            <li class="c-slide">First slide…</li>
-            <li class="c-slide">…some slide…</li>
-            <li class="c-slide">…last slide</li>
+            <li class="c-slide">First slide&#x2026;</li>
+            <li class="c-slide">&#x2026;some slide&#x2026;</li>
+            <li class="c-slide">&#x2026;last slide</li>
         </ul>
     </div>
-{% endblock %}
+        </main>
+
+        <footer class="c-footer">
+            <p>Application footer content</p>
+
+<p class="c-copy">&#xA9; 2018 ideil</p>
+
+<p class="c-ideil">made by <a href="https://www.ideil.com/">ideil</a></p>
+        </footer>
+
+        <script src="../../vendor/jquery.min.js"></script>
+<script src="../../src/js/vendor.js"></script>
+<script src="../../src/js/app.js"></script>    
+
+</body></html>

@@ -1,5 +1,6 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const SassImporter = require('node-sass-magic-importer');
+const sassImporter = require('node-sass-magic-importer');
+const path = require('path');
 
 exports.cssLoaders = function (options) {
     options = options || {};
@@ -7,8 +8,7 @@ exports.cssLoaders = function (options) {
     const cssLoader = {
         loader: 'css-loader',
         options: {
-            sourceMap: options.sourceMap,
-            url: false
+            sourceMap: options.sourceMap
         }
     };
 
@@ -16,8 +16,14 @@ exports.cssLoaders = function (options) {
         loader: 'postcss-loader',
         options: {
             sourceMap: options.sourceMap,
-            url: false
+            plugins: () => require(
+                path.resolve(__dirname, '../postcss.config')
+            ).plugins
         }
+    };
+
+    const resolveUrlLoader = {
+        loader: 'resolve-url-loader'
     };
 
     // generate loader string to be used with extract text plugin
@@ -51,7 +57,7 @@ exports.cssLoaders = function (options) {
         css: generateLoaders(),
         postcss: generateLoaders(),
         scss: generateLoaders('sass', {
-             importer: SassImporter()
+             importer: sassImporter()
         })
     };
 };
@@ -70,4 +76,8 @@ exports.styleLoaders = function (options) {
     }
 
     return output;
+};
+
+exports.basePath = (relativePath) => {
+    return path.resolve(__dirname, `../../../${relativePath}`);
 };
