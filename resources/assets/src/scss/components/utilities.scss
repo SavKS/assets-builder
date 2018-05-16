@@ -82,3 +82,20 @@
 .u-ellipsis {
     @include text-truncate;
 }
+
+
+.u-link {
+    @include link;
+}
+
+.u-uppercase {
+    text-transform: uppercase;
+}
+
+.u-bold {
+    font-weight: $font-weight-bold;
+}
+
+.u-bg {
+    background-color: $white;
+}

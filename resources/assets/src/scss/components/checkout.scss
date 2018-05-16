@@ -1,0 +1,295 @@
+.c-checkout {
+    &__main {
+        padding: gutter('sm') gutter('sm') $offset;
+        background-color: $white;
+        border-radius: 5px;
+        counter-reset: fieldset;
+
+        &-inner {
+            max-width: 830px;
+        }
+    }
+    
+    &__sidebar {
+        margin-top: gutter('sm');
+        background-color: $white;
+        border-radius: 5px;
+    }
+
+    &__delivery {
+        padding-top: gutter('sm');
+        border-top: 2px solid $gray-200;
+
+        .description {
+            margin-bottom: offset('sm');
+        }
+    }
+
+    .c-fieldset__title {
+        counter-increment: fieldset;
+
+        &:before {
+            content: counter(fieldset)". ";
+        }
+    }
+}
+
+.c-order {
+    &__title {
+        padding: gutter('sm');
+        margin: 0;
+        font-size: 2rem;
+        font-weight: $font-weight-bold;
+        border-bottom: 2px solid $gray-200;
+    }
+
+    &__list {
+        position: relative;
+        padding: gutter('sm') offset('sm');
+        border-bottom: 2px solid $gray-200;
+        overflow: hidden;
+        max-height: 250px;
+
+        .item {
+            &:not(:last-child) {
+                margin-bottom: $offset;
+            }
+        }
+    }
+
+    &__promocode {
+        padding: gutter('sm');
+        border-bottom: 2px solid $gray-200;
+
+        .toggle {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: $black;
+            @include link;
+
+            &:after {
+                content: '';
+                display: block;
+                width: 8px;
+                height: 8px;
+                position: absolute;
+                top: 50%;
+                right: 0;
+                margin-top: -6px;
+                border-right: 2px solid currentColor;
+                border-bottom: 2px solid currentColor;
+                transform: rotate(45deg);
+                transition: transform $transition;
+                will-change: transform;
+            }
+
+            &:hover {
+                color: $primary;
+            }
+
+            svg {
+                fill: currentColor;
+                transition: transform $transition;
+            }
+
+            &[aria-expanded="true"] {
+                &:after {
+                    transform: rotate(-135deg);
+                }
+            }
+        }
+
+        .form-group {
+            padding-top: gutter('sm');
+            margin-bottom: 0;
+
+            .form-control {
+                margin-bottom: 10px;
+            }
+
+            @include media-breakpoint-up(sm) {
+                display: flex;
+
+                .form-control {
+                    margin-bottom: 0;
+                    margin-right: 10px;
+                    width: auto;
+                    flex-grow: 1;
+                }
+            }
+        }
+    }
+
+    &__details {
+        padding: gutter('sm');
+        border-bottom: 2px solid $gray-200;
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .total {
+            padding-top: offset('sm');
+            margin-bottom: 0;
+            font-size: $h5-font-size;
+        }
+    }
+
+    &__footer {
+        position: relative;
+        padding: gutter('sm');
+
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 15px;
+            color: $white;
+            background-image: linear-gradient(45deg, transparent 33.333%, 33.333%, currentColor 66.667%, transparent 66.667%), linear-gradient(-45deg, transparent 33.333%, 33.333%, currentColor 66.667%, transparent 66.667%);
+            background-size: 30px 60px;
+            background-position: 50% -45px;
+            background-repeat: repeat-x;
+        }
+    }
+}
+
+.c-item-order {
+    display: flex;
+    align-items: flex-start;
+    color: $black;
+    @include link;
+    font-size: $font-size-sm;
+
+    &__img {
+        flex-shrink: 0;
+        width: 100px;
+        margin-right: offset('sm');
+    }
+
+    &__title {
+        margin-bottom: 12px;
+        font-weight: $font-weight-bold;
+        font-size: $font-size-sm;
+    }
+
+    &__list {
+        color: $black;
+        line-height: 1.2;
+        margin-bottom: 12px;
+
+        .item {
+            &:not(:last-child) {
+                margin-bottom: 5px;
+            }
+        }
+
+        .label {
+            color: $gray-600;
+        }
+    }
+
+    &__price {
+        color: $black;
+
+        .count {
+            color: $gray-600;
+        }
+    }
+}
+
+@include media-breakpoint-up(sm) {
+
+    .c-item-order {
+        &__img {
+            width: 130px;
+            margin-right: $offset;
+        }
+
+        &__list {
+            .item {
+                display: flex;
+            }
+
+            .label {
+                margin-right: 10px;
+            }
+        }
+    }
+
+}
+
+
+@include media-breakpoint-up(lg) {
+
+    .c-checkout {
+        display: flex;
+        align-items: flex-start;
+
+        &__main {
+            flex-grow: 1;
+            padding: $gutter $gutter offset('lg');
+        }
+
+        &__sidebar {
+            margin-top: 0;
+            margin-left: $gutter;
+            width: calc(50% - #{$gutter});
+            flex-shrink: 0;
+        }
+
+        &__delivery {
+            padding-top: $gutter;
+
+            .description {
+                margin-bottom: gutter('sm') + 5;
+            }
+        }
+    }
+
+    .c-order {
+        &__title {
+            padding: 25px $gutter;
+        }
+
+        &__list {
+            padding: $offset $gutter;
+            max-height: 320px;
+        }
+
+        &__promocode {
+            padding: gutter('sm') $gutter;
+        }
+
+        &__details {
+            padding: $offset $gutter;
+        }
+
+        &__footer {
+            padding: $gutter;
+        }
+    }
+}
+
+@include media-breakpoint-up(xl) {
+    
+    .c-checkout {
+        &__sidebar {
+            width: 500px;
+        }
+    }
+
+    .c-item-order {
+        &__img {
+            width: 170px;
+        }
+    }
+
+}

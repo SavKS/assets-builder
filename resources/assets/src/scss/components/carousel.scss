@@ -1,0 +1,207 @@
+.o-carousel--brands {
+    .o-carousel__slick:not(.slick-initialized) {
+        white-space: nowrap;
+        font-size: 0;
+        overflow: hidden;
+
+        .o-carousel__item {
+            display: inline-block;
+            width: 50%;
+            font-size: $font-size-base;
+
+            @include media-breakpoint-only(md) {
+                width: 33.333%;
+            }
+
+            @include media-breakpoint-only(lg) {
+                width: 25%;
+            }
+
+            @include media-breakpoint-only(xl) {
+                width: 20%;
+            }
+
+            @include media-breakpoint-up(hd) {
+                width: 16.666%;
+            }
+        }
+    }
+
+    .o-carousel__item {
+        
+        .link {
+            display: block;
+            position: relative;
+            padding-bottom: 60%;
+
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                max-height: calc(100% - #{$offset});
+                max-width: calc(100% - #{$offset});
+                width: auto;
+                margin: auto;
+
+                @include media-breakpoint-up(hd) {
+                    max-height: calc(100% - #{$gutter});
+                    max-width: calc(100% - #{$gutter});
+                }
+            }
+        }
+    }
+
+    .link {
+        filter: grayscale(100%) opacity(50%);
+        transition: filter $transition;
+        will-change: filter;
+
+        &:hover {
+            filter: grayscale(0) opacity(100%);
+        }
+    }
+}
+
+.o-carousel--related {
+    .o-carousel__slick:not(.slick-initialized) {
+        white-space: nowrap;
+        font-size: 0;
+        overflow: hidden;
+
+        .o-carousel__item {
+            display: inline-block;
+            width: 100%;
+
+            @include media-breakpoint-only(sm) {
+                width: 50%;
+            }
+
+            @include media-breakpoint-only(md) {
+                width: 33.334%;
+            }
+
+            @include media-breakpoint-up(lg) {
+                width: 25%;
+            }
+        }
+    }
+}
+
+.o-carousel--about {
+    margin-left: -5px;
+    margin-right: -5px;
+
+    .o-carousel__slick:not(.slick-initialized) {
+        white-space: nowrap;
+        font-size: 0;
+        overflow: hidden;
+
+        .o-carousel__item {
+            display: inline-block;
+            width: 100%;
+
+            @include media-breakpoint-only(sm) {
+                width: 50%;
+            }
+
+            @include media-breakpoint-up(md) {
+                width: 33.334%;
+            }
+
+            @include media-breakpoint-up(xl) {
+                width: 25%;
+            }
+        }
+    }
+
+    .o-carousel__item {
+        padding: 0 5px;
+        background: none;
+        border: none;
+    }
+
+    @include media-breakpoint-up(lg) {
+        margin-left: gutter('sm') * -1;
+        margin-right: gutter('sm') * -1;
+
+        .o-carousel__item {
+            padding: 0 gutter('sm');
+        }
+    }
+}
+
+.o-carousel--kit {
+    .o-carousel__slick:not(.slick-initialized) {
+        white-space: nowrap;
+        font-size: 0;
+        overflow: hidden;
+
+        .o-carousel__item {
+            display: inline-block;
+            width: 100%;
+        }
+    }
+}
+
+.o-carousel__item {
+    border: 1px solid $gray-200;
+    background-color: $white;
+}
+
+.c-carousel-arrows {
+    position: relative;
+    width: 150px;
+    padding: 0 50px;
+    opacity: 0;
+    visibility: hidden;
+    text-align: center;
+
+    .is-init & {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .slick-arrow {
+        position: absolute;
+        top: 50%;
+        margin-top: -12px;
+        border: none;
+        background: none;
+        padding: 5px 10px;
+        color: $black;
+        cursor: pointer;
+
+        svg {
+            display: block;
+            stroke: currentColor;
+        }
+
+        &.slick-disabled {
+            color: $gray-600 !important;
+            cursor: not-allowed;
+        }
+
+        &:hover {
+            color: $primary;
+        } 
+    }
+
+    .slick-prev {
+        left: -10px;
+        transform: rotate(180deg);
+    }
+
+    .slick-next {
+        right: -10px;
+    }
+
+    span {
+        color: $gray-600;
+
+        &:first-of-type {
+            color: $black;
+        }
+    }
+}

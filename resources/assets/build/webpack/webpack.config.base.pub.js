@@ -2,7 +2,6 @@ const webpackConfig = require('./webpack.config.base');
 const path = require('path');
 const lodash = require('lodash');
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const CleanupPlugin = require('./plugins/cleanup');
@@ -28,29 +27,18 @@ const manifestReplacer = function (key, value) {
 webpackConfig.output = {
     ...webpackConfig.output,
 
-    path: path.resolve(__dirname, '../../static/pub/js'),
+    path: path.resolve(__dirname, '../../../../static/pub/js'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js'
 };
 
 webpackConfig.plugins.push(
-    new CleanupPlugin({
-        otherFolders: [
-            path.resolve(__dirname, '../../static/pub/css')
-        ]
-    })
-);
-
-webpackConfig.plugins.push(
-    new ExtractTextPlugin({
-        filename: '../../pub/css/[name].[hash].css',
-        allChunks: true
-    })
+    new CleanupPlugin
 );
 
 webpackConfig.plugins.push(
     new WebpackAssetsManifest({
-        output: '../manifest.json',
+        output: './manifest.json',
         customize: manifestReplacer,
         space: 2,
         writeToDisk: false,
@@ -61,6 +49,6 @@ webpackConfig.plugins.push(
     }),
 );
 
-webpackConfig.resolve.alias.vue = path.resolve('./node_modules/vue/dist/vue.min.js');
+webpackConfig.resolve.alias.vue = path.resolve('../node_modules/vue/dist/vue.min.js');
 
 module.exports = webpackConfig;

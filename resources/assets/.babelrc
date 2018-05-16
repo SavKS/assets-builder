@@ -15,7 +15,7 @@
         [
             "babel-plugin-webpack-alias",
             {
-                "config": "./webpack.config.base.js"
+                "config": "../build/webpack/webpack.config.base.js"
             }
         ]
     ]
