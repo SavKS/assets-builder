@@ -1,78 +1,27 @@
 const gulp = require('gulp');
-const sass = require('gulp-sass');
-const postcss = require('gulp-postcss');
-const sourceMaps = require('gulp-sourcemaps');
-const sassImporter = require('node-sass-magic-importer');
-const webpack = require('webpack');
-const browserSync = require('browser-sync');
 
-const postCssPlugins = require('../postcss.config').plugins;
+const config = require('../config');
 
-const browser = browserSync.create();
+const buildStyles = require('./utils/buildStyle');
+const browserSync = require('./utils/browserSync');
 
-const buildStyles = (outputPath) => () => {
-    return gulp.src('../src/scss/app.scss')
-        .pipe(
-            sourceMaps.init()
-        )
-        .pipe(
-            sass({
-                importer: sassImporter()
-            }).on('error', sass.logError)
-        )
-        .pipe(
-            postcss(postCssPlugins)
-        )
-        .pipe(
-            sourceMaps.write()
-        )
-        .pipe(
-            gulp.dest(outputPath)
-        )
-        .pipe(
-            browser.stream()
-        );
-};
-
-const bundler = (mode, watch = false) => () => {
-    const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-
-    const config = require(`./webpack/webpack.config.${mode}.${env}`);
-
-    config.watch = watch;
-
-    return new Promise(
-        resolve => webpack(config, (err, stats) => {
-
-            if (err) {
-                console.log('Webpack', err);
-            }
-
-            console.log(
-                stats.toString({
-                    colors: true
-                })
-            );
-
-            resolve();
-        })
-    );
-};
+const bundler = require('./utils/bundler');
+// const templater = require('./utils/templater');
 
 gulp.task(
     'scss:pub:dev',
-    buildStyles('../../../static/pub/css')
+    buildStyles('pub', true)
 );
 gulp.task(
     'scss:src:dev',
-    buildStyles('../../../static/src/css')
+    buildStyles('src')
 );
 
 gulp.task(
     'scss:pub:watch',
     () => {
         gulp.watch(
-            [ '../src/scss/*.scss', '../src/scss/**/*.scss' ],
+            config.style.watch,
             gulp.series('scss:pub:dev')
         );
     }
@@ -80,16 +29,10 @@ gulp.task(
 gulp.task(
     'scss:src:watch',
     () => {
-        browser.init({
-            open: true,
-            server: {
-                baseDir: '../../../static',
-                directory: true
-            }
-        });
+        browserSync.init(config.browserSync);
 
         gulp.watch(
-            [ '../src/scss/*.scss', '../src/scss/**/*.scss' ],
+            config.style.watch,
             gulp.series('scss:src:dev')
         );
     }
@@ -124,7 +67,7 @@ gulp.task(
     'src-dev',
     gulp.parallel([
         'scss:src:dev',
-        'webpack:src:dev'
+        // 'webpack:src:dev'
     ])
 );
 

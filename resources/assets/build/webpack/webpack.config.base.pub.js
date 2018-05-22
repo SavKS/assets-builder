@@ -38,13 +38,13 @@ webpackConfig.plugins.push(
 
 webpackConfig.plugins.push(
     new WebpackAssetsManifest({
-        output: './manifest.json',
+        output: '../manifest.json',
         customize: manifestReplacer,
         space: 2,
         writeToDisk: false,
         fileExtRegex: /\.\w{2,4}\.(?:map|gz)$|\.\w+$/i,
         sortManifest: true,
-        merge: false,
+        merge: true,
         publicPath: ''
     }),
 );

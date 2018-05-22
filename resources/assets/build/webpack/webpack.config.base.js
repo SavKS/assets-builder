@@ -57,13 +57,10 @@ module.exports = {
     ],
     resolve: {
         extensions: ['.js', '.json', '.vue'],
-        modules: [
-            'node_modules'
-            // path.resolve(__dirname, '../../node_modules')
-        ],
+        modules: [ 'node_modules' ],
         alias: {
             '@base': path.resolve(__dirname, '../../../../'),
-            '@root': path.resolve(__dirname, '../../src/js'),
+            '@root': path.resolve(__dirname, '../../src'),
             '@store': path.resolve(__dirname, '../../src/js/store'),
             '@plugins': path.resolve(__dirname, '../../src/js/plugins'),
             '@components': path.resolve(__dirname, '../../src/js/components'),

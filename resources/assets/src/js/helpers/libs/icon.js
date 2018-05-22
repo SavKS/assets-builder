@@ -1,3 +1,3 @@
 export default function (name) {
-    return require(`@base/static/src/img/svg/${name}.svg`);
+    return require(`@root/img/svg/${name}.svg`);
 }
