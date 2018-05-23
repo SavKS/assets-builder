@@ -10,9 +10,9 @@ let plugins = [
             filter: config.fonts.mask,
             url: asset => copyAsset(
                 asset.absolutePath,
-                config.srcPath,
-                config.staticPath,
-                config.fonts.baseUri,
+                config.current().styles.path.output,
+                config.fonts.path.src,
+                config.fonts.path.output,
                 asset.originUrl
             )
         },
@@ -20,9 +20,9 @@ let plugins = [
             filter: config.images.mask,
             url: asset => copyAsset(
                 asset.absolutePath,
-                config.srcPath,
-                config.staticPath,
-                config.images.baseUri,
+                config.current().styles.path.output,
+                config.images.path.src,
+                config.images.path.output,
                 asset.originUrl
             )
         }

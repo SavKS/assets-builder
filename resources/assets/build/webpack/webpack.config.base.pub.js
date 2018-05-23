@@ -28,8 +28,8 @@ webpackConfig.output = {
     ...webpackConfig.output,
 
     path: path.resolve(__dirname, '../../../../static/pub/js'),
-    filename: '[name].[chunkhash].js',
-    chunkFilename: '[name].[chunkhash].js'
+    filename: '[name].[chunkhash:10].js',
+    chunkFilename: '[name].[chunkhash:10].js'
 };
 
 webpackConfig.plugins.push(
@@ -38,13 +38,13 @@ webpackConfig.plugins.push(
 
 webpackConfig.plugins.push(
     new WebpackAssetsManifest({
-        output: '../manifest.json',
+        output: './manifest.json',
         customize: manifestReplacer,
         space: 2,
         writeToDisk: false,
         fileExtRegex: /\.\w{2,4}\.(?:map|gz)$|\.\w+$/i,
         sortManifest: true,
-        merge: true,
+        merge: false,
         publicPath: ''
     }),
 );

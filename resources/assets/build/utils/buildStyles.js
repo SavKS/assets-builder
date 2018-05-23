@@ -1,9 +1,9 @@
 const gulp = require('gulp');
+const path = require('path');
 const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
 const sourceMaps = require('gulp-sourcemaps');
 const rev = require('gulp-rev');
-const revDel = require('rev-del');
 const revFormat = require('gulp-rev-format');
 const sassImporter = require('node-sass-magic-importer');
 const postCssPlugins = require('../../postcss.config').plugins;
@@ -13,8 +13,8 @@ const removeOld = require('./gulp-remove-old');
 
 const config = require('../../config');
 
-module.exports = (mode, withRev = false) => () => {
-    const currentConfig = config.env[ mode ];
+module.exports = (withRev = false) => () => {
+    const currentConfig = config.current();
 
     let stream = gulp.src(config.styles.entries)
         .pipe(
@@ -48,7 +48,7 @@ module.exports = (mode, withRev = false) => () => {
                 })
             )
             .pipe(
-                gulp.dest(config.staticPath)
+                gulp.dest(config.path.output)
             )
             .pipe(
                 browserSync.stream()
@@ -58,29 +58,25 @@ module.exports = (mode, withRev = false) => () => {
             )
             .pipe(
                 rev.manifest({
-                    merge: true,
                     path: 'manifest.json'
                 })
             )
             .pipe(
-                revDel({
-                    oldManifest: `${currentConfig.basePath}/manifest.json`
-                })
-            )
-            .pipe(
-                gulp.dest(currentConfig.basePath)
+                gulp.dest(
+                    path.parse(currentConfig.styles.manifest).dir
+                )
             )
             .pipe(
                 removeOld({
                     manifest: true,
-                    staticPath: config.staticPath
+                    staticPath: config.path.output
                 })
             );
     }
 
     return stream
         .pipe(
-            gulp.dest(currentConfig.styles.output)
+            gulp.dest(currentConfig.styles.path.output)
         )
         .pipe(
             browserSync.stream()

@@ -1,67 +1,102 @@
 const path = require('path');
 
 const srcPath = path.resolve(__dirname, './src');
-const staticPath = path.resolve(__dirname, '../../static');
+const outputPath = path.resolve(__dirname, '../../static');
 
 const fonts = {
     mask: /\/fonts\/.*\.(ttf|woff|woff2|eot)/,
-    source: path.resolve(srcPath, './fonts'),
-    baseUri: '../..'
+    path: {
+        src: path.resolve(srcPath, './fonts'),
+        output: path.resolve(outputPath, './fonts')
+    }
 };
 
 const images = {
     mask: /\/img\/.*\.(png|jpg|gif|svg)/,
     path: {
         src: path.resolve(srcPath, './img'),
-        output: path.resolve(staticPath, './img')
+        output: path.resolve(outputPath, './img')
     },
-    baseUri: '../..'
+    manifest: path.resolve(outputPath, './img/manifest.json')
 };
 
 const styles = {
     entries: [ '../src/scss/app.scss' ],
-        watch: [
+    watch: [
         '../src/scss/*.scss',
         '../src/scss/**/*.scss'
     ]
 };
 
+const layouts = {
+    entries: [ '../src/layouts/*.twig' ],
+    path: {
+        src: path.resolve(srcPath, './layouts'),
+        output: path.resolve(outputPath, './layouts')
+    },
+    watch: [
+        '../src/layouts/*.twig',
+        '../src/layouts/**/*.twig'
+    ],
+    datafile: path.resolve(srcPath, './layouts/datafile.json'),
+    baseUri: '../..'
+};
+
 const browserSync = {
     open: true,
     server: {
-        baseDir: staticPath,
+        baseDir: outputPath,
         directory: true
     }
 };
 
 const envPub = {
-    basePath: path.resolve(staticPath, './pub'),
+    basePath: path.resolve(outputPath, './pub'),
     styles: {
         baseUri: 'pub/css',
-        output: path.resolve(staticPath, './pub/css')
+        path: {
+            output: path.resolve(outputPath, './pub/css')
+        },
+        manifest: path.resolve(outputPath, './pub/css/manifest.json')
+    },
+    scripts: {
+        manifest: path.resolve(outputPath, './pub/js/manifest.json')
     }
 };
 
 const envSrc = {
-    basePath: path.resolve(staticPath, './src'),
+    basePath: path.resolve(outputPath, './src'),
     styles: {
         baseUri: 'src/css',
-        output: path.resolve(staticPath, './src/css')
-    }
+        path: {
+            output: path.resolve(outputPath, './src/css')
+        }
+    },
+    scripts: {}
 };
 
+const current = () => process.env.BUILD_MODE === 'pub' ? envPub : envSrc;
+
 module.exports = {
-    srcPath,
-    staticPath,
+    path: {
+        src: srcPath,
+        output: outputPath
+    },
     fonts,
     images,
     styles,
+    layouts,
     browserSync,
     env: {
         pub: envPub,
         src: envSrc
     },
-    current: () => process.env.BUILD_MODE === 'pub' ?
-        envPub :
-        envSrc
+    current,
+    manifest: {
+        output: `${current().basePath}/manifest.json`,
+        files: [
+            current().styles.manifest,
+            current().scripts.manifest
+        ]
+    }
 };

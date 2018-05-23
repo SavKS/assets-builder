@@ -1,7 +1,8 @@
 const webpack = require('webpack');
 
-module.exports = (mode, watch = false) => () => {
+module.exports = (watch = false) => () => {
     const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+    const mode = process.env.BUILD_MODE;
 
     const config = require(`../webpack/webpack.config.${mode}.${env}`);
 

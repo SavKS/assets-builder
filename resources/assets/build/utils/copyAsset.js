@@ -3,35 +3,54 @@ const path = require('path');
 const mkdirp = require('mkdirp');
 const md5File = require('md5-file');
 
-module.exports = (filePath, srcPath, staticPath, baseUri, originUrl = 'none') => {
+module.exports = (
+    filePath,
+    basePath,
+    srcPath,
+    outputPath,
+    originUrl,
+    withoutHash = false
+) => {
     if (!fs.existsSync(filePath)) {
         console.log('[\x1b[31m%s\x1b[0m] %s', 'File not exists', filePath);
 
         return originUrl;
     }
 
-    const hash = md5File.sync(filePath);
     const relativeFilePath = path.relative(srcPath, filePath);
-    const output = path.resolve(staticPath, relativeFilePath);
+    const outputFilePath = path.resolve(outputPath, relativeFilePath);
 
-    const sourcePathInfo = path.parse(filePath);
-    const outputPathInfo = path.parse(output);
+    const srcPathInfo = path.parse(filePath);
+    const outputPathInfo = path.parse(outputFilePath);
 
     if (!fs.existsSync(outputPathInfo.dir)) {
         mkdirp.sync(outputPathInfo.dir);
     }
 
-    const hashedOutputFilePath = output.replace(
-        sourcePathInfo.name,
-        `${sourcePathInfo.name}.${hash}`
-    );
+    if (withoutHash) {
+        fs.copyFileSync(filePath, outputFilePath);
 
-    fs.copyFileSync(filePath, hashedOutputFilePath);
+        return path.relative(basePath, outputFilePath);
+    } else {
+        const hash = md5File.sync(filePath).substr(0, 10);
 
-    const hashedRelativeFilePath = relativeFilePath.replace(
-        sourcePathInfo.name,
-        `${sourcePathInfo.name}.${hash}`
-    );
+        const hashedOutputFilePath = outputFilePath.replace(
+            srcPathInfo.name,
+            `${srcPathInfo.name}.${hash}`
+        );
 
-    return `${baseUri}/${hashedRelativeFilePath}`;
+        const outputRelativeFilePath = path.relative(
+            basePath,
+            outputFilePath
+        );
+
+        fs.copyFileSync(filePath, hashedOutputFilePath);
+
+        const hashedUri = outputRelativeFilePath.replace(
+            srcPathInfo.name,
+            `${srcPathInfo.name}.${hash}`
+        );
+
+        return hashedUri;
+    }
 };
