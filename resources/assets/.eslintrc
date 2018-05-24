@@ -17,6 +17,9 @@
         "one-var": [
             0
         ],
+        "no-continue": [
+            0
+        ],
         "array-bracket-spacing": [0],
         "indent": 0,
         "vue/html-indent": [
@@ -27,7 +30,7 @@
             2,
             {
                 "multiline" : {
-                    "allowFirstLine": true
+                    "allowFirstLine": false
                 }
             }
         ]
@@ -38,7 +41,7 @@
         "__dirname": true,
         "process": true,
         "exports": true,
-        "module": true
+        "module": false
     },
     "plugins": [
         "vue"

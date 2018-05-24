@@ -1,5 +1,6 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const SassImporter = require('node-sass-magic-importer');
+const path = require('path');
 
 exports.cssLoaders = function (options) {
     options = options || {};
@@ -15,6 +16,9 @@ exports.cssLoaders = function (options) {
     const postcssLoader = {
         loader: 'postcss-loader',
         options: {
+            plugins: () => require(
+                path.resolve(__dirname, '../postcss.config')
+            ).plugins,
             sourceMap: options.sourceMap,
             url: false
         }
@@ -22,7 +26,7 @@ exports.cssLoaders = function (options) {
 
     // generate loader string to be used with extract text plugin
     function generateLoaders(loader, loaderOptions) {
-        const loaders = options.usePostCSS ? [ cssLoader, postcssLoader ] : [ cssLoader ];
+        const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader];
 
         if (loader) {
             loaders.push({
@@ -42,7 +46,7 @@ exports.cssLoaders = function (options) {
                 fallback: 'vue-style-loader'
             });
         } else {
-            return [ 'vue-style-loader' ].concat(loaders);
+            return ['vue-style-loader'].concat(loaders);
         }
     }
 
@@ -51,7 +55,7 @@ exports.cssLoaders = function (options) {
         css: generateLoaders(),
         postcss: generateLoaders(),
         scss: generateLoaders('sass', {
-             importer: SassImporter()
+            importer: SassImporter()
         })
     };
 };
@@ -62,7 +66,7 @@ exports.styleLoaders = function (options) {
     const loaders = exports.cssLoaders(options);
 
     for (const extension in loaders) {
-        const loader = loaders[ extension ];
+        const loader = loaders[extension];
         output.push({
             test: new RegExp('\\.' + extension + '$'),
             use: loader

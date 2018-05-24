@@ -8,6 +8,9 @@ Twig.cache(false);
 
 function Templater(config, staticPath, reloadBrowserSync) {
     this.config = lodash.defaultsDeep({
+        server: {
+            path: Path.resolve('./src/server')
+        },
         source: Path.resolve('./src/layouts'),
         output: Path.resolve('../../static/layouts')
     }, config);
@@ -27,10 +30,28 @@ function Templater(config, staticPath, reloadBrowserSync) {
         '/'
     );
 
-    Twig.extendFilter('static', (value) => {
-        let path = value;
-
+    Twig.extendFilter('static', (path) => {
         return `${staticPathPrefix}/${path}`;
+    });
+
+    Twig.extendFunction('loadState', (value, store) => {
+        store = store || value;
+
+        let data;
+
+        try {
+            data = fs.readFileSync(`${this.config.server.path}/${value}.json`);
+        } catch (e) {
+            console.log('[\x1b[31m%s\x1b[0m] %s', 'State read error', e.message);
+        }
+
+        return `
+            <script>
+                window.__vars = window.__vars || {};
+                window.__vars.store = window.__vars.store || {};
+                window.__vars.store.${store} = ${data};
+            </script>
+        `;
     });
 }
 
@@ -50,9 +71,21 @@ Templater.prototype.render = function () {
                 Path.basename(filePath).replace(/\.twig$/, '.html')
             );
 
-            Twig.renderFile(filePath, data, (err, html) => {
-                fs.writeFileSync(publicPath, html);
-            });
+            Twig.renderFile(
+                filePath,
+                {
+                    ...data,
+
+                    settings: {
+                        'twig options': {
+                            id: filePath
+                        }
+                    }
+                },
+                (err, html) => {
+                    fs.writeFileSync(publicPath, html);
+                }
+            );
         });
     });
 };

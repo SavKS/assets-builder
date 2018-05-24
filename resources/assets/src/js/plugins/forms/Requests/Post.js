@@ -11,7 +11,7 @@ export default class extends AbstractRequest {
     }
 
     setMethod(method) {
-        this.method =  method;
+        this.method = method;
     }
 
     send(url) {
@@ -23,7 +23,9 @@ export default class extends AbstractRequest {
         const formData = _reduce(
             _merge({}, this.data, this.form.serialize()),
             (carry, value, name) => {
-                if (iteratee && !iteratee(value, name)) return;
+                if (iteratee && !iteratee(value, name)) {
+                    return;
+                }
 
                 carry.append(name, value);
 
@@ -31,7 +33,7 @@ export default class extends AbstractRequest {
             },
             new FormData
         );
-        
+
         const request = this.httpClient(
             _merge({}, this.config, {
                 url,
