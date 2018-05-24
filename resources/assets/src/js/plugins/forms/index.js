@@ -1,14 +1,16 @@
-import _get from "lodash/get";
-import _set from "lodash/set";
-import _has from "lodash/has";
-import _each from "lodash/each";
-import _merge from "lodash/merge";
-import _reduce from "lodash/reduce";
-import _isPlainObject from "lodash/isPlainObject";
-import _isArray from "lodash/isArray";
-import _isString from "lodash/isString";
-import _isFunction from "lodash/isFunction";
-import _identity from "lodash/identity";
+import _get from 'lodash/get';
+import _assign from 'lodash/assign';
+import _set from 'lodash/set';
+import _isEmpty from 'lodash/isEmpty';
+import _has from 'lodash/has';
+import _each from 'lodash/each';
+import _merge from 'lodash/merge';
+import _reduce from 'lodash/reduce';
+import _isPlainObject from 'lodash/isPlainObject';
+import _isArray from 'lodash/isArray';
+import _isString from 'lodash/isString';
+import _isFunction from 'lodash/isFunction';
+import _identity from 'lodash/identity';
 
 import Get from './Requests/Get';
 import Post from './Requests/Post';
@@ -196,7 +198,20 @@ export default {
                 setResponse: ({ commit }, payload) => {
                     commit('setResponse', payload);
                 }
-            },
+            }
+        });
+    },
+    preload(forms) {
+        if (_isEmpty(forms)) {
+            return;
+        }
+
+        _each(forms, ({ fields, defaults }, name) => {
+            __store.dispatch(__getAction('register'), {
+                name,
+                fields,
+                defaults
+            });
         });
     }
 };
@@ -206,7 +221,7 @@ function __getNamespace() {
 }
 
 function __getAction(action) {
-    return `${__getNamespace()}/${action}`;
+    return __getNamespace() + '/' + action;
 }
 
 function __createModel(name, fields) {
@@ -304,7 +319,10 @@ function __createModel(name, fields) {
             },
             submit(method, url, config = {}, filter = _identity) {
                 const http = _get(__config, 'httpClient', require('axios'));
-                const params = filter ? this.serialize(filter) : this.serialize(filter);
+                const params = _assign(
+                    filter ? this.serialize(filter) : this.serialize(filter),
+                    config.params || {}
+                );
                 let response;
 
                 if ([ 'post', 'put', 'patch' ].indexOf(method) !== -1) {
@@ -385,7 +403,7 @@ function __createDataModel(name, fields) {
                             });
                         }
                     }
-                }
+                };
 
                 return state;
             },

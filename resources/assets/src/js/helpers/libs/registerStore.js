@@ -4,9 +4,19 @@ import _merge from 'lodash/merge';
 import _each from 'lodash/each';
 import deepForEach from 'deep-for-each';
 
-import store from '@store';
+const typeConversion = (data) => {
+    deepForEach(data, (value, prop, subject, path) => {
+        if (value === 'Infinity') {
+            _set(data, path, Infinity);
+        }
+    });
 
-export default function (name, Store) {
+    return data;
+};
+
+export default function (name, Store, store) {
+    store = store || require('@store').default;
+
     const initialState = _get(window, `__vars.store.${name}`, null);
 
     if (initialState !== null) {
@@ -23,7 +33,7 @@ export default function (name, Store) {
                         ...initState,
                         ...state
                     })
-                )
+                );
             });
 
             delete initialState[ '@modules' ];
@@ -35,14 +45,4 @@ export default function (name, Store) {
     }
 
     store.registerModule(name, Store);
-}
-
-function typeConversion(data) {
-    deepForEach(data, (value, prop, subject, path) => {
-        if (value === 'Infinity') {
-            _set(data, path, Infinity);
-        }
-    });
-
-    return data;
 }

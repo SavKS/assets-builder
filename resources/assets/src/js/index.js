@@ -28,3 +28,13 @@ Vue.use(HelpersInstaller);
 Vue.use(I18n);
 Vue.use(VueForm);
 Vue.use(TaskManager);
+
+VueForm.preload(
+    _get(window, '__vars.forms', {})
+);
+
+const files = require.context('./modules', true, /\.\/\w+([\_\-]+\w+)*\/index\.js$/);
+
+files.keys().forEach(
+    key => files(key)
+);

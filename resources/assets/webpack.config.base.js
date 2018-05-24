@@ -1,7 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const lodash = require('lodash');
-const glob = require('glob');
 
 const FriendlyErrors = require('friendly-errors-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
@@ -12,10 +10,7 @@ const utils = require('./utils');
 
 module.exports = {
     entry: {
-        app: lodash.concat(
-            './src/js/index.js',
-            glob.sync('./src/js/modules/*/*.js')
-        )
+        app: './src/js/index.js'
     },
     output: {
         publicPath: '/'
@@ -65,10 +60,12 @@ module.exports = {
         })
     ],
     resolve: {
+        extensions: [ '.js', '.json', '.vue' ],
         alias: {
             '@base': path.resolve(__dirname, '../../'),
             '@root': path.resolve(__dirname, './src/js'),
             '@store': path.resolve(__dirname, './src/js/store'),
+            '@utils': path.resolve(__dirname, './src/js/utils'),
             '@plugins': path.resolve(__dirname, './src/js/plugins'),
             '@components': path.resolve(__dirname, './src/js/components'),
             '@constants': path.resolve(__dirname, './src/js/constants'),
