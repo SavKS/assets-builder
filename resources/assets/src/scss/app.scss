@@ -1,14 +1,8 @@
-//## Init
-//
-//*
-
-@import "vars-init";
-
-
 //## Bootstrap
 //
 //*
-
+@import "vendor/bootstrap/functions";
+@import "bs-vars";
 @import "vendor/bootstrap/mixins";
 @import "vendor/bootstrap/root";
 @import "vendor/bootstrap/reboot";
@@ -49,16 +43,23 @@
 //*
 
 
-
-
 //## Application
 //
 //*
+@import "vars.scss";
+@import "components/functions";
+@import "components/mixins";
 
-@import "components/bs-misc";
-@import "components/scaffolding";
 @import "components/type";
+@import "components/forms";
+@import "components/buttons";
+@import "components/bs-misc";
+@import "components/misc";
+
 @import "components/grid";
-@import "components/app-banner";
-@import "components/app-footer";
+@import "components/scaffolding";
+
+@import "components/banner";
+@import "components/footer";
+
 @import "components/utilities";
