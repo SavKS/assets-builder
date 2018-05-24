@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const colors = require('colors/safe');
 const mkdirp = require('mkdirp');
 const md5File = require('md5-file');
 
@@ -12,7 +13,7 @@ module.exports = (
     withoutHash = false
 ) => {
     if (!fs.existsSync(filePath)) {
-        console.log('[\x1b[31m%s\x1b[0m] %s', 'File not exists', filePath);
+        console.log(`[${colors.red('%s')}] ${colors.magenta('%s')}`, 'File not exists', filePath);
 
         return originUrl;
     }

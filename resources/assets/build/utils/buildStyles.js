@@ -1,4 +1,5 @@
 const gulp = require('gulp');
+const fs = require('fs');
 const path = require('path');
 const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
@@ -9,11 +10,12 @@ const sassImporter = require('node-sass-magic-importer');
 const postCssPlugins = require('../../postcss.config').plugins;
 const browserSync = require('./browserSync');
 const rename = require('gulp-rename');
+const clean = require('gulp-clean');
 const removeOld = require('./gulp-remove-old');
 
 const config = require('../../config');
 
-module.exports = (withRev = false) => () => {
+const build = () => () => {
     const currentConfig = config.current();
 
     let stream = gulp.src(config.styles.entries)
@@ -32,7 +34,7 @@ module.exports = (withRev = false) => () => {
             sourceMaps.write()
         );
 
-    if (withRev) {
+    if (process.env.BUILD_MODE === 'pub') {
         return stream
             .pipe(
                 rename({
@@ -81,4 +83,44 @@ module.exports = (withRev = false) => () => {
         .pipe(
             browserSync.stream()
         );
+};
+
+gulp.task('@scss:clean', () => {
+    if (!fs.existsSync(config.current().styles.path.output)) {
+        return new Promise(
+            resolve => resolve()
+        );
+    }
+
+    return gulp.src(config.current().styles.path.output, { read: false })
+        .pipe(
+            clean({ force: true })
+        );
+});
+
+gulp.task(
+    '@scss:build',
+    build()
+);
+
+module.exports = (watch = false) => {
+    if (!watch) {
+        return gulp.series([
+            '@scss:clean',
+            '@scss:build'
+        ]);
+    }
+
+    return gulp.series([
+        '@scss:clean',
+        '@scss:build',
+        () => {
+            gulp.watch(
+                config.styles.watch,
+                gulp.series([
+                    '@scss:build'
+                ])
+            );
+        }
+    ]);
 };

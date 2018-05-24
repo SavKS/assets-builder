@@ -6,12 +6,11 @@
     "main": "index.js",
     "scripts": {
         "pub-prod": "cross-env BUILD_MODE=pub NODE_ENV=production gulp -f ./build/gulpfile.js pub-prod",
-        "w": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js watch",
-        "pub-dev": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js pub-dev",
+        "pub-dev": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js pub",
         "pub-watch": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js pub-watch",
         "pub-manifest": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js build-manifest",
-        "src-prod": "cross-env BUILD_MODE=src NODE_ENV=production gulp -f ./build/gulpfile.js src-prod",
-        "src-dev": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js src-dev",
+        "src-prod": "cross-env BUILD_MODE=src NODE_ENV=production gulp -f ./build/gulpfile.js src",
+        "src-dev": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js src",
         "src-watch": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js src-watch",
         "init-eslint": "npm -g i eslint vue-eslint-parser eslint-config-crockford babel-eslint"
     },
@@ -36,6 +35,7 @@
         "gulp-changed": "^3.2.0",
         "gulp-clean": "^0.4.0",
         "gulp-css-copy-assets": "^0.0.5",
+        "gulp-jsbeautifier": "^2.1.2",
         "gulp-postcss": "^7.0.1",
         "gulp-rename": "^1.2.3",
         "gulp-rev": "^8.1.1",

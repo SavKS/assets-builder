@@ -42,14 +42,6 @@ const layouts = {
     baseUri: '../..'
 };
 
-const browserSync = {
-    open: true,
-    server: {
-        baseDir: outputPath,
-        directory: true
-    }
-};
-
 const envPub = {
     basePath: path.resolve(outputPath, './pub'),
     styles: {
@@ -76,6 +68,19 @@ const envSrc = {
 };
 
 const current = () => process.env.BUILD_MODE === 'pub' ? envPub : envSrc;
+
+const browserSync = {
+    watch: [
+        path.resolve(layouts.path.output, '*.html')
+    ],
+    config: {
+        open: true,
+        server: {
+            baseDir: outputPath,
+            directory: true
+        }
+    }
+};
 
 module.exports = {
     path: {

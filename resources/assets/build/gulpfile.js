@@ -1,3 +1,4 @@
+const fs = require('fs');
 const gulp = require('gulp');
 
 const config = require('../config');
@@ -5,14 +6,39 @@ const config = require('../config');
 const buildStyles = require('./utils/buildStyles');
 const buildTwig = require('./utils/buildTwig');
 const manifestBuilder = require('./utils/manifestBuilder');
-const browserSync = require('./utils/browserSync');
+const staticServer = require('./utils/staticServer');
 
 const bundler = require('./utils/bundler');
-// const templater = require('./utils/templater');
+const cleaner = require('./tasks/cleaner');
+
+const clean = require('gulp-clean');
+
+gulp.task(
+    'clean:images',
+    cleaner([
+        config.images.path.output
+    ])
+);
+gulp.task(
+    'clean:fonts',
+    cleaner([
+        config.fonts.path.output
+    ])
+);
+
+gulp.task(
+    'staticServer',
+    staticServer()
+);
 
 gulp.task(
     'scss',
-    buildStyles(process.env.BUILD_MODE === 'pub')
+    buildStyles()
+);
+
+gulp.task(
+    'scss:watch',
+    buildStyles(true)
 );
 
 gulp.task(
@@ -51,10 +77,10 @@ gulp.task(
     bundler()
 );
 
-// gulp.task(
-//     'webpack:watch',
-//     bundler(true)
-// );
+gulp.task(
+    'webpack:watch',
+    bundler(true)
+);
 
 gulp.task(
     'build-manifest',
@@ -77,58 +103,52 @@ gulp.task(
 |--------------------------------------------------------------------------
 */
 gulp.task(
-    'pub-dev',
+    'pub',
     gulp.series([
+        'clean:images',
+        'clean:fonts',
         'scss',
         'webpack',
         'build-manifest'
     ])
 );
 
-// gulp.task(
-//     'pub-prod',
-//     gulp.parallel([
-//         'scss:pub:dev',
-//         'webpack:pub:dev'
-//     ])
-// );
-//
-// gulp.task(
-//     'pub-watch',
-//     gulp.parallel([
-//         'scss:pub:dev',
-//         'scss:pub:watch',
-//         'webpack:pub:watch'
-//     ])
-// );
-//
+gulp.task(
+    'pub-watch',
+    gulp.parallel([
+        'clean:images',
+        'clean:fonts',
+        'twig:watch',
+        'scss:watch',
+        'webpack:watch',
+        'build-manifest'
+    ])
+);
+
 /*
 |--------------------------------------------------------------------------
 | Src tasks
 |--------------------------------------------------------------------------
 */
 gulp.task(
-    'src-dev',
+    'src',
     gulp.series([
+        'clean:images',
+        'clean:fonts',
         'scss',
         'twig',
-        // 'webpack'
+        'webpack'
     ])
 );
 
-// gulp.task(
-//     'src-prod',
-//     gulp.parallel([
-//         'scss:src:dev',
-//         'webpack:src:dev'
-//     ])
-// );
-//
 gulp.task(
     'src-watch',
     gulp.parallel([
-        'twig:watch'
-        // 'scss:src:watch',
-        // 'webpack:src:watch'
+        'clean:images',
+        'clean:fonts',
+        'twig:watch',
+        'scss:watch',
+        'webpack:watch',
+        'staticServer'
     ])
 );
