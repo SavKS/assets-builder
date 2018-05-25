@@ -7,9 +7,3 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
-
-.o-box {
-    @include make-container;
-
-    max-width: $content-max-width;
-}

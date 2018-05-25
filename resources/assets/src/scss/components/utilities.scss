@@ -1,84 +1,89 @@
-//# Utilities
-//
-//*
+$gutters: (
+    0:  0,
+    xs: $g-xs,
+    sm: $g-sm,
+    md: $g-md,
+    lg: $g-lg
+);
 
-
-//## Typography
-//
-//*
-
-.u-spacer-b {
-    margin-bottom: $offset !important;
+.u-m {
+    margin: $g;
 }
 
-.u-spacer-b-sm {
-    margin-bottom: offset('sm') !important;
+.u-mt {
+    margin-top: $g;
 }
 
-.u-spacer-b-lg {
-    margin-bottom: offset('lg') !important;
+.u-mb {
+    margin-bottom: $g;
 }
 
-
-//## Grid
-//
-//*
-
-.u-gutter-x-sm {
-    padding-left: gutter('sm') !important;
-    padding-right: gutter('sm') !important;
+.u-ml {
+    margin-left: $g;
 }
 
-.u-gutter-l-sm {
-    padding-left: gutter('sm') !important;
+.u-mr {
+    margin-right: $g;
 }
 
-.u-gutter-r-lg {
-    padding-right: gutter('sm') !important;
+.u-p {
+    padding: $g;
 }
 
-
-//## Reset
-//
-//*
-
-//### Margins
-
-.u-m-0 {
-    margin: 0 !important;
+.u-pt {
+    padding-top: $g;
 }
 
-.u-mt-0 {
-    margin-top: 0 !important;
+.u-pb {
+    padding-bottom: $g;
 }
 
-.u-mb-0 {
-    margin-bottom: 0 !important;
+.u-pl {
+    padding-left: $g;
 }
 
-//### Paddings
-
-.u-p-0 {
-    padding: 0 !important;
+.u-pr {
+    padding-right: $g;
 }
 
-.u-pl-0 {
-    padding-left: 0 !important;
-}
+@each $title, $value in $gutters {
+    .u-m-#{$title} {
+        margin: $value;
+    }
 
-.u-pr-0 {
-    padding-right: 0 !important;
-}
+    .u-mt-#{$title} {
+        margin-top: $value;
+    }
 
+    .u-mb-#{$title} {
+        margin-bottom: $value;
+    }
 
-//## Text
-//
-//*
+    .u-ml-#{$title} {
+        margin-left: $value;
+    }
 
-.u-nobr { // instead </nobr>
-    white-space: nowrap;
-}
+    .u-mr-#{$title} {
+        margin-right: $value;
+    }
 
-.u-ellipsis {
-    @include text-truncate;
+    .u-p-#{$title} {
+        margin: $value;
+    }
+
+    .u-pt-#{$title} {
+        margin-top: $value;
+    }
+
+    .u-pb-#{$title} {
+        margin-bottom: $value;
+    }
+
+    .u-pl-#{$title} {
+        margin-left: $value;
+    }
+
+    .u-pr-#{$title} {
+        margin-right: $value;
+    }
 }
