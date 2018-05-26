@@ -10,7 +10,7 @@ const build = () => {
 
     for (let file of config.manifest.files) {
         if (!fs.existsSync(file)) {
-            console.log(`[${colors.red('Manifest file not found')}] ${colors.magenta('%s')}`, config.manifest.output);
+            console.log(`[${colors.red('Manifest file not found')}] ${colors.magenta('%s')}`, file);
 
             continue;
         }
@@ -56,6 +56,4 @@ module.exports.gulpPipe = gulpPipe;
 
 module.exports.build = build;
 
-// module.exports.build = () => new Promise(
-//     resolve => build(resolve)
-// );
+module.exports.debounceBuild = debounceBuild;

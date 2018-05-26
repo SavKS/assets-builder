@@ -8,10 +8,10 @@ const rev = require('gulp-rev');
 const revFormat = require('gulp-rev-format');
 const sassImporter = require('node-sass-magic-importer');
 const postCssPlugins = require('../../postcss.config').plugins;
-const browserSync = require('./browserSync');
+const browserSync = require('../utils/browserSync');
 const rename = require('gulp-rename');
 const clean = require('gulp-clean');
-const removeOld = require('./gulp-remove-old');
+const removeOld = require('../plugins/gulp-remove-old');
 
 const config = require('../../config');
 

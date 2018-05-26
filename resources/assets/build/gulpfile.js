@@ -1,17 +1,16 @@
-const fs = require('fs');
 const gulp = require('gulp');
+const watch = require('gulp-watch');
+const path = require('path');
 
 const config = require('../config');
 
-const buildStyles = require('./utils/buildStyles');
-const buildTwig = require('./utils/buildTwig');
-const manifestBuilder = require('./utils/manifestBuilder');
-const staticServer = require('./utils/staticServer');
-
-const bundler = require('./utils/bundler');
+const scss = require('./tasks/scss');
+const twig = require('./tasks/twig');
+const staticServer = require('./tasks/staticServer');
+const bundler = require('./tasks/bundler');
 const cleaner = require('./tasks/cleaner');
 
-const clean = require('gulp-clean');
+const manifestBuilder = require('./utils/manifestBuilder');
 
 gulp.task(
     'clean:images',
@@ -33,44 +32,23 @@ gulp.task(
 
 gulp.task(
     'scss',
-    buildStyles()
+    scss()
 );
 
 gulp.task(
     'scss:watch',
-    buildStyles(true)
+    scss(true)
 );
 
 gulp.task(
     'twig',
-    buildTwig()
+    twig()
 );
 
 gulp.task(
     'twig:watch',
-    buildTwig(true)
+    twig(true)
 );
-
-// gulp.task(
-//     'scss:watch',
-//     () => {
-//         gulp.watch(
-//             config.styles.watch,
-//             gulp.series('scss')
-//         );
-//     }
-// );
-// gulp.task(
-//     'scss:src:watch',
-//     () => {
-//         browserSync.init(config.browserSync);
-//
-//         gulp.watch(
-//             config.styles.watch,
-//             gulp.series('scss:src:dev')
-//         );
-//     }
-// );
 
 gulp.task(
     'webpack',
@@ -87,16 +65,23 @@ gulp.task(
     () => manifestBuilder.build()
 );
 
-// gulp.task(
-//     'build-manifest:watch',
-//     () => {
-//         gulp.watch(
-//             config.manifest.files,
-//             gulp.series(`scss:${process.env.BABEL_ENV}:dev`)
-//         );
-//     }
-// );
-//
+gulp.task(
+    'build-manifest:watch',
+    () => {
+        watch(
+            [ '*/**', '*/**/**' ],
+            {
+                cwd: config.path.output
+            },
+            file => {
+                if (config.manifest.files.includes(file.path)) {
+                    manifestBuilder.debounceBuild();
+                }
+            }
+        );
+    }
+);
+
 /*
 |--------------------------------------------------------------------------
 | Pub tasks
@@ -121,7 +106,7 @@ gulp.task(
         'twig:watch',
         'scss:watch',
         'webpack:watch',
-        'build-manifest'
+        'build-manifest:watch'
     ])
 );
 

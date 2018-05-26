@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const browserSync = require('./browserSync');
+const browserSync = require('../utils/browserSync');
 
 const config = require('../../config');
 
@@ -12,7 +12,7 @@ module.exports = () => () => {
             'change',
             () => {
                 console.log(1);
-                browserSync.reload()
+                browserSync.reload();
             }
         );
 };

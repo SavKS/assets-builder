@@ -3,13 +3,16 @@ const gulp = require('gulp');
 const twig = require('gulp-twig');
 const clean = require('gulp-clean');
 const prettify = require('gulp-jsbeautifier');
-const htmlImages = require('./gulp-html-images');
+const htmlImages = require('../plugins/gulp-html-images');
+const lodash = require('lodash');
 
 const config = require('../../config');
 
 const datafile = () => JSON.parse(
     fs.readFileSync(config.layouts.datafile)
 );
+
+// const writeManifest = _debounce
 
 gulp.task('@twig:build', () => {
     return gulp.src(config.layouts.entries)
@@ -20,8 +23,11 @@ gulp.task('@twig:build', () => {
         )
         .pipe(
             htmlImages({
+                staticPath: config.path.output,
                 srcPath: config.layouts.path.src,
-                outputPath: config.layouts.path.output
+                outputPath: config.layouts.path.output,
+                manifest: config.layouts.manifest,
+                hashMask: /\.\w{10}/
             })
         )
         .pipe(

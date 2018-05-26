@@ -39,7 +39,8 @@ const layouts = {
         '../src/layouts/**/*.twig'
     ],
     datafile: path.resolve(srcPath, './layouts/datafile.json'),
-    baseUri: '../..'
+    baseUri: '../..',
+    manifest: path.resolve(outputPath, './layouts/manifest.json')
 };
 
 const envPub = {
@@ -52,6 +53,9 @@ const envPub = {
         manifest: path.resolve(outputPath, './pub/css/manifest.json')
     },
     scripts: {
+        path: {
+            output: path.resolve(outputPath, './pub/js')
+        },
         manifest: path.resolve(outputPath, './pub/js/manifest.json')
     }
 };
@@ -64,17 +68,23 @@ const envSrc = {
             output: path.resolve(outputPath, './src/css')
         }
     },
-    scripts: {}
+    scripts: {
+        path: {
+            output: path.resolve(outputPath, './src/js')
+        },
+    }
 };
 
 const current = () => process.env.BUILD_MODE === 'pub' ? envPub : envSrc;
 
 const browserSync = {
     watch: [
-        path.resolve(layouts.path.output, '*.html')
+        path.resolve(layouts.path.output, '**'),
+        path.resolve(current().scripts.path.output, '**')
     ],
     config: {
         open: true,
+        notify: true,
         server: {
             baseDir: outputPath,
             directory: true
@@ -101,7 +111,8 @@ module.exports = {
         output: `${current().basePath}/manifest.json`,
         files: [
             current().styles.manifest,
-            current().scripts.manifest
+            current().scripts.manifest,
+            layouts.manifest
         ]
     }
 };
