@@ -4,7 +4,7 @@ const srcPath = path.resolve(__dirname, './src');
 const outputPath = path.resolve(__dirname, '../../static');
 
 const fonts = {
-    mask: /\/fonts\/.*\.(ttf|woff|woff2|eot)/,
+    mask: /\/fonts\/.*\.(ttf|woff|woff2|eot|otf|svg)/,
     path: {
         src: path.resolve(srcPath, './fonts'),
         output: path.resolve(outputPath, './fonts')
