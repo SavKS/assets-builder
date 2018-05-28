@@ -27,17 +27,17 @@
 
             className() {
                 return {
-                    [this.$props.data.attributes.class]: true
+                    [this.iconData.attributes.class]: true
                 };
             },
             width() {
-                return this.$props.data.attributes.width;
+                return this.iconData.attributes.width;
             },
             height() {
-                return this.$props.data.attributes.height;
+                return this.iconData.attributes.height;
             },
             viewBox() {
-                return this.$props.data.attributes.viewBox;
+                return this.iconData.attributes.viewBox;
             },
             content() {
                 return this.iconData.content;

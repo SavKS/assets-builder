@@ -10,9 +10,6 @@ module.exports = () => () => {
         .watch(config.browserSync.watch)
         .on(
             'change',
-            () => {
-                console.log(1);
-                browserSync.reload();
-            }
+            () => browserSync.reload()
         );
 };

@@ -4,6 +4,12 @@ import _merge from 'lodash/merge';
 import _each from 'lodash/each';
 import deepForEach from 'deep-for-each';
 
+const typeConversion = (data) => {
+    deepForEach(data, (value, prop, subject, path) => {
+        if (value === 'Infinity') {
+            _set(data, path, Infinity);
+        }
+    });
 
     return data;
 };
@@ -39,14 +45,4 @@ export default function (name, Store, store) {
     }
 
     store.registerModule(name, Store);
-}
-
-function typeConversion(data) {
-    deepForEach(data, (value, prop, subject, path) => {
-        if (value === 'Infinity') {
-            _set(data, path, Infinity);
-        }
-    });
-
-    return data;
 }
