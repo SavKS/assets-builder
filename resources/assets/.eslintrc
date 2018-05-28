@@ -33,6 +33,12 @@
                     "allowFirstLine": false
                 }
             }
+        ],
+        "vue/html-closing-bracket-newline": [
+            2,
+            {
+                "multiline": "always"
+            }
         ]
     },
     "globals": {
