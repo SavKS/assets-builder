@@ -1,10 +1,15 @@
+import _camelCase from 'lodash/camelCase';
+import _get from 'lodash/get';
 import _has from 'lodash/has';
 import _some from 'lodash/some';
+import _reduce from 'lodash/reduce';
+import _isArray from 'lodash/isArray';
 
 let __Vue = null;
 let __store = null;
+let __subscribers = [];
 
-const taskManager = {
+export const taskManager = {
     run(name, promise, params = {}) {
         __store.dispatch('taskManager/run', {
             name,
@@ -12,10 +17,10 @@ const taskManager = {
             params
         });
     },
-    status(name, includeParents = false) {
+    status(name, withDescendants = false) {
         const activeProcesses = __store.state.taskManager.processes || {};
 
-        if (!includeParents) {
+        if (!withDescendants) {
             return _has(activeProcesses, name);
         }
 
@@ -23,7 +28,58 @@ const taskManager = {
             return process.name === name
                 || process.name.indexOf(`${name}.`) !== -1;
         });
+    },
+    subscribe(name, callback) {
+        if (!_has(__subscribers, name)) {
+            __subscribers[ name ] = [];
+        }
+
+        __subscribers[ name ].push(callback);
     }
+};
+
+export const mapStatuses = (names) => {
+    let data = names;
+
+    if (_isArray(names)) {
+        data = _reduce(
+            names,
+            (carry, name) => {
+                carry[name] = false;
+
+                return carry;
+            },
+            {}
+        );
+    }
+
+    return _reduce(
+        data,
+        (carry, withDescendants, name) => {
+            carry[ _camelCase('ps.' + name) ] = function () {
+                return this.$taskManager.status(name, withDescendants);
+            };
+
+            return carry;
+        },
+        {}
+    );
+};
+
+const __fire = (name, event, data) => {
+    let subscribers;
+
+    if (_isArray(__subscribers[ name ])) {
+        subscribers = __subscribers[ name ];
+    }
+
+    if (!subscribers) {
+        return;
+    }
+
+    subscribers.forEach(
+        callback => callback(event, data)
+    );
 };
 
 export default {
@@ -46,13 +102,21 @@ export default {
                         name,
                         data
                     });
+
+                    __fire(name, 'start', data);
                 },
                 kill: (state, name) => {
+                    __fire(
+                        name,
+                        'done',
+                        _get(state.processes, `${name}.data`)
+                    );
+
                     __Vue.delete(state.processes, name);
                 }
             },
             actions: {
-                run: ({ commit }, { process: name, promise, params = {} }) => {
+                run: ({ commit }, { name, promise, params = {} }) => {
                     commit('create', {
                         name,
                         data: params.data || {}
@@ -68,7 +132,7 @@ export default {
                     }
 
                     return promise;
-                },
+                }
             }
         });
     }

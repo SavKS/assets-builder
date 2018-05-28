@@ -13,9 +13,11 @@ export default class extends AbstractRequest {
         const params = _reduce(
             _merge({}, this.data, this.form.serialize()),
             (carry, value, name) => {
-                if (iteratee && !iteratee(value, name)) return;
+                if (iteratee && !iteratee(value, name)) {
+                    return;
+                }
 
-                carry[name] = value;
+                carry[ name ] = value;
 
                 return carry;
             },
@@ -29,7 +31,7 @@ export default class extends AbstractRequest {
 
         request.catch((data) => {
             if (data.response.status === 422) {
-                resolveErrors(data.response.data);
+                this.resolveErrors(data.response.data);
             }
         });
 

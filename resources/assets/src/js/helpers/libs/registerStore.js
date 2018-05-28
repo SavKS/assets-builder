@@ -4,9 +4,13 @@ import _merge from 'lodash/merge';
 import _each from 'lodash/each';
 import deepForEach from 'deep-for-each';
 
-import store from '@store';
 
-export default function (name, Store) {
+    return data;
+};
+
+export default function (name, Store, store) {
+    store = store || require('@store').default;
+
     const initialState = _get(window, `__vars.store.${name}`, null);
 
     if (initialState !== null) {
@@ -23,7 +27,7 @@ export default function (name, Store) {
                         ...initState,
                         ...state
                     })
-                )
+                );
             });
 
             delete initialState[ '@modules' ];

@@ -1,4 +1,4 @@
-import urlHelper from '@root/plugins/location/libs/url';
+import urlHelper from '@plugins/location/url';
 
 const routes = {
     rootUrl: window.App.baseURL,
@@ -12,7 +12,7 @@ const routes = {
             return;
         }
 
-        return `/${urlHelper(route.uri, parameters)}`;
+        return '/' + urlHelper(route.uri, parameters);
     },
 
     url(url, parameters = []) {

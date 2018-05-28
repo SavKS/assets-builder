@@ -13,11 +13,11 @@
         }
     },
     "rules": {
-        "no-continue": [
-            0
-        ],
         "no-underscore-dangle": 0,
         "one-var": [
+            0
+        ],
+        "no-continue": [
             0
         ],
         "array-bracket-spacing": [0],
@@ -30,7 +30,7 @@
             2,
             {
                 "multiline" : {
-                    "allowFirstLine": true
+                    "allowFirstLine": false
                 }
             }
         ]
@@ -41,7 +41,7 @@
         "__dirname": true,
         "process": true,
         "exports": true,
-        "module": true
+        "module": false
     },
     "plugins": [
         "vue"

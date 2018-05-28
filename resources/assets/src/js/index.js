@@ -7,11 +7,11 @@ import I18n from '@plugins/i18n';
 import VueForm from '@plugins/forms';
 import TaskManager from '@plugins/taskManager';
 
-import { install as HelpersInstaller, http } from '@helpers';
+import { http, install as HelpersInstaller } from '@helpers';
 
-import SvgImage from '@components/SvgImage.vue';
+import VSvgImage from '@components/VSvgImage';
 
-Vue.component('svg-image', SvgImage);
+Vue.component('v-svg-image', VSvgImage);
 
 VueForm.config({
     httpClient: http
@@ -26,3 +26,16 @@ Vue.use(HelpersInstaller);
 Vue.use(I18n);
 Vue.use(VueForm);
 Vue.use(TaskManager);
+
+VueForm.preload(
+    _get(window, '__vars.forms', {})
+);
+
+require('popper.js');
+require('bootstrap');
+
+const files = require.context('./modules', true, /\.\/\w+([\_\-]+\w+)*\/index\.js$/);
+
+files.keys().forEach(
+    key => files(key)
+);
