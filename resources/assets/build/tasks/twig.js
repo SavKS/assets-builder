@@ -3,8 +3,10 @@ const gulp = require('gulp');
 const twig = require('gulp-twig');
 const clean = require('gulp-clean');
 const prettify = require('gulp-jsbeautifier');
-const htmlImages = require('../plugins/gulp-html-images');
 const lodash = require('lodash');
+const htmlImages = require('../plugins/gulp-html-images');
+
+const twigConfig = require('../../twig.config');
 
 const config = require('../../config');
 
@@ -12,14 +14,17 @@ const datafile = () => JSON.parse(
     fs.readFileSync(config.layouts.datafile)
 );
 
-// const writeManifest = _debounce
-
 gulp.task('@twig:build', () => {
     return gulp.src(config.layouts.entries)
         .pipe(
-            twig({
-                data: datafile()
-            })
+            twig(
+                lodash.assign(
+                    {
+                        data: datafile()
+                    },
+                    twigConfig
+                )
+            )
         )
         .pipe(
             htmlImages({
@@ -59,10 +64,27 @@ module.exports = (watch = false) => {
         ]);
     }
 
-    return gulp.series([
-        '@twig:clean',
-        '@twig:build',
+    gulp.watch(
+        config.layouts.watch,
+        gulp.series([
+            '@twig:build'
+        ])
+    );
+
+    gulp.watch(
+        [ config.layouts.datafile ],
+        gulp.series([
+            '@twig:build'
+        ])
+    );
+
+    return gulp.parallel([
         () => {
+            gulp.series([
+                '@twig:clean',
+                '@twig:build'
+            ]);
+
             gulp.watch(
                 config.layouts.watch,
                 gulp.series([

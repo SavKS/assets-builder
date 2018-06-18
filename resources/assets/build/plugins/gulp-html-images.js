@@ -37,7 +37,9 @@ module.exports = function (options = {}) {
         $('img').each(function (i, el) {
             const $self = $(this);
 
-            if (!$self.attr('src')) {
+            if (!$self.attr('src')
+                || /^(http|https):\/\//.test($self.attr('src'))
+            ) {
                 return;
             }
 
