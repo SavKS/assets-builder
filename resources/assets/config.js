@@ -12,7 +12,7 @@ const fonts = {
 };
 
 const images = {
-    mask: /\/img\/.*\.(png|jpg|gif|svg)/,
+    mask: /\/img\/.*\.(png|jpg|jpeg|gif|svg)/,
     path: {
         src: path.resolve(srcPath, './img'),
         output: path.resolve(outputPath, './img')

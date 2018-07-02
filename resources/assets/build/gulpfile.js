@@ -129,11 +129,18 @@ gulp.task(
 gulp.task(
     'src-watch',
     gulp.parallel([
-        'clean:images',
-        'clean:fonts',
-        'twig:watch',
-        'scss:watch',
-        'webpack:watch',
-        'staticServer'
+        () => {
+            gulp.series([
+                'clean:images',
+                'clean:fonts'
+            ])();
+
+            gulp.parallel([
+                'twig:watch',
+                'scss:watch',
+                'webpack:watch',
+                'staticServer'
+            ])();
+        }
     ])
 );

@@ -83,7 +83,7 @@ module.exports = (watch = false) => {
             gulp.series([
                 '@twig:clean',
                 '@twig:build'
-            ]);
+            ])();
 
             gulp.watch(
                 config.layouts.watch,
