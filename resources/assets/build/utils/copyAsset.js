@@ -36,8 +36,8 @@ module.exports = (
         const hash = md5File.sync(filePath).substr(0, 10);
 
         const hashedOutputFilePath = outputFilePath.replace(
-            srcPathInfo.name,
-            `${srcPathInfo.name}.${hash}`
+            `${srcPathInfo.name}${srcPathInfo.ext}`,
+            `${srcPathInfo.name}.${hash}${srcPathInfo.ext}`
         );
 
         const outputRelativeFilePath = path.relative(
