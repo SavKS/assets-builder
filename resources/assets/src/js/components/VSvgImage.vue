@@ -1,11 +1,13 @@
 <template>
-    <svg :class="className"
-         :width="width"
-         :height="height"
-         :view-box.camel="viewBox"
-         xmlns="http://www.w3.org/2000/svg"
-         @click="handleClick"
-         v-html="content" />
+    <svg
+        :class="className"
+        :width="width"
+        :height="height"
+        :view-box.camel="viewBox"
+        xmlns="http://www.w3.org/2000/svg"
+        @click="handleClick"
+        v-html="content"
+    />
 </template>
 
 <script>
@@ -48,5 +50,5 @@
                 this.$emit('click', $event);
             }
         }
-    }
+    };
 </script>

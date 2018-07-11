@@ -24,7 +24,9 @@ const build = () => () => {
         )
         .pipe(
             sass({
-                importer: sassImporter()
+                importer: sassImporter({
+                    cwd: path.resolve(__dirname, '../../')
+                })
             }).on('error', sass.logError)
         )
         .pipe(
