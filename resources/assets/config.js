@@ -114,5 +114,8 @@ module.exports = {
             current().scripts.manifest,
             layouts.manifest
         ]
+    },
+    dataServer: {
+        path: path.resolve(srcPath, 'server')
     }
 };

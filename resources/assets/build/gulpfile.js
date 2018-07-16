@@ -9,6 +9,7 @@ const twig = require('./tasks/twig');
 const staticServer = require('./tasks/staticServer');
 const bundler = require('./tasks/bundler');
 const cleaner = require('./tasks/cleaner');
+const optimizeImages = require('./tasks/optimizeImages');
 
 const manifestBuilder = require('./utils/manifestBuilder');
 
@@ -28,6 +29,11 @@ gulp.task(
 gulp.task(
     'staticServer',
     staticServer()
+);
+
+gulp.task(
+    'optimize-images',
+    optimizeImages()
 );
 
 gulp.task(
@@ -92,6 +98,7 @@ gulp.task(
     gulp.series([
         'clean:images',
         'clean:fonts',
+        '@twig:build',
         'scss',
         'webpack',
         'build-manifest'
@@ -100,13 +107,15 @@ gulp.task(
 
 gulp.task(
     'pub-watch',
-    gulp.parallel([
+    gulp.series([
         'clean:images',
         'clean:fonts',
-        'twig:watch',
-        'scss:watch',
-        'webpack:watch',
-        'build-manifest:watch'
+        '@twig:build',
+        gulp.parallel([
+            'scss:watch',
+            'webpack:watch',
+            'build-manifest:watch'
+        ])
     ])
 );
 
@@ -128,19 +137,14 @@ gulp.task(
 
 gulp.task(
     'src-watch',
-    gulp.parallel([
-        () => {
-            gulp.series([
-                'clean:images',
-                'clean:fonts'
-            ])();
-
-            gulp.parallel([
-                'twig:watch',
-                'scss:watch',
-                'webpack:watch',
-                'staticServer'
-            ])();
-        }
+    gulp.series([
+        'clean:images',
+        'clean:fonts',
+        gulp.parallel([
+            'twig:watch',
+            'scss:watch',
+            'webpack:watch',
+            'staticServer'
+        ])
     ])
 );

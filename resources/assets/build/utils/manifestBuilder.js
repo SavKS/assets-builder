@@ -1,5 +1,4 @@
 const fs = require('fs');
-const gulp = require('gulp');
 const config = require('../../config');
 const lodash = require('lodash');
 const colors = require('colors/safe');
@@ -38,7 +37,7 @@ const build = () => {
     );
 };
 
-const debounceBuild = lodash.debounce(build, 150);
+const debounceBuild = lodash.debounce(build, 500);
 
 const gulpPipe = () => through.obj(
     function (file, enc, cb) {

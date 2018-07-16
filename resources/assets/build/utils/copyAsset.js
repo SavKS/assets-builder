@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const colors = require('colors/safe');
 const mkdirp = require('mkdirp');
-const md5File = require('md5-file');
+// const md5File = require('md5-file');
+const md5 = require('md5');
 
 module.exports = (
     filePath,
@@ -29,11 +30,13 @@ module.exports = (
     }
 
     if (withoutHash) {
-        fs.copyFileSync(filePath, outputFilePath);
+        if (!fs.existsSync(outputFilePath)) {
+            fs.copyFileSync(filePath, outputFilePath);
+        }
 
         return path.relative(basePath, outputFilePath);
     } else {
-        const hash = md5File.sync(filePath).substr(0, 10);
+        const hash = md5(`${filePath}.${fs.statSync(filePath).size}`).substr(0, 10);
 
         const hashedOutputFilePath = outputFilePath.replace(
             `${srcPathInfo.name}${srcPathInfo.ext}`,
@@ -45,7 +48,9 @@ module.exports = (
             outputFilePath
         );
 
-        fs.copyFileSync(filePath, hashedOutputFilePath);
+        if (!fs.existsSync(hashedOutputFilePath)) {
+            fs.copyFileSync(filePath, hashedOutputFilePath);
+        }
 
         const hashedUri = outputRelativeFilePath.replace(
             srcPathInfo.name,

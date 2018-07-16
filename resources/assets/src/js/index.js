@@ -31,6 +31,9 @@ VueForm.preload(
     _get(window, '__vars.forms', {})
 );
 
+require('popper.js');
+require('bootstrap');
+
 const files = require.context('./modules', true, /\.\/\w+([\_\-]+\w+)*\/index\.js$/);
 
 files.keys().forEach(

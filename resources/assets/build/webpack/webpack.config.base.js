@@ -55,7 +55,8 @@ module.exports = {
             externalGlobal: "window.App.cdn",
             chunkName: "vendor"
         }),
-        new VueLoaderPlugin
+        new VueLoaderPlugin,
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
     resolve: {
         extensions: [ ".js", ".json", ".vue" ],

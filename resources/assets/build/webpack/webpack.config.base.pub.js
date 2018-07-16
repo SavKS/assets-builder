@@ -49,6 +49,6 @@ webpackConfig.plugins.push(
     }),
 );
 
-webpackConfig.resolve.alias.vue = path.resolve('../node_modules/vue/dist/vue.min.js');
+webpackConfig.resolve.alias.vue = path.resolve('../node_modules/vue/dist/vue.js');
 
 module.exports = webpackConfig;

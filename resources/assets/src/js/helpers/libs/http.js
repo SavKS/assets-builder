@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import parseQuery from 'query-string';
+import qs from 'qs';
 import router from '@routes';
 
 const http  = axios.create({
@@ -22,7 +22,7 @@ http.interceptors.request.use((config) => {
 http.interceptors.response.use((response) => {
     return response;
 }, (error) => {
-    const query = parseQuery.parse(document.location.search);
+    const query = qs.parse(document.location.search);
 
     switch (error.response.status) {
         case 301:
@@ -30,12 +30,12 @@ http.interceptors.response.use((response) => {
             break;
 
         case 401:
-            const queryString = parseQuery.stringify({
+            const queryString = qs.stringify({
                 back_url: document.location.href,
                 ...query
             });
 
-            document.location.href = router;
+            document.location.href = router.route('page.auth.login');
             break;
     }
 

@@ -1,10 +1,15 @@
 const fs = require('fs');
+const path = require('path');
+const glob = require('glob');
 const gulp = require('gulp');
-const twig = require('gulp-twig');
+const mkdirp = require('mkdirp');
 const clean = require('gulp-clean');
-const prettify = require('gulp-jsbeautifier');
 const lodash = require('lodash');
-const htmlImages = require('../plugins/gulp-html-images');
+const twigBuilder = require('../utils/twigBuilder');
+const htmlCopyImages = require('../utils/html-copy-images');
+const gutil = require('gulp-util');
+const File = gutil.File;
+const rext = require('replace-ext');
 
 const twigConfig = require('../../twig.config');
 
@@ -14,33 +19,71 @@ const datafile = () => JSON.parse(
     fs.readFileSync(config.layouts.datafile)
 );
 
-gulp.task('@twig:build', () => {
-    return gulp.src(config.layouts.entries)
-        .pipe(
-            twig(
-                lodash.assign(
-                    {
-                        data: datafile()
-                    },
-                    twigConfig
-                )
-            )
+const build = () => {
+    const fileDirs = config.layouts.entries.map(
+        filesPath => path.resolve(
+            process.cwd(),
+            filesPath
         )
-        .pipe(
-            htmlImages({
-                staticPath: config.path.output,
-                srcPath: config.layouts.path.src,
-                outputPath: config.layouts.path.output,
-                manifest: config.layouts.manifest,
-                hashMask: /\.\w{10}/
-            })
-        )
-        .pipe(
-            prettify()
-        )
-        .pipe(
-            gulp.dest(config.layouts.path.output)
+    );
+
+    const fileContents = [];
+
+    const twigOptions = lodash.assign(
+        {
+            data: datafile()
+        },
+        twigConfig
+    );
+
+    for (let filesDir of fileDirs) {
+        glob.sync(filesDir, {}).forEach(file => {
+            let gulpFile = new File({
+                path: file,
+                contents: fs.readFileSync(file)
+            });
+
+            fileContents.push({
+                path: file,
+                name: path.basename(file),
+                content: twigBuilder(gulpFile, twigOptions)
+            });
+        });
+    }
+
+    const result = htmlCopyImages(fileContents, {
+        staticPath: config.path.output,
+        srcPath: config.layouts.path.src,
+        outputPath: config.layouts.path.output,
+        manifest: config.layouts.manifest,
+        hashMask: /\.\w{10}/
+    });
+
+    if (!fs.existsSync(config.layouts.path.output)) {
+        mkdirp(config.layouts.path.output);
+    }
+
+    result.files.forEach(data => {
+        const fileName = rext(data.name, '.html');
+
+        fs.writeFileSync(
+            `${config.layouts.path.output}/${fileName}`,
+            data.content
         );
+    });
+
+    fs.writeFileSync(
+        config.layouts.manifest,
+        JSON.stringify(result.manifest)
+    );
+};
+
+gulp.task('@twig:build', () => {
+    build();
+
+    return new Promise(
+        resolve => resolve()
+    );
 });
 
 gulp.task('@twig:clean', () => {
@@ -78,26 +121,8 @@ module.exports = (watch = false) => {
         ])
     );
 
-    return gulp.parallel([
-        () => {
-            gulp.series([
-                '@twig:clean',
-                '@twig:build'
-            ])();
-
-            gulp.watch(
-                config.layouts.watch,
-                gulp.series([
-                    '@twig:build'
-                ])
-            );
-
-            gulp.watch(
-                [ config.layouts.datafile ],
-                gulp.series([
-                    '@twig:build'
-                ])
-            );
-        }
+    return gulp.series([
+        '@twig:clean',
+        '@twig:build'
     ]);
 };

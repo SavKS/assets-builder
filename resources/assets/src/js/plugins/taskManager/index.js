@@ -4,6 +4,8 @@ import _has from 'lodash/has';
 import _some from 'lodash/some';
 import _reduce from 'lodash/reduce';
 import _isArray from 'lodash/isArray';
+import _isFunction from 'lodash/isFunction';
+import _isString from 'lodash/isString';
 
 let __Vue = null;
 let __store = null;
@@ -41,23 +43,35 @@ export const taskManager = {
 export const mapStatuses = (names) => {
     let data = names;
 
-    if (_isArray(names)) {
-        data = _reduce(
-            names,
-            (carry, name) => {
-                carry[name] = false;
-
-                return carry;
-            },
-            {}
-        );
+    if (!_isArray(names)) {
+        throw new Error('Statuses must be array');
     }
 
     return _reduce(
         data,
-        (carry, withDescendants, name) => {
-            carry[ _camelCase('ps.' + name) ] = function () {
-                return this.$taskManager.status(name, withDescendants);
+        (carry, data) => {
+            let result = data;
+
+            if (_isString(data)) {
+                result = {
+                    name: data,
+                    nested: false
+                };
+            }
+
+            carry[ _camelCase('ps.' + result.name) ] = function () {
+                let process = result.name;
+
+                if (_has(result, 'process')) {
+                    process = _isFunction(result.process) ?
+                        result.process.bind(this)() :
+                        result.process;
+                }
+
+                return this.$taskManager.status(
+                    process,
+                    !!result.nested
+                );
             };
 
             return carry;
@@ -122,8 +136,12 @@ export default {
                         data: params.data || {}
                     });
 
-                    if (params.errorOnly) {
-                        promise.catch(() => commit('kill', name));
+                    if (params.failOnly) {
+                        promise.catch(xhr => {
+                            if (xhr.response.status >= 400) {
+                                commit('kill', name);
+                            }
+                        });
                     } else {
                         promise
                             .then(() => commit('kill', name))
