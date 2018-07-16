@@ -1,16 +1,261 @@
-//# Aplication footer
-//
-//*
+.c-footer {
+    margin-top: offset('lg');
+    background-color: $gray-900;
+    color: $white;
 
-// .c-footer {}
+    .o-full ~ & {
+        margin-top: 0;
+    }
 
-// .c-copy {}
+    .link {
+        display: inline-block;
+        margin-bottom: 7px;
+        color: $gray-400;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-bold;
+        @include link;
+
+        &:hover {
+            color: $white;
+        }
+    }
+}
+
+.c-footer__inner {
+    padding: gutter('sm') 0;
+    margin: 0 gutter('sm') * -1;
+}
+
+.c-footer__title {
+    margin-bottom: offset('xs');
+    text-transform: uppercase;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+
+    &.d-none {
+        pointer-events: none;
+    }
+}
+
+.c-footer__brand {
+    padding: 0 gutter('sm');
+    margin-bottom: $offset;
+
+    .logo {
+        position: relative;
+        display: block;
+        width: 200px;
+        height: 50px;
+        color: currentColor;
+    }
+
+    svg {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        top: 0;
+        fill: currentColor;
+    }
+
+    .slogan {
+        display: block;
+        margin-top: gutter('sm');
+        opacity: .8;
+    }
+}
+
+.c-footer__catalog {
+    padding: 0 gutter('sm');
+    margin-bottom: $offset;
+
+    .list {
+        column-count: 2;
+        column-gap: $gutter;
+    }
+
+    .item {
+        break-inside: avoid;
+    }
+}
+
+.c-footer__menu {
+    padding: 0 gutter('sm');
+    margin-bottom: $offset;
+}
+
+.c-footer__stores {
+    padding: 0 gutter('sm');
+    margin-bottom: offset('xs');
+
+    .item {
+        margin-bottom: gutter('sm');
+    }
+
+    .location, .schedule {
+        font-size: $font-size-sm;
+        opacity: .8;
+    }
+
+    .schedule {
+        margin-top: 7px;
+    }
+}
 
 .c-ideil {
-    font-weight: normal;
+    width: 100%;
+    text-align: center;
 
     a {
-        color: $body-color;
-        font-weight: bold;
+        font-size: 14px;
+        color: $white;
+        opacity: .8;
+        transition: opacity $transition;
+
+        &:hover {
+            opacity: 1;
+            text-decoration: none;
+        }
     }
+
+    img {
+        vertical-align: baseline;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+
+    .c-footer__stores {
+        .list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 gutter('sm') * -1;
+        }
+
+        .item {
+            width: 50%;
+            padding: 0 gutter('sm');
+        }
+    }
+
+}
+
+@include media-breakpoint-up(md) {
+
+    .c-footer {
+        margin-top: 100px;
+    }
+
+    .c-footer__group {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .c-footer__catalog {
+        width: 50%;
+    }
+
+}
+
+@include media-breakpoint-up(lg) {
+
+    .c-footer__inner {
+        display: flex;
+        flex-wrap: wrap;
+        padding: $offset 0;
+    }
+
+    .c-footer__brand {
+        width: 100%;
+    }
+
+    .c-footer__group {
+        width: 50%;
+        padding: 0 gutter('sm');
+    }
+
+    .c-footer__stores {
+        width: 50%;
+    }
+
+    .c-footer__catalog {
+        flex-grow: 1;
+        padding: 0;
+        margin-right: $gutter;
+    }
+
+    .c-footer__menu {
+        padding: 0;
+        width: 33.3334%;
+    }
+
+    .c-footer__title {
+        font-size: $h5-font-size;
+        margin-bottom: gutter('sm');
+    }
+
+}
+
+@include media-breakpoint-between(lg, lg) {
+
+    .c-footer__group {
+        width: 66.6667%;
+    }
+
+    .c-footer__stores {
+        width: 33.3334%;
+
+        .list {
+            flex-direction: column;
+        }
+
+        .item {
+            width: 100%;
+        }
+    }
+
+}
+
+@include media-breakpoint-up(hd) {
+
+    .c-footer__inner {
+        position: relative;
+    }
+
+    .c-footer__brand {
+        width: auto;
+        flex-grow: 1;
+
+        .slogan {
+            margin-top: $offset;
+        }
+    }
+
+    .c-footer__group {
+        width: 33.3334%;
+    }
+
+    .c-footer__stores {
+        width: 41.66667%;
+    }
+
+    .c-footer__title {
+        margin-top: $gutter;
+    }
+
+    .c-ideil {
+        position: absolute;
+        left: gutter('sm');
+        bottom: $offset;
+        width: auto;
+    }
+
+}
+
+@include media-breakpoint-up(fd) {
+
+    .c-footer__stores {
+        width: 33.3334%;
+    }
+
 }

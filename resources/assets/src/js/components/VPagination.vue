@@ -1,7 +1,9 @@
 <template>
-    <nav v-if="data.pages.last > 1"
-         aria-label="Page navigation"
-         class="text-center">
+    <nav
+        v-if="data.pages.last > 1"
+        aria-label="Page navigation"
+        class="text-center"
+    >
         <ul class="pagination justify-content-center">
 
             <!-- Previous Page Link -->
@@ -27,8 +29,10 @@
                     <span class="page-link page-divider">...</span>
                 </li>
 
-                <template v-for="page in item"
-                          v-else>
+                <template
+                    v-for="page in item"
+                    v-else
+                >
                     <li
                         :key="page.page"
                         :class="{active: data.pages.current === page.page}"

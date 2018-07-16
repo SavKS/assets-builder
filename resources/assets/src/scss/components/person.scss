@@ -1,0 +1,209 @@
+$head-sm: 90px;
+$head:    130px;
+
+.c-person {
+    display: block;
+    position: relative;
+    background-color: $white;
+    padding: 6px;
+    color: $black;
+    overflow: hidden;
+    @include link;
+
+    &__info {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: $white;
+        transform: translateY(-$head-sm);
+        transition: $transition;
+        will-change: transform;
+    }
+
+    &__head {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 0 gutter('sm');
+        line-height: $headings-line-height;
+        text-align: center;
+        transition: $transition;
+        will-change: transform;
+
+        .name {
+            font-size: 2.2rem;
+            font-weight: $font-weight-bold;
+            margin-bottom: 5px;
+        }
+
+        .prof {
+            max-height: 42px;
+            overflow: hidden;
+        }
+
+        .description {
+            margin-bottom: 0;
+            font-size: $font-size-sm;
+            transition: $transition;
+            opacity: 0;
+            visibility: hidden;
+            max-height: 185px;
+            overflow: hidden;
+
+            &:before {
+                content: '';
+                display: block;
+                width: 38px;
+                height: 2px;
+                background-color: $primary;
+                margin: 0 auto 30px;
+            }
+        }
+    }
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: $head-sm;
+    }
+
+    &:hover {
+        color: $black;
+
+        .c-person {
+            &__info {
+                background-color: rgba($white, .9);
+                transform: translateY(-100%);
+            }
+            
+            &__head {
+                top: 50%;
+                transform: translateY(-50%);
+
+                .description {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+        }
+    }
+}
+
+.c-about__content {
+    background-color: $white;
+    overflow: hidden;
+
+    &-main {
+        padding: gutter('sm') 0;
+    }
+
+    &-aside {
+        .item {
+            position: relative;
+            padding: gutter('sm');
+            text-align: center;
+
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 0;
+                left: -999px;
+                right: -999px;
+                height: 2px;
+                background-color: $gray-200;
+            }
+        }
+
+        svg {
+            display: block;
+            margin: 0 auto gutter('sm');
+        }
+    }
+}
+
+@include media-breakpoint-up(lg) {
+
+    .c-person {
+        &__info {
+            transform: translateY(-$head);
+        }
+
+        &__head {
+            .name {
+                font-size: 3rem;
+                margin-bottom: 8px;
+            }
+        }
+
+        &__inner {
+            height: $head;
+        }
+    }
+
+    .c-about__content {
+
+        &-inner {
+            display: flex;
+        }
+
+        &-main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: $gutter;
+
+            .s-content {
+                max-width: 780px;
+            }
+        }
+
+        &-aside {
+            width: 33.334%;
+            flex-shrink: 0;
+            border-left: 2px solid $gray-200;
+
+            .item {
+                padding-top: $gutter;
+                padding-bottom: $gutter;
+    
+                &:before {
+                    left: 0;
+                }
+
+                &:first-child {
+                    &:before {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@include media-breakpoint-up(hd) {
+
+    .c-about__content {
+        &-aside {
+            .item {
+                padding-top: gutter('lg');
+                padding-bottom: gutter('lg');
+            }
+        }
+    }
+
+    .c-about__video {
+        .embed-responsive {
+            &:before {
+                padding-top: 45%;
+            }
+        }
+    }
+}

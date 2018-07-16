@@ -1,0 +1,350 @@
+$img-sm:       90px;
+$img-md:       130px;
+$img-lg:       170px;
+$img-xl:       200px;
+
+.c-cart-clear {
+    display: flex;
+    align-items: center;
+    color: $primary;
+    font-size: $font-size-sm;
+    line-height: 1;
+    cursor: pointer;
+
+    svg {
+        fill: currentColor;
+        width: 12px;
+        height: 12px;
+        margin-right: 10px;
+    }
+
+    &:hover {
+        color: $black;
+    }
+}
+
+.c-cart {
+    margin-left: gutter('sm') * -1;
+    margin-right: gutter('sm') * -1;
+    background-color: $white;
+    line-height: $headings-line-height;
+
+    &__head,
+    &__row {
+        display: none;
+        padding: gutter('sm');
+        font-size: $font-size-sm;
+        border-bottom: 2px solid $gray-200;
+    }
+
+    &__head {
+        display: none;
+    }
+
+    &__footer {
+        padding: $offset gutter('sm');
+        text-align: right;
+
+        &-right {
+            margin-bottom: gutter('sm');
+            font-size: $h5-font-size;
+            font-weight: $font-weight-bold;
+            line-height: 1;
+        }
+
+        &-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: $offset;
+
+            .title {
+                text-transform: uppercase;
+                margin-right: 30px;
+            }
+        }
+    }
+}
+
+.c-item-cart {
+    display: flex;
+    align-items: flex-start;
+
+    &__img {
+        flex-shrink: 0;
+        width: $img-sm;
+        margin-right: offset('sm');
+        display: block;
+        @include link;
+
+        &:hover {
+            ~ .c-item-cart__main .title .link {
+                color: $primary;
+            }
+        }
+    }
+
+    &__main {
+        position: relative;
+        flex-grow: 1;
+        padding-right: 35px;
+    }
+
+    &__info {
+        .title {
+            margin-bottom: 12px;
+            font-size: inherit;
+            font-weight: $font-weight-bold;
+        }
+
+        .link {
+            color: $black;
+            @include link;
+
+            &:hover {
+                color: $primary;
+            }
+        }
+    }
+
+    &__list {
+        margin: 0;
+        color: $black;
+
+        .item {
+            &:not(:last-child) {
+                margin-bottom: 5px;
+            }
+        }
+
+        .label {
+            color: $gray-600;
+            font-weight: normal;
+        }
+    }
+
+    &__info,
+    &__count {
+        margin-bottom: 12px;
+    }
+
+    &__total {
+        font-weight: $font-weight-bold;
+    }
+
+    &__remove {
+        position: absolute;
+        top: 50%;
+        right: -5px;
+        transform: translateY(-50%);
+        
+        .remove {
+            border: none;
+            background: none;
+            padding: 5px;
+            color: $gray-600;
+    
+            svg {
+                display: block;
+                width: 16px;
+                height: 16px;
+                fill: currentColor;
+            }
+    
+            &:hover {
+                color: $primary;
+            }
+        }
+    }
+
+    &__price {
+        display: none;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+
+    .c-cart {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .c-item-cart {
+        &__main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        &__img {
+            width: $img-md;
+        }
+
+        &__info {
+            width: 100%;
+        }
+
+        &__list {
+            .item {
+                display: flex;
+            }
+
+            .label {
+                margin-right: 10px;
+            }
+        }
+
+        &__count {
+            margin-bottom: 0;
+        }
+    }
+
+}
+
+@include media-breakpoint-up(md) {
+
+    .c-cart {
+        &__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            &-right {
+                order: 1;
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .c-item-cart {
+        &__img {
+            width: $img-lg;
+        }
+    }
+
+}
+
+@include media-breakpoint-up(lg) {
+
+    .c-cart {
+        &__head {
+            display: flex;
+            align-items: center;
+            text-transform: uppercase;
+            font-weight: $font-weight-bold;
+        }
+
+        &__row {
+            display: flex;
+            align-items: center;
+        }
+
+        &__product {
+            flex-grow: 1;
+        }
+
+        &__price,
+        &__total {
+            width: 120px;
+        }
+
+        &__count {
+            width: 140px;
+        }
+
+        &__remove {
+            width: 80px;
+            text-align: center;
+        }
+    }
+
+    .c-item-cart {
+        &__main {
+            flex-wrap: nowrap;
+            padding-right: 0;
+
+            > * {
+                flex-shrink: 0;
+            }
+        }
+
+        &__info {
+            flex: 1;
+            margin-bottom: 0;
+            padding-right: gutter('sm');
+        }
+
+        &__price {
+            display: block;
+        }
+
+        &__total {
+            font-weight: normal;
+        }
+
+        &__remove {
+            position: static;
+            transform: none;
+        }
+    }
+
+}
+
+@include media-breakpoint-up(xl) {
+
+    .c-cart {
+        &__head,
+        &__row {
+            padding: $offset offset('lg');
+        }
+
+        &__footer {
+            padding: $gutter offset('lg');
+            align-items: center;
+
+            &-right {
+                display: flex;
+                align-items: center;
+            }
+
+            &-total {
+                margin-bottom: 0;
+                margin-right: 80px;
+            }
+        }
+    }
+
+    .c-item-cart {
+        &__img {
+            width: $img-xl;
+        }
+    }
+}
+
+@include media-breakpoint-up(hd) {
+
+    .c-cart {
+        &__price,
+        &__count,
+        &__total {
+            width: 180px;
+        }
+    }
+
+    .c-item-cart {
+        &__img {
+            margin-right: $offset;;
+        }
+    }
+}
+
+@include media-breakpoint-up(fd) {
+
+    .c-cart {
+        &__price,
+        &__count,
+        &__total {
+            width: 230px;
+        }
+    }
+}

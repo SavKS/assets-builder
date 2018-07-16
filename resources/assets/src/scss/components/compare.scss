@@ -1,0 +1,298 @@
+$line:      58px;
+
+.c-compare {
+    position: relative;
+    overflow: hidden;
+    border: 2px solid $gray-200;
+    font-size: $font-size-sm;
+    background-color: $white;
+
+    &__inner {
+        display: inline-block;
+        touch-action: pan-y pinch-zoom;
+
+        &--cloned {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            pointer-events: none;
+
+            .c-compare__col {
+                &:not(.c-compare__col--title) {
+                    opacity: 0;
+                    visibility: hidden;
+                }
+            }
+
+            .c-compare__col--title {
+                @include media-breakpoint-down(md) {
+                    width: container('md') - $gutter;
+                }
+
+                @include media-breakpoint-down(sm) {
+                    width: container('sm') - $gutter;
+                }
+
+                @include media-breakpoint-down(xs) {
+                    width: calc(100vw - #{$gutter});
+                }
+            }
+        }
+    }
+
+    &__row {
+        display: flex;
+
+        &--heading {
+            .link {
+                display: block;
+                color: $black;
+                @include link;
+
+                &:hover {
+                    color: $primary;
+                }
+            }
+            
+            .title {
+                margin-top: 10px;
+                font-size: $font-size-sm;
+                font-weight: $font-weight-bold;
+            }
+        }
+
+        &--color {
+            img {
+                border-radius: $border-radius;
+                margin-right: 5px;
+            }
+        }
+
+        &--footer {
+            border-top: 2px solid $gray-200;
+        }
+    }
+
+    &__col {
+        flex-shrink: 0;
+        padding: 17px;
+        text-align: center;
+        background-color: $white;
+
+        @include media-breakpoint-down(xs) {
+            width: 280px;
+        }
+
+        @include media-breakpoint-only(sm) {
+            width: (container('sm') - $gutter) / 2;
+        }
+
+        @include media-breakpoint-only(md) {
+            width: (container('md') - $gutter) / 2;
+        }
+
+        @include media-breakpoint-only(lg) {
+            width: (container('lg') - $gutter) / 3;
+        }
+
+        @include media-breakpoint-only(xl) {
+            width: (container('xl') - $gutter) / 4;
+        }
+
+        @include media-breakpoint-only(hd) {
+            width: (container('hd') - $gutter) / 4;
+        }
+
+        @include media-breakpoint-only(fd) {
+            width: (container('fd') - $gutter) / 4;
+        }
+
+        .c-compare__row--heading & {
+            position: relative;
+
+            .remove {
+                position: absolute;
+                top: offset('sm');
+                right: offset('sm');
+                color: $black;
+                opacity: .5;
+                padding: 5px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                transition: opacity $transition;
+
+                svg {
+                    display: block;
+                    width: 16px;
+                    height: 16px;
+                    fill: currentColor;
+                }
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            &--title {
+                font-size: $h5-font-size;
+            }
+        }
+
+        .c-compare__row--footer & {
+            padding: $offset gutter('sm');
+            background-color: $white !important;
+        }
+
+        &:nth-child(n+3) {
+            border-left: 2px solid $gray-200;
+        }
+
+        &--title {
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: $font-weight-bold;
+
+            svg {
+                fill: $primary;
+                margin-bottom: 20px;
+            }
+        }
+
+        &--price {
+            .new {
+                margin-right: 7px;
+            }
+
+            .old {
+                text-decoration: line-through;
+                color: $gray-600;
+            }
+        }
+    }
+
+    .iScrollLoneScrollbar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        margin-top: 20px;
+        background-color: $gray-200;
+        z-index: 2;
+    }
+
+    .iScrollIndicator {
+        background-color: $primary;
+        height: 100%;
+    }
+}
+
+@include media-breakpoint-down(md) {
+
+    .c-compare {
+        &__inner {
+            &:not(.c-compare__inner--cloned) {
+                .c-compare__col--title {
+                    display: none;
+                }
+            }
+
+            &--cloned {
+                .c-compare__row {
+                    position: relative;
+
+                    &--heading {
+                        svg {
+                            display: none;
+                        }
+
+                        .c-compare__col--title {
+                            border-top: none;
+                            background-color: $white;
+                            padding-top: 0;
+                            padding-bottom: 0;
+                            line-height: $line;
+                        }
+                    }
+
+                    &--footer {
+                        .c-compare__col--title {
+                            display: none;
+                        }
+                    }
+                }
+                
+                .c-compare__col--title {
+                    position: absolute;
+                    height: $line;
+                    top: 0;
+                    left: 0;
+                    background-color: #f2f2f2;
+                    border-top: 2px solid $gray-200;
+                    border-bottom: 2px solid $gray-200;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+
+        &__row {
+            &:not(.c-compare__row--footer) {
+                padding-top: $line;
+            }
+        }
+    }
+
+}
+
+@include media-breakpoint-up(lg) {
+
+    .c-compare {
+        &__inner {
+            &--cloned {
+                .c-compare__col {
+                    pointer-events: all;
+                }
+            }
+        }
+
+        &__col {
+            &.c-compare__col--title {
+                position: relative;
+                z-index: 1;
+
+                &:after {
+                    content: '';
+                    display: block;
+                    width: 40px;
+                    position: absolute;
+                    top: 0;
+                    left: 100%;
+                    bottom: 0;
+                    @include gradient-x(rgba(#bbb, .5), rgba(#bbb, 0));
+                    pointer-event: none;
+                }
+
+                .is-init .c-compare__inner:not(.c-compare__inner--cloned) & {
+                    opacity: 0;
+                    visibility: hidden;
+                }
+            }
+
+            &--title {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .c-compare__row:nth-child(even) & {
+                background-color: #f2f2f2;
+            }
+        }
+    }
+
+}

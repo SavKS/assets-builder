@@ -7,7 +7,8 @@
         >{{ text }}
             <span
                 v-if="required"
-                class="text-danger">*</span>
+                class="text-danger"
+            >*</span>
         </label>
 
         <masked-input

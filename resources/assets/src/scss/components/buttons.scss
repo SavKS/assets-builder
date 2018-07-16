@@ -1,3 +1,120 @@
 //# Buttons
 //
 //*
+.btn-secondary {
+    @include button-variant($secondary, $secondary, $primary, $primary, darken($primary, 5%), darken($primary, 5%));
+}
+
+.btn-light {
+    @include button-variant($white, $secondary, $secondary, $secondary, $gray-700, $gray-700);
+}
+
+.btn-light {
+    text-transform: none;
+    font-weight: normal;
+    letter-spacing: normal;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 30px;
+
+    svg {
+        height: 18px;
+        width: 22px;
+        fill: currentColor;
+        margin-top: -2px;
+        margin-right: 10px;
+    }
+}
+
+.btn-load {
+    position: relative;
+
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        @include gradient-striped(rgba($black, .05));
+        background-size: 40px 40px;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    &.is-loading {
+        color: transparent;
+
+        &:before {
+            visibility: visible;
+            opacity: 1;
+            animation: stripes $progress-bar-animation-timing;
+        }
+    }
+}
+
+.u-load {
+    min-height: 80px;
+
+    &:not(.u-load--abs) {
+        position: relative;
+    }
+
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba($white, .8);
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+        transition: $transition;
+    }
+
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 44px;
+        height: 44px;
+        margin: -22px 0 0 -22px;
+        background: url(../img/svg/wheel.svg) no-repeat center;
+        background-size: 44px;
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+        transition: $transition;
+    }
+
+    &.is-loading {
+        &:before, &:after {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        &:after {
+            animation: rotate 3s infinite linear;
+        }
+    }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); } 
+    to { transform: rotate(360deg); }
+}
+
+@keyframes stripes {
+    from { background-position: 40px 0; }
+    to { background-position: 0 0; }
+}
