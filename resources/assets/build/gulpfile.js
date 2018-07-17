@@ -96,12 +96,16 @@ gulp.task(
 gulp.task(
     'pub',
     gulp.series([
-        'clean:images',
-        'clean:fonts',
-        '@twig:build',
-        'scss',
-        'webpack',
-        'build-manifest'
+        [
+            'clean:images',
+            'clean:fonts',
+            '@twig:build',
+            'scss',
+            'webpack',
+            'build-manifest',
+
+            process.env.NODE_ENV === 'production' ? 'optimize-images' : null
+        ].filter(value => value)
     ])
 );
 
@@ -127,11 +131,15 @@ gulp.task(
 gulp.task(
     'src',
     gulp.series([
-        'clean:images',
-        'clean:fonts',
-        'scss',
-        'twig',
-        'webpack'
+        [
+            'clean:images',
+            'clean:fonts',
+            'scss',
+            'twig',
+            'webpack',
+
+            process.env.NODE_ENV === 'production' ? 'optimize-images' : null
+        ].filter(value => value)
     ])
 );
 

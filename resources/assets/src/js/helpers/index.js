@@ -7,6 +7,7 @@ import sortByArray from './libs/sortByArray';
 import staticAssets from './libs/staticAssets';
 import registerStore from './libs/registerStore';
 import vMount from './libs/vMount';
+import vMountLazy from './libs/vMountLazy';
 import vReplace from './libs/vReplace';
 
 export {
@@ -18,6 +19,7 @@ export {
     staticAssets,
     registerStore,
     vMount,
+    vMountLazy,
     vReplace
 };
 
