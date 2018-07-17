@@ -18,6 +18,8 @@ export const taskManager = {
             promise,
             params
         });
+
+        return promise;
     },
     status(name, withDescendants = false) {
         const activeProcesses = __store.state.taskManager.processes || {};
