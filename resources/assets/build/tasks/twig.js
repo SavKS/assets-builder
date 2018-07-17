@@ -99,7 +99,7 @@ gulp.task('@twig:clean', () => {
         );
 });
 
-module.exports = (watch = false) => {
+module.exports = (watch = false) => () => {
     if (!watch) {
         return gulp.series([
             '@twig:clean',
