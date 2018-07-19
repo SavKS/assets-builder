@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const watch = require('gulp-watch');
-const path = require('path');
 
 const config = require('../config');
 
@@ -95,7 +94,7 @@ gulp.task(
 */
 gulp.task(
     'pub',
-    gulp.series([
+    gulp.series(
         [
             'clean:images',
             'clean:fonts',
@@ -106,7 +105,7 @@ gulp.task(
 
             process.env.NODE_ENV === 'production' ? 'optimize-images' : null
         ].filter(value => value)
-    ])
+    )
 );
 
 gulp.task(
@@ -130,7 +129,7 @@ gulp.task(
 */
 gulp.task(
     'src',
-    gulp.series([
+    gulp.series(
         [
             'clean:images',
             'clean:fonts',
@@ -140,7 +139,7 @@ gulp.task(
 
             process.env.NODE_ENV === 'production' ? 'optimize-images' : null
         ].filter(value => value)
-    ])
+    )
 );
 
 gulp.task(

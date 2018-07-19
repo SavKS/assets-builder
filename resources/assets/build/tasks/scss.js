@@ -105,24 +105,19 @@ gulp.task(
     build()
 );
 
-module.exports = (watch = false) => {
-    if (!watch) {
+module.exports = {
+    build: () => () => {
         return gulp.series([
             '@scss:clean',
             '@scss:build'
         ]);
+    },
+    watch: () => () => {
+        gulp.watch(
+            config.styles.watch,
+            gulp.series([
+                '@scss:build'
+            ])
+        );
     }
-
-    return gulp.series([
-        '@scss:clean',
-        '@scss:build',
-        () => {
-            gulp.watch(
-                config.styles.watch,
-                gulp.series([
-                    '@scss:build'
-                ])
-            );
-        }
-    ]);
 };

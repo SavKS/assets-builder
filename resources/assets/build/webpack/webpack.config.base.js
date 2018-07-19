@@ -8,10 +8,11 @@ const WebpackNotifierPlugin = require("webpack-notifier");
 const ProgressPlugin = require("webpack/lib/ProgressPlugin");
 const DynamicPublicPathPlugin = require("dynamic-public-path-webpack-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const externals = require("../../externals");
 
-module.exports = {
+const config = {
     entry: {
         app: lodash.concat(
             "../src/js/index.js",
@@ -53,6 +54,10 @@ module.exports = {
         }),
         new DynamicPublicPathPlugin({
             externalGlobal: "window.App.cdn",
+            chunkName: "app"
+        }),
+        new DynamicPublicPathPlugin({
+            externalGlobal: "window.App.cdn",
             chunkName: "vendor"
         }),
         new VueLoaderPlugin,
@@ -77,3 +82,11 @@ module.exports = {
         }
     }
 };
+
+if (process.env.INSPECT_JS) {
+    config.plugins.push(
+        new BundleAnalyzerPlugin
+    );
+}
+
+module.exports = config;
