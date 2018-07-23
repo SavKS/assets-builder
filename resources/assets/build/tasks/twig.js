@@ -99,7 +99,7 @@ gulp.task('@twig:clean', () => {
         );
 });
 
-module.exports = (watch = false) => () => {
+module.exports = (watch = false) => {
     if (!watch) {
         return gulp.series([
             '@twig:clean',
@@ -107,22 +107,24 @@ module.exports = (watch = false) => () => {
         ]);
     }
 
-    gulp.watch(
-        config.layouts.watch,
-        gulp.series([
+    return () => {
+        gulp.watch(
+            config.layouts.watch,
+            gulp.series([
+                '@twig:build'
+            ])
+        );
+
+        gulp.watch(
+            [ config.layouts.datafile ],
+            gulp.series([
+                '@twig:build'
+            ])
+        );
+
+        return gulp.series([
+            '@twig:clean',
             '@twig:build'
         ])
-    );
-
-    gulp.watch(
-        [ config.layouts.datafile ],
-        gulp.series([
-            '@twig:build'
-        ])
-    );
-
-    return gulp.series([
-        '@twig:clean',
-        '@twig:build'
-    ]);
+    };
 };
