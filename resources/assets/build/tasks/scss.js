@@ -113,7 +113,7 @@ module.exports = (watch = false) => {
         ]);
     }
 
-    return () => gulp.series([
+    return gulp.series([
         '@scss:clean',
         '@scss:build',
         () => {

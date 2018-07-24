@@ -36,7 +36,8 @@ module.exports = (
 
         return path.relative(basePath, outputFilePath);
     } else {
-        const hash = md5(`${filePath}.${fs.statSync(filePath).size}`).substr(0, 10);
+        const relativePath = path.relative(config.path.src, filePath);
+        const hash = md5(`${relativePath}.${fs.statSync(filePath).size}`).substr(0, 10);
 
         const hashedOutputFilePath = outputFilePath.replace(
             `${srcPathInfo.name}${srcPathInfo.ext}`,

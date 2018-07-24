@@ -107,24 +107,25 @@ module.exports = (watch = false) => {
         ]);
     }
 
-    return () => {
-        gulp.watch(
-            config.layouts.watch,
-            gulp.series([
-                '@twig:build'
-            ])
-        );
+    return gulp.series([
+        '@twig:clean',
+        '@twig:build',
+        gulp.parallel([
+            () => {
+                gulp.watch(
+                    config.layouts.watch,
+                    gulp.series([
+                        '@twig:build'
+                    ])
+                );
 
-        gulp.watch(
-            [ config.layouts.datafile ],
-            gulp.series([
-                '@twig:build'
-            ])
-        );
-
-        return gulp.series([
-            '@twig:clean',
-            '@twig:build'
+                gulp.watch(
+                    [ config.layouts.datafile ],
+                    gulp.series([
+                        '@twig:build'
+                    ])
+                );
+            }
         ])
-    };
+    ]);
 };
