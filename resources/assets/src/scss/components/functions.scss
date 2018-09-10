@@ -1,7 +1,3 @@
-//# Functions
-//
-//*
-
 @function breakpoint($key: xl) {
   @return map-get($grid-breakpoints, $key);
 }

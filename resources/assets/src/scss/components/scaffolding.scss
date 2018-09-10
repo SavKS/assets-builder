@@ -1,7 +1,3 @@
-//# Scaffolding
-//
-//*
-
 *:focus {
     outline: none !important;
 }
@@ -14,6 +10,7 @@ body {
     background-color: $body-bg;
     fill: $body-color;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 img {
@@ -28,7 +25,8 @@ a {
         color $transition,
         background $transition,
         border-color $transition,
-        fill $transition;
+        fill $transition,
+        opacity $transition;
     // outline: none !important;
 }
 
@@ -36,187 +34,8 @@ textarea {
     resize: vertical;
 }
 
-.list {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 0;
-}
-
-.o-block {
-    margin-bottom: $gutter;
-}
-
-.o-heading {
-    margin-bottom: gutter('sm');
-}
-
-.o-heading--xs {
-    @include headings;
-}
-
-.o-heading__title {
-    margin: 0 0 8px 0;
-    font-size: $h5-font-size;
-
-    .o-heading--block & {
-        text-transform: uppercase;
-    }
-}
-
-.o-heading__filter {
-    .item {
-        display: inline-block;
-
-        &:not(:last-child) {
-            margin-right: offset('sm');
-        }
-
-        &.is-active {
-            .link {
-                color: $primary;
-            }
-        }
-    }
-
-    .link {
-        color: $gray-600;
-        @include link;
-
-        &:hover {
-            color: $primary;
-        }
-    }
-}
-
-.c-all {
-    position: relative;
-    padding-right: 38px;
-    color: $black;
-    font-weight: $font-weight-bold;
-    @include link;
-
-    &:after {
-        content: '';
-        display: block;
-        height: 12px;
-        width: 22px;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        margin-top: -6px;
-        transition: transform $transition;
-        background: url('../../src/img/svg/arrow-right.svg');
-        background-size: 100%;
-    }
-
-    &:hover {
-        color: $black;
-
-        &:after {
-            transform: translateX(5px);
-        }
-    }
-}
-
-.c-empty {
-    position: relative;
-    width: 100%;
-    padding-bottom: 40%;
-    min-height: 250px;
-    background-color: $white;
-
-    &__inner {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: gutter('sm');
-
-        svg {
-            fill: $gray-400;
-        }
-    }
-
-    &__title {
-        text-align: center;
-        font-size: $font-size-sm;
-        margin: 0;
-        font-weight: normal;
-    }
-}
-
-.o-noimg {
-    background: url('../img/svg/velozona.svg') no-repeat center;
-    background-size: 40% auto;
-    padding-bottom: 66%;
-    width: 100%;
-
-    .c-product__for & {
-        padding-bottom: 56.875%;
-    }
-
-    .c-product__nav & {
-        padding-bottom: 56%;
-    }
-
-    .c-product__gift-inner & {
-        width: 120px;
-        padding-bottom: 120px;
-    }
-
-    .c-person__photo & {
-        background: url('../img/svg/user.svg') no-repeat center;
-        background-size: 80% auto;
-        padding-bottom: 134.5%;
-        opacity: .1;
-    }
-}
-
-@include media-breakpoint-up(sm) {
-
-    .o-heading--sm {
-        @include headings;
-    }
-
-}
-
-@include media-breakpoint-up(md) {
-
-    .o-heading--md {
-        @include headings;
-    }
-
-    .o-heading__title {
-        font-size: $h4-font-size;
-    }
-
-}
-
-@include media-breakpoint-up(lg) {
-
-    .o-block {
-        margin-bottom: 100px;
-    }
-
-    .o-heading {
-        margin-bottom: 50px;
-    }
-
-    .o-heading--page {
-        margin-top: 70px;
-    }
-
-    .o-heading__title {
-        font-size: $h3-font-size;
-    }
-
-    .o-heading--lg {
-        @include headings;
-    }
-
+abbr[title] {
+    text-decoration: none;
+    border-bottom: 0;
+    cursor: inherit !important;
 }

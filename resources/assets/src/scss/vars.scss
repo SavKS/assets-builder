@@ -1,0 +1,45 @@
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    laptop: 1440px,
+    desktop: 1660px,
+    fullhd: 1800px
+);
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    laptop: 1380px,
+    desktop: 1620px,
+    fullhd: 1740px
+);
+
+$layout-min-width:      320px;
+$layout-max-width:      1920px;
+
+$grid-gutter-width:     40px;
+
+$gutter: $grid-gutter-width;
+$gutters: (
+    xs:   round($gutter / 3),
+    xs2: round($gutter * 2 / 3),
+    sm:   round($gutter / 2),
+    md:   round($gutter * 3 / 2),
+    lg:   round($gutter * 2),
+);
+
+$offset: 30px;
+$offsets: (
+    xs:   round($offset / 3),
+    xs2: round($offset * 2 / 3),
+    sm:   round($offset / 2),
+    md:   round($offset * 3 / 2),
+    lg:   round($offset * 2),
+);
+
+$transition:            .3s;
