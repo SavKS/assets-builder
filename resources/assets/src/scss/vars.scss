@@ -19,27 +19,30 @@ $container-max-widths: (
     fullhd: 1740px
 );
 
-$layout-min-width:      320px;
-$layout-max-width:      1920px;
+$layout-min-width:                                  320px;
+$layout-max-width:                                  1920px;
+$grid-gutter-width:                                 40px;
 
-$grid-gutter-width:     40px;
+$g:                                                 $grid-gutter-width;
+$g-xs:                                              $g / 8;
+$g-sm:                                              $g / 2;
+$g-md:                                              $g-sm * 3;
+$g-lg:                                              $g * 2;
 
-$gutter: $grid-gutter-width;
-$gutters: (
-    xs:   round($gutter / 3),
-    xs2: round($gutter * 2 / 3),
-    sm:   round($gutter / 2),
-    md:   round($gutter * 3 / 2),
-    lg:   round($gutter * 2),
+$o:                                                 30px;
+$o-xs:                                              $o / 3;
+$o-sm:                                              $o / 2;
+$o-md:                                              $o-sm * 3;
+$o-lg:                                              $o * 2;
+
+$spacers: (
+    0: 0,
+    1: $g-xs,
+    2: $o-xs,
+    3: $o-sm,
+    4: $g-sm,
+    5: $o,
+    6: $g
 );
 
-$offset: 30px;
-$offsets: (
-    xs:   round($offset / 3),
-    xs2: round($offset * 2 / 3),
-    sm:   round($offset / 2),
-    md:   round($offset * 3 / 2),
-    lg:   round($offset * 2),
-);
-
-$transition:            .3s;
+$transition:                                        .3s;
