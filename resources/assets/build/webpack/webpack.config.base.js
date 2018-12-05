@@ -16,26 +16,37 @@ const config = {
     entry: {
         app: lodash.concat(
             "../src/js/index.js",
-            glob.sync("./src/js/modules/*/*.js")
+            glob.sync("./src/js/modules/*/index.js")
         )
     },
     output: {
-        publicPath: "/"
+        publicPath: "PUBLIC_PATH"
     },
     module: {
         rules: [
             {
                 test: /\.vue$/,
-                loader: "vue-loader"
+                loader: 'vue-loader',
+                options: {
+                    loaders: {
+                        js: [
+                            {
+                                loader: 'babel-loader',
+                                options: require('../../babel.config')
+                            }
+                        ]
+                    }
+                }
             },
             {
                 test: /\.js$/,
-                loader: "babel-loader",
-                exclude: [ /node_modules/ ]
+                loader: 'babel-loader',
+                exclude: [/node_modules/],
+                options: require('../../babel.config')
             },
             {
                 test: /\.svg$/,
-                loader: "svg-loader"
+                loader: 'svg-loader'
             }
         ]
     },
@@ -44,27 +55,19 @@ const config = {
         new ProgressPlugin,
         new FriendlyErrors,
         new WebpackNotifierPlugin,
-        new webpack.optimize.CommonsChunkPlugin({
-            name: "vendor",
-            minChunks: (module) => {
-                return module.resource
-                    && !/\.(png|jpe?g|gif)$/.test(module.resource)
-                    && /\.(js|svg)$/.test(module.resource);
-            }
-        }),
         new DynamicPublicPathPlugin({
             externalGlobal: "window.App.cdn",
             chunkName: "app"
-        }),
-        new DynamicPublicPathPlugin({
-            externalGlobal: "window.App.cdn",
-            chunkName: "vendor"
         }),
         new VueLoaderPlugin,
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
     resolve: {
-        extensions: [ ".js", ".json", ".vue" ],
+        extensions: [
+            ".js",
+            ".json",
+            ".vue"
+        ],
         modules: [ "node_modules" ],
         alias: {
             "@base": path.resolve(__dirname, "../../../../"),

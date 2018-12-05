@@ -1,5 +1,5 @@
-import _trim from 'lodash/trim';
+import { trim } from 'lodash';
 
-const staticUrl = _trim(window.App.staticUrl, '/');
+const staticUrl = trim(window.App.staticUrl, '/');
 
-export default (path) => `${staticUrl}/${_trim(path, '/')}`;
+export default (path) => `${staticUrl}/${trim(path, '/')}`;

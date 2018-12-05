@@ -19,9 +19,9 @@ module.exports = {
 
                 return `
                         <script>
-                            window.__vars = window.__vars || {};
-                            window.__vars.store = window.__vars.store || {};
-                            window.__vars.store.${store} = ${data};
+                            window.__preload = window.__preload || {};
+                            window.__preload.store = window.__preload.store || {};
+                            window.__preload.store.${store} = ${data};
                         </script>
                     `;
             }

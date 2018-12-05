@@ -1,29 +1,4 @@
-import _each from 'lodash/each';
-import _concat from 'lodash/concat';
-import _clone from 'lodash/clone';
-
-export default function (selector, component, rootParams = {}, componentParams = {}) {
-    let targets;
-
-    if (selector instanceof HTMLElement) {
-        return init(selector, _clone(component), rootParams, componentParams);
-    }
-
-    if (!selector || !(targets = document.querySelectorAll(selector)).length) {
-        return;
-    }
-
-    if (!component instanceof Vue) {
-        throw new Error('This is not Vue component');
-    }
-
-    _each(targets, (el) => init(
-        el,
-        _clone(component),
-        rootParams,
-        componentParams
-    ));
-};
+import { each, concat, clone } from 'lodash';
 
 function init(el, component, rootParams = {}, componentParams = {}) {
     const tmpEl = document.createElement(el.tagName);
@@ -34,7 +9,7 @@ function init(el, component, rootParams = {}, componentParams = {}) {
     (new Vue({
         ...rootParams,
         render(h) {
-            component.mixins = _concat(component.mixins || [], [
+            component.mixins = concat(component.mixins || [], [
                 {
                     mounted() {
                         this.$el.style && this.$el.style.removeProperty('display');
@@ -52,3 +27,26 @@ function init(el, component, rootParams = {}, componentParams = {}) {
         }
     })).$mount(tmpEl);
 }
+
+export default function (selector, component, rootParams = {}, componentParams = {}) {
+    let targets;
+
+    if (selector instanceof HTMLElement) {
+        return init(selector, clone(component), rootParams, componentParams);
+    }
+
+    if (!selector || !(targets = document.querySelectorAll(selector)).length) {
+        return;
+    }
+
+    if (!component instanceof Vue) {
+        throw new Error('This is not Vue component');
+    }
+
+    each(targets, (el) => init(
+        el,
+        clone(component),
+        rootParams,
+        componentParams
+    ));
+};

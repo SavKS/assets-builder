@@ -1,5 +1,7 @@
 module.exports = {
     'jquery': 'jQuery',
     '$': 'jQuery',
-    'perfect-scrollbar': 'PerfectScrollbar'
+    'vue': 'Vue',
+    'vuex': 'Vuex',
+    'lodash': '_'
 };

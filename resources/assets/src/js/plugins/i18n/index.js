@@ -1,6 +1,4 @@
-import _get from 'lodash/get';
-import _isArray from 'lodash/isArray';
-import _merge from 'lodash/merge';
+import { get, isArray, merge } from 'lodash';
 import print from 'sprintf-js';
 
 let __config = {};
@@ -12,7 +10,7 @@ export default {
         };
 
         Vue.prototype.$ti = function (text, args, scope) {
-            if (!_isArray(args)) {
+            if (!isArray(args)) {
                 throw Error('Arguments must bee array');
             }
 
@@ -26,14 +24,14 @@ export default {
         store.registerModule('i18n', {
             namespaced: true,
             state: {
-                dictionary: _merge(
+                dictionary: merge(
                     {},
-                    _get(__config, 'dictionary', {})
+                    get(__config, 'dictionary', {})
                 )
             },
             getters: {
                 translate: ({ dictionary }) => (text, locale) => {
-                    return _get(dictionary, text, text);
+                    return get(dictionary, text, text);
                 }
             },
             mutations: {
@@ -49,6 +47,6 @@ export default {
         })
     },
     config(config = {}) {
-        __config = _merge({}, __config, config);
+        __config = merge({}, __config, config);
     }
 };

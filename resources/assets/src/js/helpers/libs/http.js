@@ -8,7 +8,8 @@ const http  = axios.create({
     headers: {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
-    }
+    },
+    paramsSerializer: params => qs.stringify(params)
 });
 
 http.interceptors.request.use((config) => {

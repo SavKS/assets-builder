@@ -1,13 +1,10 @@
-import _get from 'lodash/get';
-import _set from 'lodash/set';
-import _merge from 'lodash/merge';
-import _each from 'lodash/each';
+import { get, set, merge, each } from 'lodash';
 import deepForEach from 'deep-for-each';
 
 const typeConversion = (data) => {
     deepForEach(data, (value, prop, subject, path) => {
         if (value === 'Infinity') {
-            _set(data, path, Infinity);
+            set(data, path, Infinity);
         }
     });
 
@@ -17,16 +14,16 @@ const typeConversion = (data) => {
 export default function (name, Store, store) {
     store = store || require('@store').default;
 
-    const initialState = _get(window, `__vars.store.${name}`, null);
+    const initialState = get(window, `__preload.store.${name}`, null);
 
     if (initialState !== null) {
-        const modules = _get(initialState, '@modules', null);
+        const modules = get(initialState, '@modules', null);
 
         if (modules !== null) {
-            _each(modules, (state, name) => {
-                const initState = _get(Store.modules, `${name}.state`, {});
+            each(modules, (state, name) => {
+                const initState = get(Store.modules, `${name}.state`, {});
 
-                _set(
+                set(
                     Store.modules,
                     `${name}.state`,
                     typeConversion({
@@ -40,7 +37,7 @@ export default function (name, Store, store) {
         }
 
         Store.state = typeConversion(
-            _merge(Store.state, initialState)
+            merge(Store.state, initialState)
         );
     }
 

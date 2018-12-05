@@ -5,14 +5,14 @@ const routes = {
     routes: $ROUTES$,
     prefix: '$PREFIX$',
 
-    route(name, parameters) {
+    route(name, parameters, query) {
         const route = this.getByName(name);
 
         if (!route) {
             return;
         }
 
-        return '/' + urlHelper(route.uri, parameters);
+        return `/${urlHelper(route.uri, parameters, query)}`;
     },
 
     url(url, parameters = []) {
@@ -35,31 +35,16 @@ const routes = {
     },
 
     isOtherHost(route) {
-        return route.host && route.host != window.location.hostname;
+        return route.host && route.host !== window.location.hostname;
     },
 
     replaceNamedParameters(uri, parameters) {
         return urlHelper(uri, parameters);
-
-        uri = uri.replace(/\{(.*?)\??\}/g, function (match, key) {
-            if (parameters.hasOwnProperty(key)) {
-                var value = parameters[key];
-                delete parameters[key];
-                return value;
-            } else {
-                return match;
-            }
-        });
-
-        // Strip out any optional parameters that were not given
-        uri = uri.replace(/\/\{.*?\?\}/g, '');
-
-        return uri;
     },
 
     getRouteQueryString: function (parameters) {
-        var qs = [];
-        for (var key in parameters) {
+        const qs = [];
+        for (const key in parameters) {
             if (parameters.hasOwnProperty(key)) {
                 qs.push(key + '=' + parameters[key]);
             }
@@ -73,7 +58,7 @@ const routes = {
     },
 
     getByName: function (name) {
-        for (var key in this.routes) {
+        for (const key in this.routes) {
             if (this.routes.hasOwnProperty(key) && this.routes[key].name === name) {
                 return this.routes[key];
             }
@@ -81,7 +66,7 @@ const routes = {
     }
 };
 
-const route = (route, parameters) => routes.route(route, parameters);
+const route = (route, parameters, query) => routes.route(route, parameters, query);
 const url = (url, parameters = {}) => routes.url(url, parameters);
 
 export default {

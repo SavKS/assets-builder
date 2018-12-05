@@ -1,12 +1,11 @@
 import Vue from 'vue';
 
-import _each from 'lodash/each';
-import _clone from 'lodash/clone';
+import { each, clone } from 'lodash';
 
 export default function (selector, component) {
     let targets;
 
-    if (!selector || ! (targets = document.querySelectorAll(selector)).length) {
+    if (!selector || !(targets = document.querySelectorAll(selector)).length) {
         return;
     }
 
@@ -14,7 +13,7 @@ export default function (selector, component) {
         throw new Error('This is not Vue component');
     }
 
-    _each(targets, (el) => {
-        (new Vue(_clone(component))).$mount(el);
+    each(targets, (el) => {
+        (new Vue(clone(component))).$mount(el);
     });
 };

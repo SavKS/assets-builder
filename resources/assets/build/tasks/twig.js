@@ -120,7 +120,7 @@ module.exports = (watch = false) => {
                 );
 
                 gulp.watch(
-                    [ config.layouts.datafile ],
+                    [ config.layouts.datafile, config.layouts.serverFiles ],
                     gulp.series([
                         '@twig:build'
                     ])

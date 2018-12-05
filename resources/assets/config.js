@@ -4,7 +4,7 @@ const srcPath = path.resolve(__dirname, './src');
 const outputPath = path.resolve(__dirname, '../../static');
 
 const fonts = {
-    mask: /\/fonts\/.*\.(ttf|woff|woff2|eot|otf|svg)/,
+    mask: /[\/|\\]fonts[\/|\\].*\.(ttf|woff|woff2|eot|otf|svg)/,
     path: {
         src: path.resolve(srcPath, './fonts'),
         output: path.resolve(outputPath, './fonts')
@@ -12,7 +12,7 @@ const fonts = {
 };
 
 const images = {
-    mask: /\/img\/.*\.(png|jpg|jpeg|gif|svg)/,
+    mask: /[\/|\\]img[\/|\\].*\.(png|jpg|jpeg|gif|svg)/,
     path: {
         src: path.resolve(srcPath, './img'),
         output: path.resolve(outputPath, './img')
@@ -39,6 +39,7 @@ const layouts = {
         '../src/layouts/**/*.twig'
     ],
     datafile: path.resolve(srcPath, './layouts/datafile.json'),
+    serverFiles: path.resolve(srcPath, './server/*.json'),
     baseUri: '../..',
     manifest: path.resolve(outputPath, './layouts/manifest.json')
 };

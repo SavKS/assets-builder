@@ -59,6 +59,6 @@ module.exports = (
             `${srcPathInfo.name}.${hash}`
         );
 
-        return hashedUri;
+        return hashedUri.replace(new RegExp('\\\\', 'g'), '/');
     }
 };

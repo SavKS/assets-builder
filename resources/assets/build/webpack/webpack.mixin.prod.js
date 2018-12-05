@@ -1,8 +1,8 @@
 const webpack = require('webpack');
 
-const CompressionPlugin = require('compression-webpack-plugin');
-
 module.exports = (webpackConfig) => {
+    webpackConfig.mode = 'production';
+
     webpackConfig.performance = {
         hints: 'warning'
     };
@@ -12,19 +12,15 @@ module.exports = (webpackConfig) => {
     webpackConfig.plugins.push(
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: '"production"'
+                NODE_ENV: '"production"',
+                BUILD_MODE: `"${process.env.BUILD_MODE}"`
             }
         })
     );
 
-    webpackConfig.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            sourceMap: false
-        })
-    );
+    webpackConfig.optimization = {
+        minimize: true
+    };
 
     return webpackConfig;
 };

@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 
 module.exports = (webpackConfig) => {
+    webpackConfig.mode = 'development';
+
     webpackConfig.performance = {
         hints: false
     };
@@ -10,7 +12,8 @@ module.exports = (webpackConfig) => {
     webpackConfig.plugins.push(
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: '"develop"'
+                NODE_ENV: '"develop"',
+                BUILD_MODE: `"${process.env.BUILD_MODE}"`
             }
         })
     );

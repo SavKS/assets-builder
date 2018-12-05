@@ -1,458 +1,381 @@
-import _get from 'lodash/get';
-import _assign from 'lodash/assign';
-import _set from 'lodash/set';
-import _isEmpty from 'lodash/isEmpty';
-import _has from 'lodash/has';
-import _each from 'lodash/each';
-import _merge from 'lodash/merge';
-import _reduce from 'lodash/reduce';
-import _isPlainObject from 'lodash/isPlainObject';
-import _isArray from 'lodash/isArray';
-import _isString from 'lodash/isString';
-import _isFunction from 'lodash/isFunction';
-import _identity from 'lodash/identity';
+import Vue from 'vue';
 
-import Get from './Requests/Get';
-import Post from './Requests/Post';
+import _ from 'lodash';
+import { deepModel } from 'vue-deepset';
+import qs from 'qs';
 
 let __store;
-let __config = {};
-let __Vue;
+let __config = {
+    defaultRequestType: 'json',
+    paramsSerializer: (params) => qs.stringify(params)
+};
 let __models = {};
-let __forms = function (name) {
-};
+let __forms = function (name) {};
 
-const __parameters = {};
-const __filters = {};
-
-export default {
-    registerFilter: (name, filter) => {
-        __filters[ name ] = filter;
-    },
-    config(config = {}) {
-        __config = _merge({}, __config, config);
-    },
-    install(Vue) {
-        __Vue = Vue;
-
-        __forms = (function (name, fields, defaults) {
-            __store.dispatch(__getAction('register'), {
-                name,
-                fields,
-                defaults
-            });
-        }).bind(Vue);
-
-        Vue.prototype.$forms = __forms;
-        Vue.prototype.$thisForm = function (resource = null) {
-            if (typeof this.$options.form === 'undefined') {
-                throw new Error('Form name not defined');
-            }
-
-            return resource !== null ?
-                this.$forms[ this.$options.form ][ resource ] :
-                this.$forms[ this.$options.form ];
-        };
-
-        Vue.$forms = __forms;
-    },
-    storeRegister(store) {
-        __store = store;
-
-        store.registerModule(__getNamespace(), {
-            namespaced: true,
-            state: {
-                defaults: {},
-                edited: {},
-                errors: {},
-                empty: {},
-                update: 0,
-                responses: {}
-            },
-            mutations: {
-                register: (state, { name, fields, defaults = {} }) => {
-                    if (__models.hasOwnProperty(name)) {
-                        return false;
-                    }
-
-                    __Vue.set(
-                        state.defaults,
-                        name,
-                        _reduce(
-                            fields,
-                            (state, key) => {
-                                const defaultValue = _get(defaults, key, null);
-
-                                if (_isPlainObject(defaultValue)) {
-                                    state[ key ] = defaultValue.value || null;
-
-                                    if (_isArray(defaultValue.filters)
-                                        && defaultValue.filters.length
-                                    ) {
-                                        _set(
-                                            __parameters,
-                                            `${name}.${key}.filters`,
-                                            [ ...defaultValue.filters ]
-                                        );
-                                    } else if (_isFunction(defaultValue.filters)) {
-                                        _set(
-                                            __parameters,
-                                            `${name}.${key}.filters`,
-                                            [ defaultValue.filters ]
-                                        );
-                                    }
-
-                                } else {
-                                    state[ key ] = defaultValue;
-                                }
-
-                                return state;
-                            },
-                            {}
-                        )
-                    );
-
-                    __models[ name ] = __createModel(name, fields);
-
-                    Object.defineProperty(__forms, name, {
-                        configurable: true,
-                        get: function () {
-                            if (!__models.hasOwnProperty(name)) {
-                                throw new Error(`Form [${name}] does not exists`);
-                            }
-
-                            return __models[ name ];
-                        }
-                    });
-                },
-                set: (state, { name, field, value }) => {
-                    if (!state.edited.hasOwnProperty(name)) {
-                        __Vue.set(state.edited, name, {});
-                    }
-
-                    __Vue.set(state.edited[ name ], field, value);
-                },
-                fill: (state, { name, fields }) => {
-                    __Vue.set(state.edited, name, fields);
-                },
-                setDefault: (state, { name, field, value }) => {
-                    if (!state.defaults.hasOwnProperty(name)) {
-                        __Vue.set(state.defaults, name, {});
-                    }
-
-                    __Vue.set(state.defaults[ name ], field, value || null);
-                },
-                reset: (state, name) => {
-                    __Vue.delete(state.edited, name);
-                    __Vue.delete(state.errors, name);
-                },
-                remove: (state, { name, field }) => {
-                    if (!state.edited.hasOwnProperty(name)) {
-                        return;
-                    }
-
-                    __Vue.delete(state.edited[ name ], field);
-                },
-                destroy: (state, name) => {
-                    __Vue.delete(__models, name);
-                    __Vue.delete(state.defaults, name);
-                    __Vue.delete(state.edited, name);
-
-                    delete __forms[ name ];
-                },
-                fillErrors: (state, { name, errors }) => {
-                    __Vue.set(state.errors, name, errors);
-                },
-                clearErrors: (state, name) => {
-                    __Vue.delete(state.errors, name);
-                },
-                setResponse: (state, { name, data }) => {
-                    __Vue.set(state.responses, name, data);
-                }
-            },
-            actions: {
-                register: ({ commit }, payload) => {
-                    commit('register', payload);
-                },
-                set: ({ commit }, payload) => {
-                    commit('set', payload);
-                },
-                setDefault: ({ commit }, payload) => {
-                    commit('setDefault', payload);
-                },
-                reset: ({ commit }, name) => {
-                    commit('reset', name);
-                },
-                remove: ({ commit }, name) => {
-                    commit('remove', name);
-                },
-                destroy: ({ commit }, name) => {
-                    commit('destroy', name);
-                },
-                fillErrors: ({ commit }, { name, errors }) => {
-                    commit('fillErrors', { name, errors });
-                },
-                clearErrors: ({ commit }, name) => {
-                    commit('clearErrors', name);
-                },
-                setResponse: ({ commit }, payload) => {
-                    commit('setResponse', payload);
-                }
-            }
-        });
-    },
-    preload(forms) {
-        if (_isEmpty(forms)) {
-            return;
-        }
-
-        _each(forms, ({ fields, defaults }, name) => {
-            __store.dispatch(__getAction('register'), {
-                name,
-                fields,
-                defaults
-            });
-        });
+function preparePostData(data, dataType = __config.defaultRequestType) {
+    if (dataType === 'json') {
+        return data;
     }
-};
 
-function __getNamespace() {
-    return _get(__config, 'namespace', 'forms');
+    return _.reduce(
+        data,
+        (carry, value, name) => {
+            if (_.isArray(value) || _.isPlainObject(value)) {
+                _.each(value, (item, key) => {
+                    carry.append(`${name}[${key}]`, item);
+                });
+            } else {
+                carry.append(name, value);
+            }
+
+            return carry;
+        },
+        new FormData
+    );
 }
 
-function __getAction(action) {
-    return __getNamespace() + '/' + action;
+function __namespace() {
+    return _.get(__config, 'namespace', 'forms');
 }
 
-function __createModel(name, fields) {
-    return new __Vue({
-        __store,
+function __action(action) {
+    return __namespace() + '/' + action;
+}
+
+function __getter(getter) {
+    return __namespace() + '/' + getter;
+}
+
+function __createModel(name) {
+    return new Vue({
+        data: () => ({
+            old: {}
+        }),
+        store: __store,
         computed: {
             name: () => name,
+
             errors() {
-                let storage = __store.state[ __getNamespace() ];
+                let storage = __store.state[ __namespace() ];
 
-                return _get(storage.errors, name, {});
+                return _.get(storage.errors, name, {});
             },
+
             response() {
-                let storage = __store.state[ __getNamespace() ];
+                let storage = __store.state[ __namespace() ];
 
-                return _get(storage.responses, name, null);
+                return _.get(storage.responses, name, null);
             },
+
             data() {
-                return __createDataModel(name, fields);
+                return deepModel.bind(this)(`${__namespace()}.data.${name}`);
             }
         },
         methods: {
-            destroy() {
-                __store.dispatch(__getAction('destroy'), name);
-            },
-            remove(field) {
-                __store.dispatch(__getAction('remove'), { name, field });
-            },
-            reset() {
-                __store.dispatch(__getAction('reset'), name);
-                __store.dispatch(__getAction('clearErrors'), name);
-            },
-            fill(fields) {
-                _each(fields, (value, field) => {
-                    __store.dispatch(__getAction('set'), {
-                        name,
-                        field,
-                        value
-                    });
-                });
-            },
-            fillDefaults(fields) {
-                _each(fields, (value, field) => {
-                    __store.dispatch(__getAction('setDefault'), {
-                        name,
-                        field,
-                        value
-                    });
-                });
-            },
-            serialize(filter) {
-                let data = _reduce(
-                    fields,
-                    (state, field) => {
-                        const value = this.data[ field ];
-
-                        if (!filter
-                            || (filter && filter(value, field))
-                        ) {
-                            state[ field ] = value;
+            formatErrors(names, delimiter = '. ') {
+                const errors = _.flattenDeep([names])
+                    .map(name => {
+                        if (!this.errors[ name ]) {
+                            return null;
                         }
 
-                        return state;
-                    },
-                    {}
-                );
+                        return this.errors[ name ];
+                    })
+                    .filter(value => value);
 
-                return data;
-            },
-            hasChanges(field) {
-                let storage = __store.state[ __getNamespace() ];
-
-                if (!field) {
-                    return !!Object.keys(
-                        _get(storage.edited, name, {})
-                    ).length;
+                if (!errors.length) {
+                    return null;
                 }
 
-                return _has(storage.edited, `${name}.${field}`);
+                return errors.join(delimiter);
             },
-            request(method) {
-                const http = _get(__config, 'httpClient', require('axios'));
-                const errorsResolver = (errors) => {
-                    __store.dispatch(__getAction('fillErrors'), {
-                        name,
-                        errors
-                    });
-                };
 
-                if ([ 'post', 'put', 'patch' ].indexOf(method.toLowerCase()) !== -1) {
-                    return new Post(this, http, errorsResolver);
+            hasErrors(...names) {
+                if (names.length === 0) {
+                    return !_.isEmpty(this.errors);
                 }
 
-                return new Get(this, http, errorsResolver);
-            },
-            submit(method, url, config = {}, filter = _identity) {
-                const http = _get(__config, 'httpClient', require('axios'));
-                const params = _assign(
-                    filter ? this.serialize(filter) : this.serialize(filter),
-                    config.params || {}
+                return _.flattenDeep([names]).some(
+                    name => !!this.errors[ name ]
                 );
+            },
+
+            remove(field) {
+                return __store.dispatch(__action('remove'), { name, field });
+            },
+
+            reset(data = {}) {
+                return Promise.all([
+                    this.setData(data),
+                    __store.dispatch(__action('clearErrors'), name)
+                ]);
+            },
+
+            fill(fields) {
+                _.each(fields, (value, field) => {
+                    this.data[ field ] = value;
+                });
+            },
+
+            setData(data = {}, remember = true) {
+                const request = __store.dispatch(__action('setData'), {
+                    name,
+                    data
+                });
+
+                if (remember) {
+                    request.then(
+                        () => this.remember()
+                    );
+                }
+
+                return request;
+            },
+
+            submit(method, url, options = {}) {
+                const data = _.assign(
+                    options.filter ? _.pickBy(this.data, options.filter) : this.data,
+                    options.data || {}
+                );
+                const queryParams = options.params || {};
+                const http = __config.httpClient || require('axios');
+
                 let response;
 
-                if ([ 'post', 'put', 'patch' ].indexOf(method) !== -1) {
-                    response = http[ method ](url, params, config);
-                } else {
-                    config.params = params;
+                if (method.toLowerCase() === 'post') {
+                    response = http[ method ](
+                        url,
+                        preparePostData(data, options.dataType),
+                        {
+                            ...(options.config || {}),
 
-                    response = http[ method ](url, config);
+                            params: queryParams
+                        }
+                    );
+                } else {
+                    response = http[ method ](url, {
+                        params: _.assign(data, queryParams),
+                        ...options.config || {}
+                    });
                 }
 
                 response.catch((data) => {
                     if (data.response.status === 422) {
-                        __store.dispatch(__getAction('fillErrors'), {
+                        __store.dispatch(__action('fillErrors'), {
                             name,
-                            errors: data.response.data
+                            errors: data.response.data.errors
                         });
                     }
                 });
 
-                response.then(({ data }) => {
-                    __store.dispatch(__getAction('setResponse'), {
+                response.then(data => {
+                    __store.dispatch(__action('clearErrors'), name);
+
+                    __store.dispatch(__action('setResponse'), {
                         name,
                         data
                     });
                 });
 
                 return response;
+            },
+
+            onChange(callback, config = {}) {
+                return this.watch(null, callback, config);
+            },
+
+            watch(field = null, callback, config = {}) {
+                const path = field !== null ?
+                    `${__namespace()}.data.${name}.${field}` :
+                    `${__namespace()}.data.${name}`;
+
+                let oldValue = typeof _.get(__store.state, path) !== 'undefined' ?
+                    JSON.parse(
+                        JSON.stringify(
+                            _.get(__store.state, path)
+                        )
+                    ) :
+                    undefined;
+
+                return this.$store.watch(
+                    store => ({
+                        result: _.get(store, path)
+                    }),
+                    ({ result }) => {
+                        if (JSON.stringify(result) !== JSON.stringify(oldValue)) {
+                            callback(result, oldValue);
+
+                            oldValue = undefined !== result ?
+                                JSON.parse(
+                                    JSON.stringify(result)
+                                ) :
+                                undefined;
+                        }
+                    },
+                    {
+                        deep: field === null,
+
+                        ...config
+                    }
+                );
+            },
+
+            remember() {
+                this.$data.old = JSON.parse(
+                    JSON.stringify(this.data)
+                );
+
+                return this;
+            },
+
+            restore() {
+                this.setData(this.$data.old);
+
+                return this;
+            },
+
+            changed(field) {
+                if (!this.$data.old) {
+                    return false;
+                }
+
+                let oldValue, currentValue;
+
+                if (!field) {
+                    oldValue = this.$data.old;
+                    currentValue = this.data;
+                } else {
+                    oldValue = _.get(this.$data.old, field);
+                    currentValue = _.get(this.data, field);
+                }
+
+                return JSON.stringify(oldValue) !== JSON.stringify(currentValue);
             }
         }
     });
 }
 
-function __getDefault(name, field) {
-    let storage = __store.state[ __getNamespace() ];
+export default {
+    forms: (name, data) => __forms(name, data),
+    config(config = {}) {
+        __config = _.merge({}, __config, config);
+    },
+    install(Vue) {
+        Vue = Vue;
 
-    return _get(
-        storage.defaults,
-        `${name}.${field}`,
-        null
-    );
-}
+        __forms = (function (name, data) {
+            if (!_.has(__models, name)) {
+                __store.dispatch(__action('register'), {
+                    name,
+                    data
+                });
+            }
 
-function __getEdited(name, field) {
-    let storage = __store.state[ __getNamespace() ];
+            return __models[ name ];
+        }).bind(Vue);
 
-    return _get(
-        storage.edited,
-        `${name}.${field}`,
-        null
-    );
-}
+        Vue.prototype.$forms = __forms;
 
-function __createDataModel(name, fields) {
-    return new __Vue({
-        computed: _reduce(
-            fields,
-            (state, key) => {
-                state[ key ] = {
-                    get: () => __getValue(name, key),
-                    set(value) {
-                        let storage = __store.state[ __getNamespace() ];
-                        let filters = _get(__parameters, `${name}.${key}.filters`);
-                        const defaultValue = _get(storage.defaults, `${name}.${key}`);
+        Vue.prototype.$thisForm = function (resource = null) {
+            if (typeof this.$options.form === 'undefined') {
+                throw new Error('Form name not defined');
+            }
 
-                        if (filters) {
-                            value = __applyFilters(value, filters, __getValue(name, key));
-                        }
+            const formName = _.isFunction(this.$options.form) ?
+                this.$options.form.bind(this)() :
+                this.$options.form;
 
-                        if (value === defaultValue
-                            || (defaultValue === null && value === '')
-                        ) {
-                            __store.dispatch(__getAction('remove'), { name, field: key });
-                        } else {
-                            __store.dispatch(__getAction('set'), {
-                                field: key,
-                                name,
-                                value
-                            });
-                        }
-                    }
-                };
+            return resource !== null ?
+                this.$forms(formName)[ resource ] :
+                this.$forms(formName);
+        };
 
-                return state;
+        Vue.$forms = __forms;
+    },
+    storeRegisterer(store) {
+        __store = store;
+
+        store.registerModule(__namespace(), {
+            namespaced: true,
+            state: {
+                data: {},
+                errors: {},
+                responses: {}
             },
-            {}
-        )
-    });
-}
+            mutations: {
+                SET_DATA: (state, { name, data }) => {
+                    Vue.set(state.data, name, data);
+                },
 
-function __getValue(name, key) {
-    let value = __getEdited(name, key);
+                REGISTER: (state, { name }) => {
+                    if (__models.hasOwnProperty(name)) {
+                        return false;
+                    }
 
-    if (value === null) {
-        return __getDefault(name, key);
+                    Vue.set(state.data, name, {});
+
+                    __models[ name ] = __createModel(name);
+                },
+
+                RESET: (state, name) => {
+                    Vue.delete(state.data, name);
+                    Vue.delete(state.errors, name);
+                },
+
+                FILL_ERRORS: (state, { name, errors }) => {
+                    Vue.set(state.errors, name, errors);
+                },
+
+                CLEAR_ERRORS: (state, name) => {
+                    Vue.delete(state.errors, name);
+                },
+
+                SET_RESPONSE: (state, { name, data }) => {
+                    Vue.set(state.responses, name, data);
+                }
+            },
+            actions: {
+                register: ({ commit }, payload) => {
+                    commit('REGISTER', payload);
+                },
+
+                setData: ({ commit }, payload) => {
+                    commit('SET_DATA', payload);
+                },
+
+                reset: ({ commit }, name) => {
+                    commit('RESET', name);
+                },
+
+                fillErrors: ({ commit }, { name, errors }) => {
+                    commit('FILL_ERRORS', { name, errors });
+                },
+
+                clearErrors: ({ commit }, name) => {
+                    commit('CLEAR_ERRORS', name);
+                },
+
+                setResponse: ({ commit }, payload) => {
+                    commit('SET_RESPONSE', payload);
+                }
+            }
+        });
+    },
+    preload(forms) {
+        if (_.isEmpty(forms)) {
+            return;
+        }
+
+        _.each(forms, ({ data }, name) => {
+            __store.dispatch(
+                __action('register'),
+                { name }
+            );
+
+            __store.dispatch(
+                __action('setData'),
+                { name, data }
+            );
+        });
     }
-
-    return value;
-}
-
-function __applyFilters(value, filters, oldValue) {
-    if (filters.length === 0) {
-        return value;
-    }
-
-    if (filters.length === 1) {
-        return __applyFilter(value, filters[ 0 ], oldValue);
-    }
-
-    const _filters = [ ...filters ];
-    const first = _filters.splice(0, 1)[ 0 ];
-
-    return _filters.reduce((carry, filter) => {
-        return __applyFilter(carry, filter, oldValue);
-    }, __applyFilter(value, first, oldValue));
-}
-
-function __applyFilter(value, filter, oldValue) {
-    if (_isFunction(filter)) {
-        return filter(value, oldValue);
-    } else if (_isString(filter)) {
-        return __getRegisteredFilter(filter)(value, oldValue);
-    }
-
-    throw new Error('Filter must bee registerd or function');
-}
-
-function __getRegisteredFilter(name) {
-    if (!__filters.hasOwnProperty(name)) {
-        throw Error(`Filter [${name}] not registered`);
-    }
-
-    return __filters[ name ];
-}
+};

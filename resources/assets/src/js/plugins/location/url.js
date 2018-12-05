@@ -1,32 +1,31 @@
-import _isArray from 'lodash/isArray';
-import _isObject from 'lodash/isObject';
-import _reduce from 'lodash/reduce';
-import _filter from 'lodash/filter';
+import { isArray, isObject, reduce, filter } from 'lodash';
+import qs from 'qs';
 
 /**
- * @param string url
+ * @param string uri
  * @param string|number|Array|Object params
  * @return string
  * @throws Error
  */
-export default (url, params) => {
-    const placeholders = url
+export default (uri, params, query) => {
+    const placeholders = uri
         .split('/')
         .filter((param) => /\{.*\}/.test(param))
         .map((param) => param.replace('{', '').replace('}', ''))
     ;
 
-    if (_isArray(params)) {
-        return bindArray(url, placeholders, params);
-    } else if (_isObject(params)) {
-        return bindObject(url, placeholders, params);
+    let url;
+
+    if (isArray(params)) {
+        url = bindArray(uri, placeholders, params);
+    } else if (isObject(params)) {
+        url = bindObject(uri, placeholders, params);
     } else {
-        return bindString(url, placeholders, params);
+        url = bindString(uri, placeholders, params);
     }
 
-    throw new Error('Invalid parameters');
-}
-
+    return query ? `${url}?${qs.stringify(query)}` : url;
+};
 
 /**
  * @param string url
@@ -34,7 +33,7 @@ export default (url, params) => {
  * @param string[] params
  */
 function bindArray(url, placeholders, params) {
-    const requiredPlaceholders = _filter(
+    const requiredPlaceholders = filter(
         placeholders,
         (value) => value[value.length - 1] !== '?'
     );
@@ -43,7 +42,7 @@ function bindArray(url, placeholders, params) {
         throw new Error('Missed required parameters');
     }
 
-    return _reduce(placeholders, (state, placeholder, index) => {
+    return reduce(placeholders, (state, placeholder, index) => {
         if (!params[index]
             && requiredPlaceholders.indexOf(placeholder) === -1) {
             return state.replace(`/{${placeholder}}`, '');
@@ -59,7 +58,7 @@ function bindArray(url, placeholders, params) {
  * @param string[] params
  */
 function bindObject(url, placeholders, params) {
-    return _reduce(placeholders, (state, placeholder) => {
+    return reduce(placeholders, (state, placeholder) => {
         if (!params.hasOwnProperty(placeholder)) {
             throw new Error(`Missed required parameter [${placeholder}]`);
         }

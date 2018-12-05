@@ -1,78 +1,97 @@
-import _camelCase from 'lodash/camelCase';
-import _get from 'lodash/get';
-import _has from 'lodash/has';
-import _some from 'lodash/some';
-import _reduce from 'lodash/reduce';
-import _isArray from 'lodash/isArray';
-import _isFunction from 'lodash/isFunction';
-import _isString from 'lodash/isString';
+import _ from 'lodash';
 
 let __Vue = null;
 let __store = null;
 let __subscribers = [];
 
 export const taskManager = {
-    run(name, promise, params = {}) {
-        __store.dispatch('taskManager/run', {
-            name,
-            promise,
-            params
+    run(name, promise, params) {
+        let names = _.flattenDeep([ name ]);
+
+        let action, payload;
+
+        if (Promise.resolve(promise) === promise) {
+            action = 'run';
+            payload = {
+                promise,
+                params
+            };
+        } else {
+            action = 'runSync';
+            payload = {
+                params: promise
+            };
+        }
+
+        names.forEach(name => {
+            __store.dispatch(`taskManager/${action}`, {
+                name,
+
+                ...payload
+            });
         });
 
         return promise;
     },
+
     status(name, withDescendants = false) {
         const activeProcesses = __store.state.taskManager.processes || {};
 
         if (!withDescendants) {
-            return _has(activeProcesses, name);
+            return _.has(activeProcesses, name);
         }
 
-        return _some(activeProcesses, (process) => {
+        return _.some(activeProcesses, (process) => {
             return process.name === name
-                || process.name.indexOf(`${name}.`) !== -1;
+                || process.name.indexOf(`${name}.`) !== -1
+                || process.name.indexOf(`${name}@`) !== -1;
         });
     },
+
     subscribe(name, callback) {
-        if (!_has(__subscribers, name)) {
+        if (!_.has(__subscribers, name)) {
             __subscribers[ name ] = [];
         }
 
-        __subscribers[ name ].push(callback);
+        const index = __subscribers[ name ].length;
+
+        __subscribers[ name ][ __subscribers[ name ].length ] = callback;
+
+        return () => __subscribers.splice(index, 1);
     }
 };
 
 export const mapStatuses = (names) => {
     let data = names;
 
-    if (!_isArray(names)) {
+    if (!_.isArray(names)) {
         throw new Error('Statuses must be array');
     }
 
-    return _reduce(
+    return _.reduce(
         data,
         (carry, data) => {
             let result = data;
 
-            if (_isString(data)) {
+            if (_.isString(data)) {
                 result = {
                     name: data,
-                    nested: false
+                    deep: false
                 };
             }
 
-            carry[ _camelCase('ps.' + result.name) ] = function () {
+            carry[ _.camelCase('ps.' + result.name) ] = function () {
                 let process = result.name;
 
-                if (_has(result, 'process')) {
-                    process = _isFunction(result.process) ?
+                if (_.has(result, 'process')) {
+                    process = _.isFunction(result.process) ?
                         result.process.bind(this)() :
                         result.process;
                 }
 
                 return this.$taskManager.status(
                     process,
-                    !!result.nested
+                    !!result.deep
                 );
             };
 
@@ -85,7 +104,7 @@ export const mapStatuses = (names) => {
 const __fire = (name, event, data) => {
     let subscribers;
 
-    if (_isArray(__subscribers[ name ])) {
+    if (_.isArray(__subscribers[ name ])) {
         subscribers = __subscribers[ name ];
     }
 
@@ -125,7 +144,7 @@ export default {
                     __fire(
                         name,
                         'done',
-                        _get(state.processes, `${name}.data`)
+                        _.get(state.processes, `${name}.data`)
                     );
 
                     __Vue.delete(state.processes, name);
@@ -152,7 +171,16 @@ export default {
                     }
 
                     return promise;
-                }
+                },
+
+                runSync: ({ commit }, { name, params = {} }) => {
+                    commit('create', {
+                        name,
+                        data: params.data || {}
+                    });
+                },
+
+                kill: ({ commit }, name) => commit('kill', name)
             }
         });
     }

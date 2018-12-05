@@ -6,7 +6,7 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const CleanupPlugin = require('./plugins/cleanup');
 
-const manifestReplacer = function (key, value) {
+const manifestReplacer = ({ key, value }) => {
     let finalKey = key;
     let finalValue = value;
 
@@ -48,7 +48,5 @@ webpackConfig.plugins.push(
         publicPath: ''
     }),
 );
-
-webpackConfig.resolve.alias.vue = path.resolve('../node_modules/vue/dist/vue.js');
 
 module.exports = webpackConfig;

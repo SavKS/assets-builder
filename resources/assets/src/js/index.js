@@ -1,25 +1,32 @@
+import 'regenerator-runtime/runtime';
+
+import './static';
+
 import Vue from 'vue';
-import _get from 'lodash/get';
+import { get } from 'lodash';
 
 import '@store';
 
 import I18n from '@plugins/i18n';
 import VueForm from '@plugins/forms';
 import TaskManager from '@plugins/taskManager';
+import './polyfills/closest';
 
 import { http, install as HelpersInstaller } from '@helpers';
 
-import VSvgImage from '@components/VSvgImage';
+import VSvg from '@components/VSvg';
+import VField from '@components/VField';
 
-Vue.component('v-svg-image', VSvgImage);
+Vue.component('v-svg', VSvg);
+Vue.component('v-field', VField);
 
 VueForm.config({
     httpClient: http
 });
 
 I18n.config({
-    currentLanguage: _get(window, 'App.currentLanguage', 'en'),
-    dictionary: _get(window, '__vars.store.i18n', {})
+    currentLanguage: get(window, 'App.currentLanguage', 'en'),
+    dictionary: get(window, '__preload.stores.i18n', {})
 });
 
 Vue.use(HelpersInstaller);
@@ -28,11 +35,8 @@ Vue.use(VueForm);
 Vue.use(TaskManager);
 
 VueForm.preload(
-    _get(window, '__vars.forms', {})
+    get(window, '__preload.forms', {})
 );
-
-require('popper.js');
-require('bootstrap');
 
 const files = require.context('./modules', true, /\.\/\w+([\_\-]+\w+)*\/index\.js$/);
 

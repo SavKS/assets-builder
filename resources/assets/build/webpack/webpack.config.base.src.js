@@ -21,7 +21,8 @@ webpackConfig.devtool = 'eval';
 webpackConfig.plugins.push(
     new webpack.DefinePlugin({
         'process.env': {
-            NODE_ENV: '"develop"'
+            NODE_ENV: '"develop"',
+            BUILD_MODE: `"${process.env.BUILD_MODE}"`
         }
     })
 );
@@ -29,7 +30,5 @@ webpackConfig.plugins.push(
 webpackConfig.plugins.push(
     new CleanupPlugin
 );
-
-webpackConfig.resolve.alias.vue = path.resolve('../node_modules/vue/dist/vue.js');
 
 module.exports = webpackConfig;

@@ -1,7 +1,5 @@
 import Vue from 'vue';
-import _each from 'lodash/each';
-import _clone from 'lodash/clone';
-import _flattenDeep from 'lodash/flattenDeep';
+import { each, clone, flattenDeep } from 'lodash';
 
 export default function (selector, lazyComponents, callback) {
     let targets;
@@ -11,7 +9,7 @@ export default function (selector, lazyComponents, callback) {
     }
 
     Promise.all(
-        _flattenDeep([ lazyComponents ]).map(
+        flattenDeep([ lazyComponents ]).map(
             lazyComponent => lazyComponent()
         )
     ).then(components => {
@@ -19,8 +17,8 @@ export default function (selector, lazyComponents, callback) {
             ...components.map(c => c.default)
         );
 
-        _each(targets, el => {
-            (new Vue(_clone(component))).$mount(el);
+        each(targets, el => {
+            (new Vue(clone(component))).$mount(el);
         });
     });
 };
