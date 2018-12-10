@@ -55,8 +55,8 @@ module.exports = (
         }
 
         const hashedUri = outputRelativeFilePath.replace(
-            srcPathInfo.name,
-            `${srcPathInfo.name}.${hash}`
+            `${srcPathInfo.name}${srcPathInfo.ext}`,
+            `${srcPathInfo.name}.${hash}${srcPathInfo.ext}`
         );
 
         return hashedUri.replace(new RegExp('\\\\', 'g'), '/');
