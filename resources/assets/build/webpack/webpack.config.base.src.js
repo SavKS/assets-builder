@@ -7,7 +7,6 @@ const CleanupPlugin = require('./plugins/cleanup');
 webpackConfig.output = {
     ...webpackConfig.output,
 
-    path: path.resolve(__dirname, '../../../../static/src/js'),
     filename: '[name].js',
     chunkFilename: '[name].js'
 };

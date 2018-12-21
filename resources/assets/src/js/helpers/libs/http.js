@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import qs from 'qs';
 import router from '@routes';
 
@@ -27,16 +26,8 @@ http.interceptors.response.use((response) => {
 
     switch (error.response.status) {
         case 301:
+        case 302:
             document.location.href = error.response.data.redirect_url;
-            break;
-
-        case 401:
-            const queryString = qs.stringify({
-                back_url: document.location.href,
-                ...query
-            });
-
-            document.location.href = router.route('page.auth.login');
             break;
     }
 

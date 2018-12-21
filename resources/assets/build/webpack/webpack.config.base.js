@@ -11,8 +11,9 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const externals = require("../../externals");
+const config = require('../../config');
 
-const config = {
+const webpackConfig = {
     entry: {
         app: lodash.concat(
             "../src/js/index.js",
@@ -20,6 +21,7 @@ const config = {
         )
     },
     output: {
+        path: config.current().scripts.path.output,
         publicPath: "PUBLIC_PATH"
     },
     module: {
@@ -87,9 +89,9 @@ const config = {
 };
 
 if (process.env.INSPECT_JS) {
-    config.plugins.push(
+    webpackConfig.plugins.push(
         new BundleAnalyzerPlugin
     );
 }
 
-module.exports = config;
+module.exports = webpackConfig;

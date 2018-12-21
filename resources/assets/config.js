@@ -1,7 +1,7 @@
 const path = require('path');
 
 const srcPath = path.resolve(__dirname, './src');
-const outputPath = path.resolve(__dirname, '../../static');
+const outputPath = path.resolve(__dirname, '../../static/build');
 
 const fonts = {
     mask: /[\/|\\]fonts[\/|\\].*\.(ttf|woff|woff2|eot|otf|svg)/,

@@ -1,5 +1,4 @@
 const webpackConfig = require('./webpack.config.base');
-const path = require('path');
 const lodash = require('lodash');
 
 const WebpackAssetsManifest = require('webpack-assets-manifest');
@@ -27,7 +26,6 @@ const manifestReplacer = ({ key, value }) => {
 webpackConfig.output = {
     ...webpackConfig.output,
 
-    path: path.resolve(__dirname, '../../../../static/pub/js'),
     filename: '[name].[chunkhash:10].js',
     chunkFilename: '[name].[chunkhash:10].js'
 };
