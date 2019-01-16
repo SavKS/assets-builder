@@ -87,7 +87,7 @@ const browserSync = {
         open: true,
         notify: true,
         server: {
-            baseDir: outputPath,
+            baseDir: path.resolve(outputPath, '../'),
             directory: true
         }
     }
