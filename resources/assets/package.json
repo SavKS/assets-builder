@@ -9,9 +9,15 @@
         "pub-dev": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js pub",
         "pub-watch": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js pub-watch",
         "pub-manifest": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js build-manifest",
+        "pub-prod@copy-static": "cross-env BUILD_MODE=pub NODE_ENV=production gulp -f ./build/gulpfile.js copy-static",
+        "pub-dev@copy-static": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js copy-static",
+
         "src-prod": "cross-env BUILD_MODE=src NODE_ENV=production gulp -f ./build/gulpfile.js src",
         "src-dev": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js src",
         "src-watch": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js src-watch",
+        "src-prod@copy-static": "cross-env BUILD_MODE=src NODE_ENV=production gulp -f ./build/gulpfile.js copy-static",
+        "src-dev@copy-static": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js copy-static",
+
         "optimize-images": "gulp -f ./build/gulpfile.js optimize-images",
         "eslint-init": "npm -g i eslint vue-eslint-parser eslint-config-crockford babel-eslint eslint-plugin-vue"
     },
@@ -28,6 +34,7 @@
         "gulp-image": "^4.4.0",
         "htmlparser2": "^3.10.0",
         "iscroll": "^5.2.0",
+        "jquery": "^3.3.1",
         "lodash": "^4.17.11",
         "md5": "^2.2.1",
         "nouislider": "^12.1.0",

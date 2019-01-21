@@ -1,7 +1,5 @@
 import 'regenerator-runtime/runtime';
 
-import './static';
-
 import Vue from 'vue';
 import { get } from 'lodash';
 
