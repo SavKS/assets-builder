@@ -11,13 +11,11 @@
         "pub-manifest": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js build-manifest",
         "pub-prod@copy-static": "cross-env BUILD_MODE=pub NODE_ENV=production gulp -f ./build/gulpfile.js copy-static",
         "pub-dev@copy-static": "cross-env BUILD_MODE=pub NODE_ENV=develop gulp -f ./build/gulpfile.js copy-static",
-
         "src-prod": "cross-env BUILD_MODE=src NODE_ENV=production gulp -f ./build/gulpfile.js src",
         "src-dev": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js src",
         "src-watch": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js src-watch",
         "src-prod@copy-static": "cross-env BUILD_MODE=src NODE_ENV=production gulp -f ./build/gulpfile.js copy-static",
         "src-dev@copy-static": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js copy-static",
-
         "optimize-images": "gulp -f ./build/gulpfile.js optimize-images",
         "eslint-init": "npm -g i eslint vue-eslint-parser eslint-config-crockford babel-eslint eslint-plugin-vue"
     },
@@ -98,6 +96,7 @@
         "gulp-sourcemaps": "^2.6.4",
         "gulp-twig": "^1.2.0",
         "gulp-watch": "^5.0.1",
+        "html-es6-template-loader": "^1.0.5",
         "md5-file": "^4.0.0",
         "mkdirp": "^0.5.1",
         "node-sass": "^4.10.0",

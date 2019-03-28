@@ -49,6 +49,10 @@ const webpackConfig = {
             {
                 test: /\.svg$/,
                 loader: 'svg-loader'
+            },
+            {
+                test: /\.tpl$/,
+                use: ['html-es6-template-loader']
             }
         ]
     },
