@@ -59,7 +59,10 @@ const envPub = {
         },
         manifest: path.resolve(outputPath, './pub/js/manifest.json')
     },
-    staticFilesManifest: path.resolve(outputPath, './pub/vendor/manifest-static.json')
+    staticFiles: {
+        basePath: path.resolve(outputPath, './pub/vendor'),
+        manifest: path.resolve(outputPath, './pub/vendor/manifest-static.json')
+    }
 };
 
 const envSrc = {
@@ -75,7 +78,10 @@ const envSrc = {
             output: path.resolve(outputPath, './src/js')
         }
     },
-    staticFilesManifest: path.resolve(outputPath, './src/vendor/manifest-static.json')
+    staticFiles: {
+        basePath: path.resolve(outputPath, './src/vendor'),
+        manifest: path.resolve(outputPath, './src/vendor/manifest-static.json')
+    }
 };
 
 const current = () => process.env.BUILD_MODE === 'pub' ? envPub : envSrc;
@@ -115,7 +121,7 @@ module.exports = {
         files: [
             current().styles.manifest,
             current().scripts.manifest,
-            current().staticFilesManifest,
+            current().staticFiles.manifest,
             layouts.manifest
         ]
     },

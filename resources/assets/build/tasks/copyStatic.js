@@ -90,7 +90,7 @@ module.exports = () => () => {
     );
 
     fs.writeFileSync(
-        config.current().staticFilesManifest,
+        config.current().staticFiles.manifest,
         JSON.stringify(manifest, null, 4)
     );
 
