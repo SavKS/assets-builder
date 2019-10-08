@@ -69,7 +69,9 @@ const webpackConfig = {
     plugins: [
         new ProgressPlugin,
         new FriendlyErrors,
-        new WebpackNotifierPlugin,
+        new WebpackNotifierPlugin({
+            alwaysNotify: true
+        }),
         new DynamicPublicPathPlugin({
             externalGlobal: 'window.App.cdn',
             chunkName: 'app'

@@ -1,7 +1,7 @@
 const path = require('path');
-const cheerio = require('cheerio');
 const copyAsset = require('../utils/copyAsset');
 const htmlParser = require('htmlparser2');
+const srcsetParser = require('srcset');
 
 module.exports = (files, options = {}) => {
     const manifest = {};
@@ -22,6 +22,37 @@ module.exports = (files, options = {}) => {
 
                     if (isValidImageSrc(src)) {
                         replacements[ src ] = src;
+                    }
+                } else if (attributes.hasOwnProperty('twig-image-src')) {
+                    const attributeNames = attributes[ 'twig-image-src' ]
+                        .split('|')
+                        .map(
+                            name => name.trim()
+                        );
+
+                    for (let attributeName of attributeNames) {
+                        const src = attributes[ attributeName ];
+
+                        if (isValidImageSrc(src)) {
+                            replacements[ src ] = src;
+                        }
+                    }
+                } else if (attributes.hasOwnProperty('twig-image-srcset')) {
+                    const attributeNames = attributes[ 'twig-image-srcset' ]
+                        .split('|')
+                        .map(
+                            name => name.trim()
+                        );
+
+                    for (let attributeName of attributeNames) {
+                        const srcset = attributes[ attributeName ];
+                        const parsed = srcsetParser.parse(srcset);
+
+                        for (let item of parsed) {
+                            if (isValidImageSrc(item.url)) {
+                                replacements[ item.url ] = item.url;
+                            }
+                        }
                     }
                 }
             },
@@ -83,7 +114,15 @@ module.exports = (files, options = {}) => {
                         newPath
                     )
                     .replace(
-                        /\s?(twig\-image\-hash=\"\w+\")/g,
+                        /\s?(twig\-image\-hash=\"([-|_]*\w*)+\")/g,
+                        ''
+                    )
+                    .replace(
+                        /\s?(twig\-image\-src=\"([-|_]*\w*)+\")/g,
+                        ''
+                    )
+                    .replace(
+                        /\s?(twig\-image\-srcset\=\"([-|_]*\w*)+\")/g,
                         ''
                     );
             }
