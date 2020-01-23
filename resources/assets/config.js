@@ -58,6 +58,10 @@ const envPub = {
             output: path.resolve(outputPath, './pub/js')
         },
         manifest: path.resolve(outputPath, './pub/js/manifest.json')
+    },
+    staticFiles: {
+        basePath: path.resolve(outputPath, './pub/vendor'),
+        manifest: path.resolve(outputPath, './pub/vendor/manifest-static.json')
     }
 };
 
@@ -73,6 +77,10 @@ const envSrc = {
         path: {
             output: path.resolve(outputPath, './src/js')
         }
+    },
+    staticFiles: {
+        basePath: path.resolve(outputPath, './src/vendor'),
+        manifest: path.resolve(outputPath, './src/vendor/manifest-static.json')
     }
 };
 
@@ -87,7 +95,7 @@ const browserSync = {
         open: true,
         notify: true,
         server: {
-            baseDir: outputPath,
+            baseDir: path.resolve(outputPath, '../'),
             directory: true
         }
     }
@@ -113,6 +121,7 @@ module.exports = {
         files: [
             current().styles.manifest,
             current().scripts.manifest,
+            current().staticFiles.manifest,
             layouts.manifest
         ]
     },

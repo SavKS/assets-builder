@@ -60,7 +60,7 @@ const build = () => {
     });
 
     if (!fs.existsSync(config.layouts.path.output)) {
-        mkdirp(config.layouts.path.output);
+        mkdirp.sync(config.layouts.path.output);
     }
 
     result.files.forEach(data => {

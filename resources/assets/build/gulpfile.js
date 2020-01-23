@@ -9,6 +9,7 @@ const staticServer = require('./tasks/staticServer');
 const bundler = require('./tasks/bundler');
 const cleaner = require('./tasks/cleaner');
 const optimizeImages = require('./tasks/optimizeImages');
+const copyStatic = require('./tasks/copyStatic');
 
 const manifestBuilder = require('./utils/manifestBuilder');
 
@@ -33,6 +34,11 @@ gulp.task(
 gulp.task(
     'optimize-images',
     optimizeImages()
+);
+
+gulp.task(
+    'copy-static',
+    copyStatic()
 );
 
 gulp.task(
@@ -99,6 +105,7 @@ gulp.task(
             'clean:images',
             'clean:fonts',
             '@twig:build',
+            'copy-static',
             'scss',
             'webpack',
             'build-manifest',
@@ -114,6 +121,7 @@ gulp.task(
         'clean:images',
         'clean:fonts',
         '@twig:build',
+        'copy-static',
         gulp.parallel([
             'scss:watch',
             'webpack:watch',
@@ -135,6 +143,7 @@ gulp.task(
             'clean:fonts',
             'scss',
             'twig',
+            'copy-static',
             'webpack',
 
             process.env.NODE_ENV === 'production' ? 'optimize-images' : null
@@ -147,6 +156,7 @@ gulp.task(
     gulp.series([
         'clean:images',
         'clean:fonts',
+        'copy-static',
         gulp.parallel([
             'twig:watch',
             'scss:watch',
