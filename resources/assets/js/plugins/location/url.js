@@ -2,32 +2,6 @@ import { isArray, isObject, reduce, filter } from 'lodash';
 import qs from 'qs';
 
 /**
- * @param string uri
- * @param string|number|Array|Object params
- * @return string
- * @throws Error
- */
-export default (uri, params, query) => {
-    const placeholders = uri
-        .split('/')
-        .filter((param) => /\{.*\}/.test(param))
-        .map((param) => param.replace('{', '').replace('}', ''))
-    ;
-
-    let url;
-
-    if (isArray(params)) {
-        url = bindArray(uri, placeholders, params);
-    } else if (isObject(params)) {
-        url = bindObject(uri, placeholders, params);
-    } else {
-        url = bindString(uri, placeholders, params);
-    }
-
-    return query ? `${url}?${qs.stringify(query)}` : url;
-};
-
-/**
  * @param string url
  * @param string[] placeholders
  * @param string[] params
@@ -79,3 +53,29 @@ function bindString(url, placeholders, param) {
 
     return url.replace(`{${placeholders[0]}}`, param);
 }
+
+/**
+ * @param string uri
+ * @param string|number|Array|Object params
+ * @return string
+ * @throws Error
+ */
+export default (uri, params, query) => {
+    const placeholders = uri
+        .split('/')
+        .filter((param) => /\{.*\}/.test(param))
+        .map((param) => param.replace('{', '').replace('}', ''))
+    ;
+
+    let url;
+
+    if (isArray(params)) {
+        url = bindArray(uri, placeholders, params);
+    } else if (isObject(params)) {
+        url = bindObject(uri, placeholders, params);
+    } else {
+        url = bindString(uri, placeholders, params);
+    }
+
+    return query ? `${url}?${qs.stringify(query)}` : url;
+};

@@ -16,8 +16,8 @@ const config = require('../../config');
 const webpackConfig = {
     entry: {
         app: lodash.concat(
-            "../src/js/index.js",
-            glob.sync("./src/js/modules/*/index.js")
+            "../js/index.js",
+            glob.sync("./js/modules/*/index.js")
         )
     },
     output: {
@@ -73,16 +73,16 @@ const webpackConfig = {
         modules: [ "node_modules" ],
         alias: {
             "@base": path.resolve(__dirname, "../../../../"),
-            "@src": path.resolve(__dirname, "../../src"),
-            "@store": path.resolve(__dirname, "../../src/js/store"),
-            "@plugins": path.resolve(__dirname, "../../src/js/plugins"),
-            "@components": path.resolve(__dirname, "../../src/js/components"),
-            "@constants": path.resolve(__dirname, "../../src/js/constants"),
-            "@routes": path.resolve(__dirname, "../../src/js/routes"),
-            "@helpers": path.resolve(__dirname, "../../src/js/helpers"),
-            "@modules": path.resolve(__dirname, "../../src/js/modules"),
-            "@mixins": path.resolve(__dirname, "../../src/js/mixins"),
-            "@vendor": path.resolve(__dirname, "../../src/js/vendor"),
+            "@src": path.resolve(__dirname, "../.."),
+            "@store": path.resolve(__dirname, "../../js/store"),
+            "@plugins": path.resolve(__dirname, "../../js/plugins"),
+            "@components": path.resolve(__dirname, "../../js/components"),
+            "@constants": path.resolve(__dirname, "../../js/constants"),
+            "@routes": path.resolve(__dirname, "../../js/routes"),
+            "@helpers": path.resolve(__dirname, "../../js/helpers"),
+            "@modules": path.resolve(__dirname, "../../js/modules"),
+            "@mixins": path.resolve(__dirname, "../../js/mixins"),
+            "@vendor": path.resolve(__dirname, "../../js/vendor"),
             "@svg": path.resolve(__dirname, "../../static/src/svg")
         }
     }

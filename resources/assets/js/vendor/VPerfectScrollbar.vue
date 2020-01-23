@@ -1,7 +1,8 @@
 <template>
     <div
         class="ps-container"
-        @mouseover.once="update">
+        @mouseover.once="update"
+    >
         <slot />
     </div>
 </template>
@@ -93,9 +94,3 @@
         }
     };
 </script>
-
-<style scoped>
-    .ps-container {
-        position: relative;
-    }
-</style>

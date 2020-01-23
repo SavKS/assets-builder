@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "file-loader": "^1.1.11",
-    "mkdirp": "^0.5.1",
-    "node-sass": "^4.9.0",
-    "resolve-url-loader": "^2.3.0",
-    "url-loader": "^1.0.1"
-  }
-}

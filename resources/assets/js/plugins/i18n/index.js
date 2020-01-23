@@ -41,10 +41,10 @@ export default {
             },
             actions: {
                 changeCurrentLanguage: ({ commit }, Locale) => {
-                    commit('setCurrentLocale', Locale)
+                    commit('setCurrentLocale', Locale);
                 }
             }
-        })
+        });
     },
     config(config = {}) {
         __config = merge({}, __config, config);

@@ -1,5 +1,4 @@
 const path = require('path');
-const cheerio = require('cheerio');
 const copyAsset = require('../utils/copyAsset');
 const htmlParser = require('htmlparser2');
 

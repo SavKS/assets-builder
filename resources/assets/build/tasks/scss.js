@@ -31,10 +31,13 @@ const build = () => () => {
         )
         .pipe(
             postcss(postCssPlugins)
-        )
-        .pipe(
+        );
+
+    if (process.env.NODE_ENV !== 'production') {
+        stream.pipe(
             sourceMaps.write()
         );
+    }
 
     if (process.env.BUILD_MODE === 'pub') {
         return stream

@@ -1,6 +1,6 @@
 const path = require('path');
 
-const srcPath = path.resolve(__dirname, './src');
+const srcPath = path.resolve(__dirname, './');
 const outputPath = path.resolve(__dirname, '../../static/build');
 
 const fonts = {
@@ -21,22 +21,22 @@ const images = {
 };
 
 const styles = {
-    entries: [ '../src/scss/app.scss' ],
+    entries: [ '../scss/app.scss' ],
     watch: [
-        '../src/scss/*.scss',
-        '../src/scss/**/*.scss'
+        '../scss/*.scss',
+        '../scss/**/*.scss'
     ]
 };
 
 const layouts = {
-    entries: [ '../src/layouts/*.twig' ],
+    entries: [ '../layouts/*.twig' ],
     path: {
         src: path.resolve(srcPath, './layouts'),
         output: path.resolve(outputPath, './layouts')
     },
     watch: [
-        '../src/layouts/*.twig',
-        '../src/layouts/**/*.twig'
+        '../layouts/*.twig',
+        '../layouts/**/*.twig'
     ],
     datafile: path.resolve(srcPath, './layouts/datafile.json'),
     serverFiles: path.resolve(srcPath, './server/*.json'),
@@ -72,7 +72,7 @@ const envSrc = {
     scripts: {
         path: {
             output: path.resolve(outputPath, './src/js')
-        },
+        }
     }
 };
 
