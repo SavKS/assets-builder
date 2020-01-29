@@ -17,13 +17,15 @@ module.exports = (files, options = {}) => {
                     && isValidImageSrc(attributes.src)
                 ) {
                     replacements[ attributes.src ] = attributes.src;
-                } else if (attributes.hasOwnProperty('twig-image-hash')) {
+                }
+                if (attributes.hasOwnProperty('twig-image-hash')) {
                     const src = attributes[ attributes[ 'twig-image-hash' ] ];
 
                     if (isValidImageSrc(src)) {
                         replacements[ src ] = src;
                     }
-                } else if (attributes.hasOwnProperty('twig-image-src')) {
+                }
+                if (attributes.hasOwnProperty('twig-image-src')) {
                     const attributeNames = attributes[ 'twig-image-src' ]
                         .split('|')
                         .map(
@@ -37,7 +39,8 @@ module.exports = (files, options = {}) => {
                             replacements[ src ] = src;
                         }
                     }
-                } else if (attributes.hasOwnProperty('twig-image-srcset')) {
+                }
+                if (attributes.hasOwnProperty('twig-image-srcset')) {
                     const attributeNames = attributes[ 'twig-image-srcset' ]
                         .split('|')
                         .map(
