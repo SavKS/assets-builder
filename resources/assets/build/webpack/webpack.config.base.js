@@ -58,7 +58,7 @@ const webpackConfig = {
                 test: /\.(png|jpg|gif)$/,
                 loader: 'file-loader',
                 options: {
-                    publicPath: `/build/${process.env.BUILD_MODE}/vendor`,
+                    publicPath: `/build/${process.env.BUILD_MODE}/vendor/img`,
                     outputPath: `${path.relative(__dirname, config.current().staticFiles.basePath)}/img`,
                     name: '[name].[hash:10].[ext]'
                 }
