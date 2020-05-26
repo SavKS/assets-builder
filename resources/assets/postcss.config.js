@@ -3,7 +3,7 @@ const copyAsset = require('./build/utils/copyAsset');
 
 let plugins = [
     require('autoprefixer')({
-        browsers: [ 'last 2 versions' ]
+        grid: 'no-autoplace'
     }),
     require('postcss-url')([
         {
