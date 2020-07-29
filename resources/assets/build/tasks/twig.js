@@ -76,6 +76,8 @@ const build = () => {
         config.layouts.manifest,
         JSON.stringify(result.manifest)
     );
+    
+    browserSync.reload();
 };
 
 gulp.task('@twig:build', () => {
