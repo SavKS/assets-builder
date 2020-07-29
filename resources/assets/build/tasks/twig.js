@@ -10,6 +10,7 @@ const htmlCopyImages = require('../utils/html-copy-images');
 const gutil = require('gulp-util');
 const File = gutil.File;
 const rext = require('replace-ext');
+const browserSync = require('../utils/browserSync');
 
 const twigConfig = require('../../twig.config');
 
