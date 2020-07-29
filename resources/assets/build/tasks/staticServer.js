@@ -6,10 +6,10 @@ const config = require('../../config');
 module.exports = () => () => {
     browserSync.init(config.browserSync.config);
 
-    gulp
+    /*gulp
         .watch(config.browserSync.watch)
         .on(
             'change',
             () => browserSync.reload()
-        );
+        );*/
 };
