@@ -98,7 +98,8 @@ const browserSync = {
             baseDir: path.resolve(outputPath, '../'),
             directory: true
         }
-    }
+    },
+    ghostMode: false
 };
 
 module.exports = {
