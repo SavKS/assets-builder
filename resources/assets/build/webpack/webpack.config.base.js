@@ -47,15 +47,11 @@ const webpackConfig = {
                 options: require('../../babel.config')
             },
             {
-                test: /\.svg$/,
-                loader: 'svg-loader'
-            },
-            {
                 test: /\.tpl$/,
                 use: [ 'html-es6-template-loader' ]
             },
             {
-                test: /\.(png|jpg|gif)$/,
+                test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
                     publicPath: `/build/${process.env.BUILD_MODE}/vendor/img`,
