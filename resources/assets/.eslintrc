@@ -21,6 +21,9 @@
         "no-continue": [
             0
         ],
+        "no-constant-condition": [
+            0
+        ],
         "array-bracket-spacing": [0],
         "indent": 0,
         "vue/html-indent": [

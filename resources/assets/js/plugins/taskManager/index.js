@@ -4,61 +4,83 @@ let __Vue = null;
 let __store = null;
 let __subscribers = [];
 
-export const taskManager = {
-    run(name, promise, params) {
-        let names = _.flattenDeep([ name ]);
+const run = (name, promise, params) => {
+    let names = _.flattenDeep([ name ]);
 
-        let action, payload;
+    let action, payload;
 
-        if (Promise.resolve(promise) === promise) {
-            action = 'run';
-            payload = {
-                promise,
-                params
-            };
-        } else {
-            action = 'runSync';
-            payload = {
-                params: promise
-            };
-        }
-
-        names.forEach(name => {
-            __store.dispatch(`taskManager/${action}`, {
-                name,
-
-                ...payload
-            });
-        });
-
-        return promise;
-    },
-
-    status(name, withDescendants = false) {
-        const activeProcesses = __store.state.taskManager.processes || {};
-
-        if (!withDescendants) {
-            return _.has(activeProcesses, name);
-        }
-
-        return _.some(activeProcesses, (process) => {
-            return process.name === name
-                || process.name.indexOf(`${name}.`) !== -1
-                || process.name.indexOf(`${name}@`) !== -1;
-        });
-    },
-
-    subscribe(name, callback) {
-        if (!_.has(__subscribers, name)) {
-            __subscribers[ name ] = [];
-        }
-
-        const index = __subscribers[ name ].length;
-
-        __subscribers[ name ][ __subscribers[ name ].length ] = callback;
-
-        return () => __subscribers.splice(index, 1);
+    if (Promise.resolve(promise) === promise) {
+        action = 'run';
+        payload = {
+            promise,
+            params
+        };
+    } else {
+        action = 'runSync';
+        payload = {
+            params: promise
+        };
     }
+
+    names.forEach(name => {
+        __store.dispatch(`taskManager/${action}`, {
+            name,
+
+            ...payload
+        });
+    });
+
+    return promise;
+};
+
+const kill = (name) => __store.dispatch('taskManager/kill', name);
+
+const status = (name, withDescendants = false) => {
+    if (_.isArray(name)) {
+        return name.some(
+            item => status(item, withDescendants)
+        );
+    }
+
+    const activeProcesses = __store.state.taskManager.processes || {};
+
+    if (!withDescendants) {
+        return _.has(activeProcesses, name);
+    }
+
+    return _.some(activeProcesses, (process) => {
+        return process.name === name
+            || process.name.indexOf(`${name}.`) !== -1
+            || process.name.indexOf(`${name}@`) !== -1;
+    });
+};
+
+const subscribe = (name, callback) => {
+    if (!_.has(__subscribers, name)) {
+        __subscribers[ name ] = [];
+    }
+
+    const index = __subscribers[ name ].length;
+
+    __subscribers[ name ][ __subscribers[ name ].length ] = callback;
+
+    return () => __subscribers.splice(index, 1);
+};
+
+const map = parent => (name, withDescendants = false) => status(
+    name === '*' ? `${parent}.${name}` : parent,
+    withDescendants
+);
+
+const list = () => _.keys(__store.state.taskManager.processes);
+
+export const taskManager = {
+    run,
+    kill,
+    status,
+    subscribe,
+    map,
+    list
 };
 
 export const mapStatuses = (names) => {
@@ -85,14 +107,18 @@ export const mapStatuses = (names) => {
 
                 if (_.has(result, 'process')) {
                     process = _.isFunction(result.process) ?
-                        result.process.bind(this)() :
+                        result.process.bind(this)(this) :
                         result.process;
                 }
 
-                return this.$taskManager.status(
-                    process,
-                    !!result.deep
-                );
+                if (_.isArray(process)) {
+                    return _.some(
+                        process,
+                        name => this.$taskManager.status(name, !!result.deep)
+                    );
+                }
+
+                return this.$taskManager.status(process, !!result.deep);
             };
 
             return carry;
@@ -121,9 +147,9 @@ export default {
     install(Vue) {
         __Vue = Vue;
 
-        __Vue.prototype.$taskManager = taskManager;
+        __Vue.prototype.$taskManager = __Vue.$taskManager = taskManager;
     },
-    storeRegister(store) {
+    storeRegisterer(store) {
         __store = store;
 
         store.registerModule('taskManager', {
