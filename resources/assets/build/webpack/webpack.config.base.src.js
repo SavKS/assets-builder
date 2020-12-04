@@ -27,7 +27,7 @@ webpackConfig.plugins.push(
 );
 
 webpackConfig.plugins.push(
-    new CleanupPlugin
+    new CleanupPlugin()
 );
 
 module.exports = webpackConfig;

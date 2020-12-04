@@ -6,7 +6,7 @@ const glob = require('glob');
 const FriendlyErrors = require('friendly-errors-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const DynamicPublicPathPlugin = require('dynamic-public-path-webpack-plugin');
+const DynamicPublicPathPlugin = require('./plugins/dynamic-public-path-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -70,7 +70,7 @@ const webpackConfig = {
         }),
         new DynamicPublicPathPlugin({
             externalGlobal: 'window.App.cdn',
-            chunkName: 'app'
+            chunkName: 'app',
         }),
         new VueLoaderPlugin,
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
