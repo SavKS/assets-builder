@@ -14,7 +14,7 @@ const store = new Vuex.Store({
     plugins: [
         VueForm.storeRegisterer,
         I18n.storeRegister,
-        TaskManager.storeRegister
+        TaskManager.storeRegisterer
     ],
     mutations: {
         VUEX_DEEP_SET
