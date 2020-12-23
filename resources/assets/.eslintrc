@@ -24,7 +24,9 @@
         "no-constant-condition": [
             0
         ],
-        "array-bracket-spacing": [0],
+        "array-bracket-spacing": [
+            0
+        ],
         "indent": 0,
         "vue/html-indent": [
             "error",
@@ -33,7 +35,7 @@
         "vue/max-attributes-per-line": [
             2,
             {
-                "multiline" : {
+                "multiline": {
                     "allowFirstLine": false
                 }
             }
@@ -42,6 +44,14 @@
             2,
             {
                 "multiline": "always"
+            }
+        ],
+        "vue/v-slot-style": [
+            "error",
+            {
+                "atComponent": "shorthand",
+                "default": "shorthand",
+                "named": "shorthand"
             }
         ]
     },
