@@ -55,6 +55,7 @@
         "vue2-datepicker": "^3.3.0",
         "vuescroll": "^4.14.4",
         "vuex": "^3.1.1",
+        "wildcard": "^2.0.0",
         "wnumb": "^1.1.0",
         "wolfy87-eventemitter": "^5.2.8"
     },
