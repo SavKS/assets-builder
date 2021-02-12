@@ -31,28 +31,28 @@ function DynamicPublicPathPlugin(options) {
  *
  * @param {object} compiler - comes from webpack
  */
-DynamicPublicPathPlugin.prototype.apply = function(compiler) {
-    if(this.options && this.options.externalGlobal && this.options.chunkName) {
+DynamicPublicPathPlugin.prototype.apply = function (compiler) {
+    if (this.options && this.options.externalGlobal && this.options.chunkName) {
         compiler.hooks.afterEmit.tap('DynamicPublicPathPlugin', (compilation) => {
 
             this.compilation = compilation;
 
             const outputPath = compiler.options.output.path;
 
-            if(compilation.options.output && compilation.options.output.publicPath){
+            if (compilation.options.output && compilation.options.output.publicPath) {
                 this.publicPathStr = '"' + compilation.options.output.publicPath + '"';
-            }else{
+            } else {
                 this.err('output.publicPath must be defined in webpack config ' +
                     '(used only as placeholder, make it distinctive)');
                 return;
             }
 
-            const chunk = compilation.chunks.find((chunk)=>{
+            const chunk = compilation.chunks.find((chunk) => {
                 return chunk.name === this.options.chunkName;
             });
 
-            if(!chunk){
-                this.err('chunk "'+this.options.chunkName+'" does not exist.');
+            if (!chunk) {
+                this.err('chunk "' + this.options.chunkName + '" does not exist.');
                 return;
             }
 
@@ -61,11 +61,11 @@ DynamicPublicPathPlugin.prototype.apply = function(compiler) {
                 return file.match(/.*\.js$/);
             });
 
-            const filePath = path.resolve(`${outputPath}/compilation.getAsset(fileName).name`);
+            const filePath = path.resolve(`${outputPath}/${compilation.getAsset(fileName).name}`);
 
             this.doReplace(filePath);
         });
-    }else{
+    } else {
         this.err('params missing: \n[mandatory] externalGlobal - name of global var you want to use as publicPath.\n[mandatory] chunkName - name of chunk in which to look for publicPath references.');
     }
 };
@@ -75,7 +75,7 @@ DynamicPublicPathPlugin.prototype.apply = function(compiler) {
  *
  * @param {string} filePath
  */
-DynamicPublicPathPlugin.prototype.doReplace = function(filePath){
+DynamicPublicPathPlugin.prototype.doReplace = function (filePath) {
     this.log('attempting to modify: ' + filePath);
 
     // open file
@@ -83,7 +83,7 @@ DynamicPublicPathPlugin.prototype.doReplace = function(filePath){
         if (!err) {
             fs.readFile(filePath, 'utf8', (err, data) => {
                 if (err) {
-                    _log('fs read error (' + err + ')');
+                    this.log('fs read error (' + err + ')');
                     return;
                 }
 
@@ -97,7 +97,6 @@ DynamicPublicPathPlugin.prototype.doReplace = function(filePath){
                     } else {
                         this.log('replaced publicPath');
                     }
-
                 });
             });
         } else {
@@ -106,12 +105,12 @@ DynamicPublicPathPlugin.prototype.doReplace = function(filePath){
     });
 };
 
-DynamicPublicPathPlugin.prototype.log = function(msg) {
+DynamicPublicPathPlugin.prototype.log = function (msg) {
     //this.compilation.children.push('-------- Dynamic Public Path Plugin: '+msg);
 };
 
-DynamicPublicPathPlugin.prototype.err = function(msg) {
-    this.compilation.errors.push(new Error('-------- Dynamic Public Path Plugin: '+msg));
+DynamicPublicPathPlugin.prototype.err = function (msg) {
+    this.compilation.errors.push(new Error('-------- Dynamic Public Path Plugin: ' + msg));
 };
 
 
