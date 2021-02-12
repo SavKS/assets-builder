@@ -33,17 +33,6 @@ module.exports = {
             pub: 'lodash.[hash:10].js',
             src: 'lodash.js'
         }
-    },
-    jquery: {
-        type: 'js',
-        entry: {
-            production: path.resolve(__dirname, './node_modules/jquery/dist/jquery.min.js'),
-            develop: path.resolve(__dirname, './node_modules/jquery/dist/jquery.js')
-        },
-        name: {
-            pub: 'jquery.[hash:10].js',
-            src: 'jquery.js'
-        }
     }
 };
 

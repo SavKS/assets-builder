@@ -70,7 +70,7 @@ const webpackConfig = {
         }),
         new DynamicPublicPathPlugin({
             externalGlobal: 'window.App.cdn',
-            chunkName: 'app',
+            chunkName: 'app'
         }),
         new VueLoaderPlugin,
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
