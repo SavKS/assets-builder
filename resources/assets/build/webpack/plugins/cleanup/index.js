@@ -22,7 +22,7 @@ class CleanupPlugin {
 
             folders.push(outputPath);
 
-            const currentFiles = Object.keys(compilation.assets).map(name => path.join(outputPath, name));
+            const currentFiles = Object.keys(stats.compilation.assets).map(name => path.join(outputPath, name));
 
             const files = folders
                 .reduce((carry, fromPath) => carry.concat(
