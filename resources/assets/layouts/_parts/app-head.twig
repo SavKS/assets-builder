@@ -1,14 +1,14 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{{pageTitle}} | {{ brandName }}</title>
+    <title>{{ pageTitle|striptags }} | {{ brandName }}</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
     {# Favicon #}
     {# Path: "project-name/static.www/" #}
 
-    <link rel="stylesheet" href="{{ '../src/css/app.css' }}">
+    <link rel="stylesheet" href="../src/css/app.css">
 
     {# Modernizr #}
     <script src="../../vendor/modernizr.min.js"></script>

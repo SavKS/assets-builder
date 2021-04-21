@@ -1,0 +1,66 @@
+@mixin icon {
+    content: '';
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    vertical-align: middle;
+}
+
+@mixin bg($path, $width: 0, $height: 0) {
+    width: $width + px;
+    height: $height + px;
+    background-image: url('../img/svg/' + $path + '.svg');
+}
+
+@mixin white {
+    filter: brightness(0) invert(1);
+}
+
+@mixin black {
+    filter: brightness(0);
+}
+
+@mixin sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@mixin line-clamp($count: 3) {
+    display: -webkit-box;
+    -webkit-line-clamp: $count;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@mixin ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@mixin clamp($minWidth, $maxWidth, $minFontSize, $maxFontSize, $update: false, $rem: 10) {
+    $slope: strip-unit($maxFontSize - $minFontSize) / strip-unit($maxWidth / $rem - $minWidth / $rem);
+    $yAxisIntersection: strip-unit(-$minWidth * $slope / $rem) + strip-unit($minFontSize);
+
+    font-size: clamp($minFontSize, $yAxisIntersection + rem #{' + '} $slope * 100 + vw , $maxFontSize);
+
+    @if not $update {
+        min-height: 0vw;
+    }
+}
+
+@mixin clear {
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}

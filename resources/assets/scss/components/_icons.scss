@@ -1,0 +1,11 @@
+.i-before {
+    &:before {
+        @include icon;
+    }
+}
+
+.i-after {
+    &:after {
+        @include icon;
+    }
+}

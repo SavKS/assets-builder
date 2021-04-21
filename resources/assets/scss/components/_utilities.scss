@@ -1,0 +1,53 @@
+$utilities: (
+    "display": (
+        responsive: true,
+        print: true,
+        property: display,
+        class: d,
+        values: inline inline-block block flex inline-flex none
+    ),
+    "margin-top": (
+        responsive: true,
+        property: margin-top,
+        class: mt,
+        values: map-merge($spacers, (auto: auto))
+    ),
+    "margin-bottom": (
+        responsive: true,
+        property: margin-bottom,
+        class: mb,
+        values: map-merge($spacers, (auto: auto))
+    )
+);
+
+.sr-only {
+    @include sr-only;
+}
+
+.u-ellipsis {
+    @include ellipsis;
+}
+
+.u-clear {
+    @include clear;
+}
+
+.u-img {
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+        content: '';
+        display: block;
+    }
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}

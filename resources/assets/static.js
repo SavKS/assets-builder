@@ -33,6 +33,17 @@ module.exports = {
             pub: 'lodash.[hash:10].js',
             src: 'lodash.js'
         }
+    },
+    focusVisible: {
+        type: 'js',
+        entry: {
+            production: path.resolve(__dirname, './node_modules/focus-visible/dist/focus-visible.min.js'),
+            develop: path.resolve(__dirname, './node_modules/focus-visible/dist/focus-visible.js')
+        },
+        name: {
+            pub: 'focus-visible.[hash:10].js',
+            src: 'focus-visible.js'
+        }
     }
 };
 
