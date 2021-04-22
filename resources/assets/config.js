@@ -21,7 +21,7 @@ const images = {
 };
 
 const styles = {
-    entries: [ '../scss/app.scss' ],
+    entries: [ '../scss/*.scss', '!../scss/_*.scss' ],
     watch: [
         '../scss/*.scss',
         '../scss/**/*.scss'
@@ -38,7 +38,7 @@ const layouts = {
         '../layouts/*.twig',
         '../layouts/**/*.twig'
     ],
-    datafile: path.resolve(srcPath, './layouts/datafile.json'),
+    dataDir: path.resolve(srcPath, './layouts/_data'),
     serverFiles: path.resolve(srcPath, './server/*.json'),
     baseUri: '../..',
     manifest: path.resolve(outputPath, './layouts/manifest.json')
