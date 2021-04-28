@@ -145,6 +145,7 @@ gulp.task(
             'twig',
             'copy-static',
             'webpack',
+            'build-manifest',
 
             process.env.NODE_ENV === 'production' ? 'optimize-images' : null
         ].filter(value => value)
@@ -161,6 +162,7 @@ gulp.task(
             'twig:watch',
             'scss:watch',
             'webpack:watch',
+            'build-manifest:watch',
             'staticServer'
         ])
     ])

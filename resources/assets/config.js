@@ -41,7 +41,10 @@ const layouts = {
     dataDir: path.resolve(srcPath, './layouts/_data'),
     serverFiles: path.resolve(srcPath, './server/*.json'),
     baseUri: '../..',
-    manifest: path.resolve(outputPath, './layouts/manifest.json')
+    manifest: path.resolve(outputPath, './layouts/manifest.json'),
+    assetFiles: {
+        manifest: path.resolve(outputPath, './pub/manifest-assets.json')
+    }
 };
 
 const envPub = {
@@ -62,6 +65,9 @@ const envPub = {
     staticFiles: {
         basePath: path.resolve(outputPath, './pub/vendor'),
         manifest: path.resolve(outputPath, './pub/vendor/manifest-static.json')
+    },
+    assetFiles: {
+        manifest: path.resolve(outputPath, './pub/manifest-assets.json')
     }
 };
 
@@ -71,16 +77,21 @@ const envSrc = {
         baseUri: 'src/css',
         path: {
             output: path.resolve(outputPath, './src/css')
-        }
+        },
+        manifest: path.resolve(outputPath, './src/css/manifest.json')
     },
     scripts: {
         path: {
             output: path.resolve(outputPath, './src/js')
-        }
+        },
+        manifest: path.resolve(outputPath, './src/js/manifest.json')
     },
     staticFiles: {
         basePath: path.resolve(outputPath, './src/vendor'),
         manifest: path.resolve(outputPath, './src/vendor/manifest-static.json')
+    },
+    assetFiles: {
+        manifest: path.resolve(outputPath, './src/manifest-assets.json')
     }
 };
 
@@ -103,6 +114,7 @@ const browserSync = {
 };
 
 module.exports = {
+    buildMode: process.env.BUILD_MODE,
     path: {
         src: srcPath,
         output: outputPath
@@ -123,6 +135,7 @@ module.exports = {
             current().styles.manifest,
             current().scripts.manifest,
             current().staticFiles.manifest,
+            current().assetFiles.manifest,
             layouts.manifest
         ]
     },

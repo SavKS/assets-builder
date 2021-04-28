@@ -3,8 +3,30 @@ const path = require('path');
 const colors = require('colors/safe');
 const mkdirp = require('mkdirp');
 const md5 = require('md5');
+const lodash = require('lodash');
 
 const config = require('../../config');
+
+const manifestReplacer = require('../utils/manifestReplacer')(config.buildMode);
+
+const manifest = {};
+
+const saveManifest = lodash.debounce(function (manifest) {
+    fs.writeFileSync(
+        config.current().assetFiles.manifest,
+        JSON.stringify(manifest, null, 4)
+    );
+}, 300);
+
+const pushToManifest = (key, value) => {
+    const { key: manifestKey, value: manifestValue } = manifestReplacer({ key, value });
+
+    manifest[ manifestKey ] = manifestValue;
+
+    saveManifest(manifest);
+};
+
+const preparePath = filePath => lodash.trimStart(filePath.replace(/\.+\//g, ''), '/');
 
 module.exports = (
     filePath,
@@ -15,7 +37,7 @@ module.exports = (
     withoutHash = false
 ) => {
     if (!fs.existsSync(filePath)) {
-        console.log(`[${colors.red('%s')}] ${colors.magenta('%s')}`, 'File not exists', filePath);
+        console.log(`[${ colors.red('%s') }] ${ colors.magenta('%s') }`, 'File not exists', filePath);
 
         return originUrl;
     }
@@ -35,14 +57,18 @@ module.exports = (
             fs.copyFileSync(filePath, outputFilePath);
         }
 
+        const outputFileRelativePath = path.relative(basePath, outputFilePath);
+
+        pushToManifest(outputFileRelativePath, outputFileRelativePath);
+
         return path.relative(basePath, outputFilePath);
     } else {
         const relativePath = path.relative(config.path.src, filePath);
-        const hash = md5(`${relativePath}.${fs.statSync(filePath).size}`).substr(0, 10);
+        const hash = md5(`${ relativePath }.${ fs.statSync(filePath).size }`).substr(0, 10);
 
         const hashedOutputFilePath = outputFilePath.replace(
-            `${srcPathInfo.name}${srcPathInfo.ext}`,
-            `${srcPathInfo.name}.${hash}${srcPathInfo.ext}`
+            `${ srcPathInfo.name }${ srcPathInfo.ext }`,
+            `${ srcPathInfo.name }.${ hash }${ srcPathInfo.ext }`
         );
 
         const outputRelativeFilePath = path.relative(
@@ -55,10 +81,18 @@ module.exports = (
         }
 
         const hashedUri = outputRelativeFilePath.replace(
-            `${srcPathInfo.name}${srcPathInfo.ext}`,
-            `${srcPathInfo.name}.${hash}${srcPathInfo.ext}`
+            `${ srcPathInfo.name }${ srcPathInfo.ext }`,
+            `${ srcPathInfo.name }.${ hash }${ srcPathInfo.ext }`
         );
 
-        return hashedUri.replace(new RegExp('\\\\', 'g'), '/');
+        const outputFileRelativePath = path.relative(basePath, outputFilePath);
+        const outputFileRelativeHashedPath = hashedUri.replace(new RegExp('\\\\', 'g'), '/');
+
+        pushToManifest(
+            preparePath(outputFileRelativePath),
+            preparePath(outputFileRelativeHashedPath)
+        );
+
+        return outputFileRelativeHashedPath;
     }
 };

@@ -22,11 +22,6 @@ VueForm.config({
     httpClient: http
 });
 
-I18n.config({
-    currentLanguage: get(window, 'App.currentLanguage', 'en'),
-    dictionary: get(window, '__preload.stores.i18n', {})
-});
-
 Vue.use(HelpersInstaller);
 Vue.use(I18n);
 Vue.use(VueForm);
@@ -35,6 +30,15 @@ Vue.use(TaskManager);
 VueForm.preload(
     get(window, '__preload.forms', {})
 );
+
+Vue.directive('log', {
+    inserted(el, bindings) {
+        console.log(bindings.value);
+    },
+    update(el, bindings) {
+        console.log(bindings.value);
+    }
+});
 
 const files = require.context('./modules', true, /\.\/\w+([\_\-]+\w+)*\/index\.js$/);
 

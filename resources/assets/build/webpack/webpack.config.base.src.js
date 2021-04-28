@@ -1,8 +1,11 @@
 const webpackConfig = require('./webpack.config.base');
 const webpack = require('webpack');
-const path = require('path');
+
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const CleanupPlugin = require('./plugins/cleanup');
+
+const manifestReplacer = require('../utils/manifestReplacer')('src');
 
 webpackConfig.output = {
     ...webpackConfig.output,
@@ -28,6 +31,19 @@ webpackConfig.plugins.push(
 
 webpackConfig.plugins.push(
     new CleanupPlugin()
+);
+
+webpackConfig.plugins.push(
+    new WebpackAssetsManifest({
+        output: './manifest.json',
+        customize: manifestReplacer,
+        space: 2,
+        writeToDisk: false,
+        fileExtRegex: /\.\w{2,4}\.(?:map|gz)$|\.\w+$/i,
+        sortManifest: true,
+        merge: false,
+        publicPath: ''
+    })
 );
 
 module.exports = webpackConfig;

@@ -1,18 +1,20 @@
+import arrayHelpers from './libs/arrayHelpers';
+import asset from './libs/asset';
 import ee from './libs/eventEmitter';
 import http from './libs/http';
 import icon from './libs/icon';
 import registerStore from './libs/registerStore';
 import router from '../routes';
-import staticAssets from './libs/staticAssets';
 import vMount from './libs/vMount';
 import vMountLazy from './libs/vMountLazy';
 import vReplace from './libs/vReplace';
 
 export {
+    arrayHelpers,
+    asset,
     http,
-    router,
-    staticAssets,
     registerStore,
+    router,
     vMount,
     vMountLazy,
     vReplace
@@ -21,10 +23,11 @@ export {
 export const install = {
     install(Vue) {
         Vue.prototype.$helpers = {
-            icon,
+            arrayHelpers,
+            asset,
             http,
-            router,
-            staticAssets
+            icon,
+            router
         };
 
         Vue.prototype.$ee = ee;

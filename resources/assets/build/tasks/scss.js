@@ -87,6 +87,25 @@ const build = () => () => {
         )
         .pipe(
             browserSync.stream()
+        )
+        .pipe(
+            removeOld()
+        )
+        .pipe(
+            rev.manifest({
+                path: 'manifest.json'
+            })
+        )
+        .pipe(
+            gulp.dest(
+                path.parse(currentConfig.styles.manifest).dir
+            )
+        )
+        .pipe(
+            removeOld({
+                manifest: true,
+                staticPath: config.path.output
+            })
         );
 };
 

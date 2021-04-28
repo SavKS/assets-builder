@@ -104,9 +104,9 @@ const build = () => {
 
     fs.writeFileSync(
         config.layouts.manifest,
-        JSON.stringify(result.manifest)
+        JSON.stringify(result.manifest, null, 4)
     );
-    
+
     browserSync.reload();
 };
 

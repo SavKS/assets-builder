@@ -1,7 +1,12 @@
 const path = require('path');
+const lodash = require('lodash');
 const copyAsset = require('../utils/copyAsset');
 const htmlParser = require('htmlparser2');
 const srcsetParser = require('srcset');
+
+const config = require('../../config');
+
+const manifestReplacer = require('../utils/manifestReplacer')(config.buildMode);
 
 module.exports = (files, options = {}) => {
     const manifest = {};
@@ -93,21 +98,32 @@ module.exports = (files, options = {}) => {
                 if (newPath !== src
                     && options.manifest
                 ) {
-                    const relativeHashedPath = path.relative(
-                        options.staticPath,
-                        path.resolve(
-                            options.outputPath,
-                            newPath
+                    const relativeHashedPath = lodash.trimStart(
+                        path.relative(
+                            options.staticPath,
+                            path.resolve(
+                                options.outputPath,
+                                newPath
+                            ),
+                            '/'
                         )
                     );
 
-                    const originalPath = relativeHashedPath.replace(
-                        options.hashMask,
-                        '',
-                        relativeHashedPath
+                    const originalPath = lodash.trimStart(
+                        relativeHashedPath.replace(
+                            options.hashMask,
+                            '',
+                            relativeHashedPath
+                        ),
+                        '/'
                     );
 
-                    manifest[ originalPath ] = relativeHashedPath;
+                    const { key: manifestKey, value: manifestValue } = manifestReplacer({
+                        key: originalPath,
+                        value: relativeHashedPath
+                    });
+
+                    manifest[ manifestKey ] = manifestValue;
                 }
 
                 data.content = data

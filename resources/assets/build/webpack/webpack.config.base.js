@@ -51,7 +51,11 @@ const webpackConfig = {
                 use: [ 'html-es6-template-loader' ]
             },
             {
-                test: /\.(png|jpg|gif|svg)$/,
+                test: /\.svg$/,
+                loader: 'svg-loader'
+            },
+            {
+                test: /\.(png|jpg|gif)$/,
                 loader: 'file-loader',
                 options: {
                     publicPath: `/build/${process.env.BUILD_MODE}/vendor/img`,

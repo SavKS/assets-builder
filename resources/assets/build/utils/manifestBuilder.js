@@ -26,6 +26,11 @@ const build = () => {
         JSON.stringify(result, null, 4)
     );
 
+    fs.writeFileSync(
+        `${ config.manifest.output }.js`,
+        `window.__manifest = ${ JSON.stringify(result) };`
+    );
+
     if (!lodash.isEmpty(result)) {
         console.log(`[${colors.green('Manifest created')}] ${colors.magenta('%s')}`, config.manifest.output);
     } else {
