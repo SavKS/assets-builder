@@ -1,5 +1,6 @@
 import arrayHelpers from './libs/arrayHelpers';
 import asset from './libs/asset';
+import staticAsset from './libs/staticAsset';
 import ee from './libs/eventEmitter';
 import http from './libs/http';
 import icon from './libs/icon';
@@ -12,6 +13,7 @@ import vReplace from './libs/vReplace';
 export {
     arrayHelpers,
     asset,
+    staticAsset,
     http,
     registerStore,
     router,
@@ -25,6 +27,7 @@ export const install = {
         Vue.prototype.$helpers = {
             arrayHelpers,
             asset,
+            staticAsset,
             http,
             icon,
             router
