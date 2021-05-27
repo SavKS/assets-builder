@@ -1,27 +1,32 @@
 const fs = require('fs');
 const lodash = require('lodash');
+const log = require('fancy-log');
 const config = require('./config');
 
 module.exports = {
     functions: [
         {
             name: 'loadState',
-            func(value, store) {
+            func(value, store, path) {
                 store = store || value;
 
                 let data;
 
                 try {
-                    data = fs.readFileSync(`${config.dataServer.path}/${value}.json`);
+                    data = fs.readFileSync(`${ config.layouts.dataDir }/${ value }.json`);
+
+                    if (path) {
+                        data = lodash.get(data, path);
+                    }
                 } catch (e) {
-                    console.log('[\x1b[31m%s\x1b[0m] %s', 'State read error', e.message);
+                    log('[\x1b[31m%s\x1b[0m] %s', 'State read error', e.message);
                 }
 
                 return `
                         <script>
                             window.__preload = window.__preload || {};
                             window.__preload.store = window.__preload.store || {};
-                            window.__preload.store.${store} = ${data};
+                            window.__preload.store.${ store } = ${ data };
                         </script>
                     `;
             }
@@ -32,13 +37,13 @@ module.exports = {
                 let data;
 
                 try {
-                    const string = fs.readFileSync(`${config.dataServer.path}/${value}.json`);
+                    const string = fs.readFileSync(`${ config.layouts.dataDir }/${ value }.json`);
 
                     data = JSON.parse(
                         string.toString()
                     );
                 } catch (e) {
-                    console.log('[\x1b[31m%s\x1b[0m] %s', 'State read error', e.message);
+                    log('[\x1b[31m%s\x1b[0m] %s', 'State read error', e.message);
 
                     return defaults;
                 }

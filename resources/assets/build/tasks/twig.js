@@ -152,7 +152,7 @@ module.exports = (watch = false) => {
                 );
 
                 gulp.watch(
-                    [ `${ config.layouts.dataDir }/*.json`, config.layouts.serverFiles ],
+                    [ `${ config.layouts.dataDir }/*.json` ],
                     gulp.series([
                         '@twig:build'
                     ])

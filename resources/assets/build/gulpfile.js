@@ -6,6 +6,7 @@ const config = require('../config');
 const scss = require('./tasks/scss');
 const twig = require('./tasks/twig');
 const staticServer = require('./tasks/staticServer');
+const mockServer = require('./tasks/mockServer');
 const bundler = require('./tasks/bundler');
 const cleaner = require('./tasks/cleaner');
 const optimizeImages = require('./tasks/optimizeImages');
@@ -27,8 +28,13 @@ gulp.task(
 );
 
 gulp.task(
-    'staticServer',
+    'static-server',
     staticServer()
+);
+
+gulp.task(
+    'mock-server',
+    mockServer()
 );
 
 gulp.task(
@@ -163,7 +169,7 @@ gulp.task(
             'scss:watch',
             'webpack:watch',
             'build-manifest:watch',
-            'staticServer'
+            'static-server'
         ])
     ])
 );

@@ -39,7 +39,6 @@ const layouts = {
         '../layouts/**/*.twig'
     ],
     dataDir: path.resolve(srcPath, './layouts/_data'),
-    serverFiles: path.resolve(srcPath, './server/*.json'),
     baseUri: '../..',
     manifest: path.resolve(outputPath, './layouts/manifest.json'),
     assetFiles: {
@@ -139,7 +138,9 @@ module.exports = {
             layouts.manifest
         ]
     },
-    dataServer: {
-        path: path.resolve(srcPath, 'server')
+    mockServer: {
+        port: 3030,
+        routesPath: path.resolve(srcPath, 'server/routes.js'),
+        dbDir: path.resolve(srcPath, 'server/db')
     }
 };
