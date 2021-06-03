@@ -103,13 +103,13 @@ const browserSync = {
     ],
     config: {
         open: true,
-        notify: true,
+        notify: false,
         server: {
             baseDir: path.resolve(outputPath, '../'),
             directory: true
-        }
-    },
-    ghostMode: false
+        },
+        ghostMode: false
+    }
 };
 
 module.exports = {
