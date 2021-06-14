@@ -16,8 +16,8 @@
         },
         props: {
             name: {
-                type: String,
-                default: () => uuidV4()
+                required: true,
+                type: String
             },
             data: {
                 type: Object,
@@ -26,12 +26,18 @@
             mode: {
                 type: String,
                 default: null
+            },
+            forceDisabled: {
+                type: Boolean,
+                default: null
             }
         },
         computed: {
-            model() {
-                return this.$thisForm();
-            }
+            model: self => self.$thisForm(),
+
+            disabled: self => self.$props.forceDisabled !== null ?
+                self.$props.forceDisabled || self.model.processing :
+                self.model.processing
         },
         beforeMount() {
             if (this.$props.data) {
@@ -39,8 +45,8 @@
             }
         },
         methods: {
-            setData(data) {
-                return this.model.setData(data || {});
+            setData(data, remember = true) {
+                return this.model.setData(data || {}, remember);
             },
 
             restore() {
@@ -53,11 +59,20 @@
 
             async submit() {
                 this.$emit('submit', this.model);
+            },
+
+            isMode(mode) {
+                if (this.$props.mode === null) {
+                    throw new Error('Mode not defined');
+                }
+
+                return this.$props.mode === mode;
             }
         },
         render() {
             return this.$scopedSlots.default({
-                form: this.model,
+                vForm: this,
+                $form: this.model,
                 submit: this.submit
             });
         }

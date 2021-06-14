@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 import TaskManager from '@plugins/taskManager';
 import I18n from '@plugins/i18n';
-import VueForm from '@plugins/forms';
+import VueForm from '@shelter/vue-forms';
 import { registerStore } from '@helpers';
 
 import { VUEX_DEEP_SET } from 'vue-deepset';

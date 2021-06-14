@@ -5,6 +5,7 @@ const qs = require('qs');
 const colors = require('colors/safe');
 const decache = require('decache');
 const nocache = require('nocache');
+const cors = require('cors');
 const { createHttpTerminator } = require('http-terminator');
 
 const config = require('../../config');
@@ -22,6 +23,9 @@ const startServer = () => {
         express.json()
     );
     app.use(
+        cors()
+    );
+    app.use(
         express.urlencoded({ extended: true })
     );
 
@@ -29,6 +33,12 @@ const startServer = () => {
         nocache()
     );
 
+    app.use((request, response, next) => {
+        response.header("Access-Control-Allow-Origin", "*");
+        response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
+    
     app.use((request, response, next) => {
         let color;
 

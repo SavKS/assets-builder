@@ -4,7 +4,8 @@ import _ from 'lodash';
 import { deepModel } from 'vue-deepset';
 import qs from 'qs';
 import wildcard from 'wildcard';
-import VForm from "./VForm";
+import VForm from './VForm.vue';
+import _each from 'lodash/each';
 
 let __store;
 let __config = {
@@ -15,36 +16,42 @@ let __models = {};
 let __forms = function (name) {
 };
 
-const preparePostData = (data, dataType = __config.defaultRequestType) => {
+const preparePostData = (data, dataType = __config.defaultRequestType, fileFields = {}) => {
     if (dataType === 'json') {
+        if (_.values(fileFields).length) {
+            throw new Error('To send files you need to set "dataType" as "formData"')
+        }
+
         return data;
     }
 
-    return _.reduce(
-        data,
-        (carry, value, name) => {
-            if (_.isArray(value) || _.isPlainObject(value)) {
-                _.each(value, (item, key) => {
-                    carry.append(`${ name }[${ key }]`, item);
-                });
-            } else {
-                carry.append(name, value);
-            }
+    const formData = new FormData();
 
-            return carry;
-        },
-        new FormData
-    );
+    _.each(fileFields, (files, name) => {
+        _.each(files, file => {
+            formData.append(name, file, file.name);
+        });
+    });
+
+    _.each(data, (value, name) => {
+        if (_.isArray(value) || _.isPlainObject(value)) {
+            _.each(value, (item, key) => {
+                formData.append(`${ name }[${ key }]`, item);
+            });
+        } else {
+            formData.append(name, value);
+        }
+    });
+
+    return formData;
 };
 
 const __namespace = () => _.get(__config, 'namespace', 'forms');
 
 const __action = action => __namespace() + '/' + action;
 
-const __getter = getter => __namespace() + '/' + getter;
-
-export const extractErrors = (errors, path, asFormatted = false) => {
-    return _.reduce(errors, (carry, errors, key) => {
+export const extractErrors = (errors, path, asFormatted = false, asSingleMessage = false) => {
+    const result = _.reduce(errors, (carry, errors, key) => {
         const regExp = new RegExp(
             path.replace(/\*/g, '[\\w]+').replace(/\./g, '\\.')
         );
@@ -55,11 +62,21 @@ export const extractErrors = (errors, path, asFormatted = false) => {
                 '.'
             );
 
-            carry[ newKey ] = asFormatted ? errors.join('. ') : errors;
+            carry[ newKey ] = asFormatted !== false ?
+                errors.join(
+                    _.isString(asFormatted) ? asFormatted : '. '
+                ) :
+                errors;
         }
 
         return carry;
     }, {});
+
+    return asSingleMessage !== false ?
+        result.join(
+            _.isString(asSingleMessage) ? asSingleMessage : '. '
+        ) :
+        result;
 };
 
 export const pluckErrors = (errors, path, asFormatted = false, asSingleMessage = false) => {
@@ -69,7 +86,13 @@ export const pluckErrors = (errors, path, asFormatted = false, asSingleMessage =
         );
 
         if (regExp.test(key)) {
-            carry.push(asFormatted ? errors.join('. ') : errors);
+            carry.push(
+                asFormatted !== false ?
+                    errors.join(
+                        _.isString(asFormatted) ? asFormatted : '. '
+                    ) :
+                    errors
+            );
         }
 
         return carry;
@@ -78,10 +101,11 @@ export const pluckErrors = (errors, path, asFormatted = false, asSingleMessage =
     return asSingleMessage ? result.join('. ') : result;
 };
 
-const __createModel = (name) => new Vue({
+const __createModel = name => new Vue({
     data: () => ({
         old: {},
-        processing: false
+        processing: false,
+        files: {}
     }),
     store: __store,
     computed: {
@@ -104,6 +128,44 @@ const __createModel = (name) => new Vue({
         }
     },
     methods: {
+        fillFile(event, name) {
+            if (!event.target) {
+                return;
+            }
+
+            const originalName = name = name || event.target.name;
+
+            if (event.target.multiple) {
+                name = `${ name }[]`;
+            }
+
+            this.$set(
+                this.$data,
+                'files',
+                _.reduce(event.target.files, (carry, file) => {
+                    carry[ name ].push(file);
+
+                    return carry;
+                }, {
+                    ...this.$data.files,
+
+                    [ name ]: []
+                })
+            );
+
+            if (event.target.multiple) {
+                Object.defineProperty(this.$data.files, originalName, {
+                    get() {
+                        return this[ name ];
+                    }
+                })
+            }
+        },
+
+        removeFile(name) {
+            this.$delete(this.$data.files, name);
+        },
+
         formatErrors(names, delimiter = '. ') {
             const errors = _.flattenDeep([ names ])
                 .map(name => {
@@ -130,8 +192,8 @@ const __createModel = (name) => new Vue({
             return errors.join(delimiter);
         },
 
-        extractErrors(path, asFormatted = false) {
-            return extractErrors(this.errors, path, asFormatted);
+        extractErrors(path, asFormatted = false, asSingleMessage = false) {
+            return extractErrors(this.errors, path, asFormatted, asSingleMessage);
         },
 
         pluckErrors(path, asFormatted = false, asSingleMessage = false) {
@@ -148,15 +210,13 @@ const __createModel = (name) => new Vue({
             );
         },
 
-        remove(field) {
-            return __store.dispatch(__action('remove'), { name, field });
-        },
-
         destroy() {
             return __store.dispatch(__action('destroy'), { name });
         },
 
         reset(data = {}) {
+            this.$set(this.$data, 'files', {});
+
             return Promise.all([
                 this.setData(data),
                 __store.dispatch(__action('clearErrors'), name)
@@ -198,14 +258,14 @@ const __createModel = (name) => new Vue({
             );
 
             const queryParams = options.params || {};
-            const http = __config.httpClient || require('axios');
+            const http = options.httpClient || __config.httpClient || require('axios');
 
             let response;
 
             if (method.toLowerCase() === 'post') {
                 response = http[ method ](
                     url,
-                    preparePostData(data, options.dataType),
+                    preparePostData(data, options.dataType, this.$data.files),
                     {
                         ...(options.config || {}),
 

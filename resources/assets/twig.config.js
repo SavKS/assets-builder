@@ -11,10 +11,12 @@ module.exports = {
                 store = store || value;
 
                 let data;
-
+                
                 try {
-                    data = fs.readFileSync(`${ config.layouts.dataDir }/${ value }.json`);
-
+                    data = JSON.parse(
+                        fs.readFileSync(`${ config.layouts.dataDir }/${ value }.json`).toString()
+                    );
+                    
                     if (path) {
                         data = lodash.get(data, path);
                     }
@@ -26,7 +28,7 @@ module.exports = {
                         <script>
                             window.__preload = window.__preload || {};
                             window.__preload.store = window.__preload.store || {};
-                            window.__preload.store.${ store } = ${ data };
+                            window.__preload.store.${ store } = ${ JSON.stringify(data) };
                         </script>
                     `;
             }

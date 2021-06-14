@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import { each, clone } from 'lodash';
+import { map, clone } from 'lodash';
 
 export default function (selector, component) {
     let targets;
@@ -13,7 +13,9 @@ export default function (selector, component) {
         throw new Error('This is not Vue component');
     }
 
-    each(targets, (el) => {
-        (new Vue(clone(component))).$mount(el);
+    return map(targets, (el) => {
+        const instace = new Vue(clone(component));
+        instace.$mount(el);
+        return instace;
     });
 };

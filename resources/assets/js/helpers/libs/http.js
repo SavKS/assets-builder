@@ -3,7 +3,7 @@ import qs from 'qs';
 import router from '@routes';
 
 const http  = axios.create({
-    baseURL: '/',
+    baseURL: window.App.apiUrl || '/',
     headers: {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'

@@ -1,4 +1,5 @@
 {
+    "src/js/app.js": "pub/js/app.js",
     "src/vendor/js/vue.js": "src/vendor/js/vue.js",
     "src/vendor/js/vuex.js": "src/vendor/js/vuex.js",
     "src/vendor/js/lodash.js": "src/vendor/js/lodash.js",

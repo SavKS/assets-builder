@@ -1,7 +1,7 @@
 import arrayHelpers from './libs/arrayHelpers';
 import asset from './libs/asset';
 import staticAsset from './libs/staticAsset';
-import ee from './libs/eventEmitter';
+import eventEmitter from './libs/eventEmitter';
 import http from './libs/http';
 import icon from './libs/icon';
 import registerStore from './libs/registerStore';
@@ -19,7 +19,8 @@ export {
     router,
     vMount,
     vMountLazy,
-    vReplace
+    vReplace,
+    eventEmitter
 };
 
 export const install = {
@@ -33,6 +34,6 @@ export const install = {
             router
         };
 
-        Vue.prototype.$ee = ee;
+        Vue.prototype.$ee = eventEmitter;
     }
 };

@@ -6,7 +6,7 @@ import { get } from 'lodash';
 import '@store';
 
 import I18n from '@plugins/i18n';
-import VueForm from '@plugins/forms';
+import VueForm from '@shelter/vue-forms';
 import TaskManager from '@plugins/taskManager';
 import './polyfills/closest';
 
