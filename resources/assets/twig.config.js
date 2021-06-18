@@ -11,12 +11,12 @@ module.exports = {
                 store = store || value;
 
                 let data;
-                
+
                 try {
                     data = JSON.parse(
-                        fs.readFileSync(`${ config.layouts.dataDir }/${ value }.json`).toString()
+                        fs.readFileSync(`${config.layouts.dataDir}/${value}.json`).toString()
                     );
-                    
+
                     if (path) {
                         data = lodash.get(data, path);
                     }
@@ -28,7 +28,7 @@ module.exports = {
                         <script>
                             window.__preload = window.__preload || {};
                             window.__preload.store = window.__preload.store || {};
-                            window.__preload.store.${ store } = ${ JSON.stringify(data) };
+                            window.__preload.store.${store} = ${JSON.stringify(data)};
                         </script>
                     `;
             }
@@ -39,7 +39,7 @@ module.exports = {
                 let data;
 
                 try {
-                    const string = fs.readFileSync(`${ config.layouts.dataDir }/${ value }.json`);
+                    const string = fs.readFileSync(`${config.layouts.dataDir}/${value}.json`);
 
                     data = JSON.parse(
                         string.toString()
@@ -51,6 +51,32 @@ module.exports = {
                 }
 
                 return lodash.get(data, path, defaults);
+            }
+        },
+        {
+            name: 'assetRev',
+            func(assetPath) {
+                let manifest;
+
+                try {
+                    const string = fs.readFileSync(`${config.manifest.output}`);
+
+                    manifest = JSON.parse(
+                        string.toString()
+                    );
+                } catch (e) {
+                    log('[\x1b[31m%s\x1b[0m] %s', 'Manifest read error', e.message);
+
+                    return defaults;
+                }
+
+                if (!lodash.has(manifest, assetPath)) {
+                    log('[\x1b[31m%s\x1b[0m] %s', 'Manifest error', `Asset path [${assetPath}] not found`);
+
+                    return assetPath;
+                }
+
+                return `../${ manifest[ assetPath ] }`;
             }
         }
     ],

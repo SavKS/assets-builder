@@ -18,13 +18,11 @@ import VField from '@components/VField';
 Vue.component('v-svg', VSvg);
 Vue.component('v-field', VField);
 
-VueForm.config({
-    httpClient: http
-});
-
 Vue.use(HelpersInstaller);
 Vue.use(I18n);
-Vue.use(VueForm);
+Vue.use(VueForm, {
+    httpClient: http
+});
 Vue.use(TaskManager);
 
 VueForm.preload(

@@ -14,7 +14,7 @@ webpackConfig.output = {
 };
 
 webpackConfig.plugins.push(
-    new CleanupPlugin
+    new CleanupPlugin()
 );
 
 webpackConfig.plugins.push(

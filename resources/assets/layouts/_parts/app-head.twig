@@ -8,10 +8,12 @@
     {# Favicon #}
     {# Path: "project-name/static.www/" #}
 
-    <link rel="stylesheet" href="../src/css/app.css">
+    <link rel="stylesheet" href="{{ assetRev('src/css/app.css') }}">
 
     {# Modernizr #}
     <script src="../../vendor/modernizr.min.js"></script>
+
+    <script src="../src/manifest.json.js"></script>
 
     <script>
         window.App = {

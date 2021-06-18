@@ -6,7 +6,7 @@ module.exports = mode => ({ key, value }) => {
 
     if (/\.js$/.test(key)) {
         finalKey = `${ mode }/js/` + lodash.trimStart(key, '/');
-        finalValue = 'pub/js/' + lodash.trimStart(value, '/');
+        finalValue = `${ mode }/js/` + lodash.trimStart(value, '/');
     } else if (/\.css/.test(key)) {
         finalKey = `${ mode }/css/` + lodash.trimStart(key, '/');
         finalValue = value.replace('../../', '');
