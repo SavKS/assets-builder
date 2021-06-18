@@ -66,8 +66,6 @@ module.exports = {
                     );
                 } catch (e) {
                     log('[\x1b[31m%s\x1b[0m] %s', 'Manifest read error', e.message);
-
-                    return defaults;
                 }
 
                 if (!lodash.has(manifest, assetPath)) {

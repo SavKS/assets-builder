@@ -7,7 +7,10 @@ module.exports = {
             production: path.resolve(__dirname, './node_modules/vue/dist/vue.min.js'),
             develop: path.resolve(__dirname, './node_modules/vue/dist/vue.js')
         },
-        name: 'vue.[hash:10].js'
+        name: {
+            pub: 'vue.[hash:10].js',
+            src: 'vue.js'
+        }
     },
     vuex: {
         type: 'js',
@@ -15,7 +18,10 @@ module.exports = {
             production: path.resolve(__dirname, './node_modules/vuex/dist/vuex.min.js'),
             develop: path.resolve(__dirname, './node_modules/vuex/dist/vuex.js')
         },
-        name: 'vuex.[hash:10].js'
+        name: {
+            pub: 'vuex.[hash:10].js',
+            src: 'vuex.js'
+        }
     },
     lodash: {
         type: 'js',
@@ -23,7 +29,10 @@ module.exports = {
             production: path.resolve(__dirname, './node_modules/lodash/lodash.min.js'),
             develop: path.resolve(__dirname, './node_modules/lodash/lodash.js')
         },
-        name: 'lodash.[hash:10].js'
+        name: {
+            pub: 'lodash.[hash:10].js',
+            src: 'lodash.js'
+        }
     },
     focusVisible: {
         type: 'js',
@@ -31,7 +40,10 @@ module.exports = {
             production: path.resolve(__dirname, './node_modules/focus-visible/dist/focus-visible.min.js'),
             develop: path.resolve(__dirname, './node_modules/focus-visible/dist/focus-visible.js')
         },
-        name: 'focus-visible.[hash:10].js'
+        name: {
+            pub: 'focus-visible.[hash:10].js',
+            src: 'focus-visible.js'
+        }
     }
 };
 
@@ -58,3 +70,4 @@ module.exports = {
 // }
 
 // \Example
+

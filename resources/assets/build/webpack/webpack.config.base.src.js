@@ -10,8 +10,8 @@ const manifestReplacer = require('../utils/manifestReplacer')('src');
 webpackConfig.output = {
     ...webpackConfig.output,
 
-    filename: '[name].[chunkhash:10].js',
-    chunkFilename: '[name].[chunkhash:10].js'
+    filename: '[name].js',
+    chunkFilename: '[name].js'
 };
 
 webpackConfig.performance = {

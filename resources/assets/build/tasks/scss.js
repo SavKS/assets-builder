@@ -38,22 +38,52 @@ const build = () => () => {
             sourceMaps.write()
         );
     }
+
+    if (process.env.BUILD_MODE === 'pub') {
+        return stream
+            .pipe(
+                rename({
+                    dirname: currentConfig.styles.baseUri
+                })
+            )
+            .pipe(
+                rev()
+            )
+            .pipe(
+                revFormat({
+                    prefix: '.'
+                })
+            )
+            .pipe(
+                gulp.dest(config.path.output)
+            )
+            .pipe(
+                browserSync.stream()
+            )
+            .pipe(
+                removeOld()
+            )
+            .pipe(
+                rev.manifest({
+                    path: 'manifest.json'
+                })
+            )
+            .pipe(
+                gulp.dest(
+                    path.parse(currentConfig.styles.manifest).dir
+                )
+            )
+            .pipe(
+                removeOld({
+                    manifest: true,
+                    staticPath: config.path.output
+                })
+            );
+    }
+
     return stream
         .pipe(
-            rename({
-                dirname: currentConfig.styles.baseUri
-            })
-        )
-        .pipe(
-            rev()
-        )
-        .pipe(
-            revFormat({
-                prefix: '.'
-            })
-        )
-        .pipe(
-            gulp.dest(config.path.output)
+            gulp.dest(currentConfig.styles.path.output)
         )
         .pipe(
             browserSync.stream()
