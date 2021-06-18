@@ -5,3 +5,25 @@
 @function container($key: xl) {
   @return map-get($container-max-widths, $key);
 }
+
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+@function calcFluidFontSize($minWidth, $maxWidth, $minFontSize, $maxFontSize, $rem: 10) {
+    $minFontSize: strip-unit($minFontSize);
+    $maxFontSize: strip-unit($maxFontSize);
+    $minWidth: strip-unit($minWidth) / $rem;
+    $maxWidth: strip-unit($maxWidth) / $rem;
+    
+    $k: ($maxFontSize - $minFontSize)/($maxWidth - $minWidth);
+    $b: $minFontSize - $k * $minWidth;
+
+    $b: $b + 'rem';
+
+    @return calc(#{$k} * 100vw + #{$b});
+} 
