@@ -1,4 +1,3 @@
-const Twig = require('twig');
 const rext = require('replace-ext');
 const log = require('fancy-log');
 

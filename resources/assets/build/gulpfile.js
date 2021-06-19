@@ -6,6 +6,7 @@ const config = require('../config');
 const scss = require('./tasks/scss');
 const twig = require('./tasks/twig');
 const staticServer = require('./tasks/staticServer');
+const staticServerWithRender = require('./tasks/staticServerWithRender');
 const mockServer = require('./tasks/mockServer');
 const bundler = require('./tasks/bundler');
 const cleaner = require('./tasks/cleaner');
@@ -30,6 +31,11 @@ gulp.task(
 gulp.task(
     'static-server',
     staticServer()
+);
+
+gulp.task(
+    'static-server:with-render',
+    staticServerWithRender()
 );
 
 gulp.task(
@@ -164,12 +170,14 @@ gulp.task(
         'clean:images',
         'clean:fonts',
         'copy-static',
-        gulp.parallel([
-            'twig:watch',
-            'scss:watch',
-            'webpack:watch',
-            'build-manifest:watch',
-            'static-server'
-        ])
+        gulp.parallel(
+            [
+                !config.layouts.runtimeBuild ? 'twig:watch' : '',
+                'scss:watch',
+                'webpack:watch',
+                'build-manifest:watch',
+                config.layouts.runtimeBuild ? 'static-server:with-render' : 'static-server'
+            ].filter(value => value)
+        )
     ])
 );

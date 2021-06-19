@@ -29,6 +29,7 @@ const styles = {
 };
 
 const layouts = {
+    runtimeBuild: true,
     entries: [ '../layouts/*.twig' ],
     path: {
         src: path.resolve(srcPath, './layouts'),

@@ -38,7 +38,7 @@ const startServer = () => {
         response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         next();
     });
-    
+
     app.use((request, response, next) => {
         let color;
 
