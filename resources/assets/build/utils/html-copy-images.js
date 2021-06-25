@@ -3,6 +3,7 @@ const lodash = require('lodash');
 const copyAsset = require('../utils/copyAsset');
 const htmlParser = require('htmlparser2');
 const srcsetParser = require('srcset');
+const css = require('css');
 
 const config = require('../../config');
 
@@ -65,15 +66,18 @@ module.exports = (files, options = {}) => {
                 }
             },
             onattribute(name, value) {
-                if (name === 'style'
-                    && value.indexOf('background-image') !== -1
-                ) {
-                    const src = value.match(/background\-image\:\s*url\(?[\'|\"]?(.*?)[\'|\"]?\)/);
+                if (name === 'style') {
+                    const cssObj = css.parse(`body { ${ value } }`);
+                    const declarations = lodash.flattenDeep(
+                        lodash.map(cssObj.stylesheet.rules, 'declarations')
+                    );
 
-                    if (src.length
-                        && isValidImageSrc(src[ 1 ])
-                    ) {
-                        replacements[ src[ 1 ] ] = src[ 1 ];
+                    for (const declaration of declarations) {
+                        const urlMatch = declaration.value.match(/url\(?[\'|\"]?(.*?)[\'|\"]?\)/);
+
+                        if (urlMatch && isValidImageSrc(urlMatch[ 1 ])) {
+                            replacements[ urlMatch[ 1 ] ] = urlMatch[ 1 ];
+                        }
                     }
                 }
             }
