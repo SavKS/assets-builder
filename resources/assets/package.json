@@ -31,6 +31,7 @@
         "bootstrap-vue": "^2.21.1",
         "bootstrap.native": "^3.0.14-f",
         "cors": "^2.8.5",
+        "css": "^3.0.0",
         "dayjs": "^1.10.5",
         "decache": "^4.6.0",
         "deep-for-each": "^3.0.0",
