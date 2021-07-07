@@ -1,42 +1,56 @@
-const config = require('../../config');
 const critical = require('critical');
 const { last } = require('lodash');
+const log = require('fancy-log');
 const fs = require('fs');
 const glob = require('glob');
 const gulp = require('gulp');
-const through = require('through2');
-const rext = require('replace-ext');
+const os = require('os');
+const throughConcurrent = require('through2-concurrent');
 const mkdirp = require('mkdirp');
 const puppeteer = require('puppeteer');
 const rimraf = require('rimraf');
 
-let browserPromise = null;
-const getBrowser = () => {
-    if (!browserPromise) {
-        browserPromise = (async () => {
-            const browser = await puppeteer.launch({
-                ignoreHTTPSErrors: true,
-                headless: true,
-                args: [
-                    '--disable-gpu',
-                    '--disable-dev-shm-usage',
-                    '--disable-setuid-sandbox',
-                    '--no-first-run',
-                    '--no-sandbox',
-                    '--no-zygote',
-                    '--deterministic-fetch',
-                    '--disable-features=IsolateOrigins',
-                    '--disable-site-isolation-trials',
-                    '--single-process'
-                ]
-            });
-            browser.closeReal = browser.close;
-            browser.close = () => {};
-            return browser;
-        })();
+const config = require('../../config');
+
+const browsersPool = [];
+let browserCounter = 0;
+
+const getBrowser = async () => {
+    if (browsersPool.length > 0) {
+        return browsersPool.shift();
     }
 
-    return browserPromise;
+    const browser = await puppeteer.launch({
+        ignoreHTTPSErrors: true,
+        headless: true,
+        args: [
+            '--disable-gpu',
+            '--disable-dev-shm-usage',
+            '--disable-setuid-sandbox',
+            '--no-first-run',
+            '--no-sandbox',
+            '--no-zygote',
+            '--deterministic-fetch',
+            '--disable-features=IsolateOrigins',
+            '--disable-site-isolation-trials',
+            '--single-process'
+        ]
+    });
+
+    const close = browser.close.bind(browser);
+
+    browser.close = () => {};
+
+    return {
+        number: ++browserCounter,
+        browser,
+        async recycle() {
+            browsersPool.push(this);
+        },
+        async close() {
+            await close();
+        }
+    };
 };
 
 gulp.task(
@@ -54,9 +68,13 @@ gulp.task(
             config.current().styles.path.output + '/*.css'
         );
 
+        process.setMaxListeners(10000);
+
         return gulp.src(config.critical.path.src)
             .pipe(
-                through.obj((file, enc, callback) => {
+                throughConcurrent.obj({
+                    maxConcurrency: os.cpus().length
+                }, (file, enc, callback) => {
                     (async () => {
                         if (file.isNull()) {
                             return file;
@@ -66,13 +84,24 @@ gulp.task(
                             throw new Error('Streaming not supported!');
                         }
 
+                        const criticalId = last(
+                                last(file.history).split('/')
+                            )
+                            .replace(/[0-9]+-/, '')
+                            .replace(/\.html$/, '');
+                        const fileName = criticalId + '.blade.php';
+
+                        const browser = await getBrowser();
+
+                        log(`[${browser.number}] Critical ${criticalId}: building...`);
+
                         const result = await critical.generate({
                             ...config.critical.settings,
                             css: cssFiles,
                             src: file,
                             penthouse: {
                                 puppeteer: {
-                                    getBrowser
+                                    getBrowser: () => browser.browser
                                 }
                             }
                         });
@@ -87,17 +116,14 @@ gulp.task(
                             return `url({{ ${config.critical.urlFunction}('${url}') }})`;
                         });
 
-                        const fileName = rext(
-                            last(
-                                last(file.history).split('/')
-                            ),
-                            '.blade.php'
-                        ).replace(/[0-9]+-/, '');
+                        log(`[${browser.number}] Critical ${criticalId}: built.`);
 
-                        await fs.promises.writeFile(
+                        fs.promises.writeFile(
                             `${config.critical.path.blade}/${fileName}`,
                             `<style>${css}</style>`
                         );
+
+                        browser.recycle();
 
                         return file;
                     })()
@@ -113,7 +139,11 @@ gulp.task(
 
 gulp.task(
     'critical:close',
-    async () => await (await getBrowser()).closeReal()
+    async () => {
+        await Promise.all(
+            browsersPool.map(browser => browser.close())
+        );
+    }
 );
 
 module.exports = () => gulp.series([
