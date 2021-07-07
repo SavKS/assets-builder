@@ -113,6 +113,36 @@ const browserSync = {
     }
 };
 
+const critical = {
+    path: {
+        src: layouts.path.output + '/*.html',
+        output: layouts.path.output,
+        blade: path.resolve(__dirname, '../../resources/views/parts/critical/')
+    },
+    urlFunction: 'asset',
+    settings: {
+        inline: false,
+        base: outputPath,
+        penthouse: {
+            timeout: 180000
+        },
+        dimensions: [{
+            height: 1000,
+            width: 414
+        }, {
+            height: 1300,
+            width: 1440
+        }, {
+            height: 1500,
+            width: 1920
+        }],
+        ignore: {
+            atrule: ['@font-face'],
+            decl: (node, value) => /url\(/.test(value)
+        }
+    }
+};
+
 module.exports = {
     buildMode: process.env.BUILD_MODE,
     path: {
@@ -124,6 +154,7 @@ module.exports = {
     styles,
     layouts,
     browserSync,
+    critical,
     env: {
         pub: envPub,
         src: envSrc

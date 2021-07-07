@@ -17,6 +17,8 @@
         "src-prod@copy-static": "cross-env BUILD_MODE=src NODE_ENV=production gulp -f ./build/gulpfile.js copy-static",
         "src-dev@copy-static": "cross-env BUILD_MODE=src NODE_ENV=develop gulp -f ./build/gulpfile.js copy-static",
         "optimize-images": "gulp -f ./build/gulpfile.js optimize-images",
+        "critical": "cross-env BUILD_MODE=pub NODE_ENV=production gulp -f ./build/gulpfile.js pub && gulp -f ./build/gulpfile.js critical",
+        "critical-only": "gulp -f ./build/gulpfile.js critical",
         "mock-server": "gulp -f ./build/gulpfile.js mock-server"
     },
     "author": "Ideil",
@@ -82,6 +84,7 @@
         "circular-dependency-plugin": "^5.2.2",
         "clean-webpack-plugin": "^3.0.0",
         "colors": "^1.4.0",
+        "critical": "^4.0.0",
         "cross-env": "^7.0.3",
         "css-loader": "^5.0.1",
         "cssnano": "^4.1.10",

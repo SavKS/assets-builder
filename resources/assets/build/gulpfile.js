@@ -12,6 +12,7 @@ const bundler = require('./tasks/bundler');
 const cleaner = require('./tasks/cleaner');
 const optimizeImages = require('./tasks/optimizeImages');
 const copyStatic = require('./tasks/copyStatic');
+const critical = require('./tasks/critical');
 
 const manifestBuilder = require('./utils/manifestBuilder');
 
@@ -46,6 +47,11 @@ gulp.task(
 gulp.task(
     'optimize-images',
     optimizeImages()
+);
+
+gulp.task(
+    'critical',
+    critical()
 );
 
 gulp.task(
