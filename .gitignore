@@ -67,3 +67,6 @@ Homestead.yaml
 Homestead.json
 .env
 .idea
+
+
+/resources/views
