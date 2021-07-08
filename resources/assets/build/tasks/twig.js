@@ -61,14 +61,16 @@ const build = () => {
         mkdirp.sync(config.layouts.path.output);
     }
 
-    result.files.forEach(data => {
-        const fileName = rext(data.name, '.html');
+    if (process.env.BUILD_MODE === 'src') {
+        result.files.forEach(data => {
+            const fileName = rext(data.name, '.html');
 
-        fs.writeFileSync(
-            `${config.layouts.path.output}/${fileName}`,
-            data.content
-        );
-    });
+            fs.writeFileSync(
+                `${ config.layouts.path.output }/${ fileName }`,
+                data.content
+            );
+        });
+    }
 
     fs.writeFileSync(
         config.layouts.manifest,

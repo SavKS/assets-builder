@@ -1,6 +1,8 @@
 const fs = require('fs');
+const path = require('path');
 const lodash = require('lodash');
 const log = require('fancy-log');
+const execa = require('execa');
 const config = require('./config');
 
 module.exports = {
@@ -14,7 +16,7 @@ module.exports = {
 
                 try {
                     data = JSON.parse(
-                        fs.readFileSync(`${config.layouts.dataDir}/${value}.json`).toString()
+                        fs.readFileSync(`${ config.layouts.dataDir }/${ value }.json`).toString()
                     );
 
                     if (path) {
@@ -28,7 +30,7 @@ module.exports = {
                         <script>
                             window.__preload = window.__preload || {};
                             window.__preload.store = window.__preload.store || {};
-                            window.__preload.store.${store} = ${JSON.stringify(data)};
+                            window.__preload.store.${ store } = ${ JSON.stringify(data) };
                         </script>
                     `;
             }
@@ -39,7 +41,7 @@ module.exports = {
                 let data;
 
                 try {
-                    const string = fs.readFileSync(`${config.layouts.dataDir}/${value}.json`);
+                    const string = fs.readFileSync(`${ config.layouts.dataDir }/${ value }.json`);
 
                     data = JSON.parse(
                         string.toString()
@@ -59,7 +61,7 @@ module.exports = {
                 let manifest;
 
                 try {
-                    const string = fs.readFileSync(`${config.manifest.output}`);
+                    const string = fs.readFileSync(`${ config.manifest.output }`);
 
                     manifest = JSON.parse(
                         string.toString()
@@ -69,12 +71,39 @@ module.exports = {
                 }
 
                 if (!lodash.has(manifest, assetPath)) {
-                    log('[\x1b[31m%s\x1b[0m] %s', 'Manifest error', `Asset path [${assetPath}] not found`);
+                    log('[\x1b[31m%s\x1b[0m] %s', 'Manifest error', `Asset path [${ assetPath }] not found`);
 
                     return assetPath;
                 }
 
                 return `../${ manifest[ assetPath ] }`;
+            }
+        },
+        {
+            name: 'layoutModifiedAt',
+            func(name) {
+                const filePath = path.join(config.layouts.path.output, `${ name }.html`);
+
+                try {
+                    const { stdout } = execa.sync('git', [
+                        'log',
+                        '-1',
+                        '--pretty="format:%ci"',
+                        '--',
+                        path.relative(config.path.root, filePath)
+                    ], {
+                        cwd: config.path.root
+                    });
+
+                    if (!stdout) {
+                        return null;
+                    }
+                    return lodash.trim(stdout, '"').replace('format:', '');
+                } catch (e) {
+                    log('[\x1b[31m%s\x1b[0m] %s', 'Can\'t resolve layout modified at', e.message);
+
+                    return null;
+                }
             }
         }
     ],

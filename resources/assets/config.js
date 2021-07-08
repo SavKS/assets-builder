@@ -1,5 +1,6 @@
 const path = require('path');
 
+const rootPath = path.resolve(__dirname, '../../');
 const srcPath = path.resolve(__dirname, './');
 const outputPath = path.resolve(__dirname, '../../static/build');
 
@@ -146,6 +147,7 @@ const critical = {
 module.exports = {
     buildMode: process.env.BUILD_MODE,
     path: {
+        root: rootPath,
         src: srcPath,
         output: outputPath
     },
