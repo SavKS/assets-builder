@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "critical": "^4.0.0",
-    "execa": "^5.1.1"
-  }
-}
