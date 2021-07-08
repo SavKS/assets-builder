@@ -21,8 +21,7 @@ const webpackConfig = {
         )
     },
     output: {
-        path: config.current().scripts.path.output,
-        publicPath: 'PUBLIC_PATH'
+        path: config.current().scripts.path.output
     },
     module: {
         rules: [

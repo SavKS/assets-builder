@@ -1,24 +1,24 @@
+const config = require('../../config');
 const critical = require('critical');
 const { last } = require('lodash');
-const log = require('fancy-log');
 const fs = require('fs');
 const glob = require('glob');
 const gulp = require('gulp');
-const os = require('os');
-const throughConcurrent = require('through2-concurrent');
+const through = require('through2');
+const rext = require('replace-ext');
 const mkdirp = require('mkdirp');
 const puppeteer = require('puppeteer');
 const rimraf = require('rimraf');
+const log = require('fancy-log');
 
-const config = require('../../config');
+const cssFiles = glob.sync(
+    config.current().styles.path.output + '/*.css'
+);
 
-const browsersPool = [];
-let browserCounter = 0;
+let lastBrowser = null;
 
 const getBrowser = async () => {
-    if (browsersPool.length > 0) {
-        return browsersPool.shift();
-    }
+    process.setMaxListeners(10000);
 
     const browser = await puppeteer.launch({
         ignoreHTTPSErrors: true,
@@ -37,20 +37,9 @@ const getBrowser = async () => {
         ]
     });
 
-    const close = browser.close.bind(browser);
+    lastBrowser = browser;
 
-    browser.close = () => {};
-
-    return {
-        number: ++browserCounter,
-        browser,
-        async recycle() {
-            browsersPool.push(this);
-        },
-        async close() {
-            await close();
-        }
-    };
+    return browser;
 };
 
 gulp.task(
@@ -64,71 +53,60 @@ gulp.task(
 gulp.task(
     'critical:process',
     () => {
-        const cssFiles = glob.sync(
-            config.current().styles.path.output + '/*.css'
-        );
-
-        process.setMaxListeners(10000);
+        const browserPromise = getBrowser();
 
         return gulp.src(config.critical.path.src)
             .pipe(
-                throughConcurrent.obj({
-                    maxConcurrency: os.cpus().length
-                }, (file, enc, callback) => {
-                    (async () => {
-                        if (file.isNull()) {
-                            return file;
-                        }
+                through.obj(function (file, enc, callback) {
+                    if (file.isNull()) {
+                        return callback(null, file);
+                    }
 
-                        if (file.isStream()) {
-                            throw new Error('Streaming not supported!');
-                        }
+                    if (file.isStream()) {
+                        throw new Error('Streaming not supported!');
+                    }
 
-                        const criticalId = last(
-                                last(file.history).split('/')
-                            )
-                            .replace(/[0-9]+-/, '')
-                            .replace(/\.html$/, '');
-                        const fileName = criticalId + '.blade.php';
+                    const fileName = rext(
+                        last(
+                            last(file.history).split('/')
+                        ),
+                        '.blade.php'
+                    ).replace(/[0-9]+-/, '');
 
-                        const browser = await getBrowser();
+                    log('Processing: ' + fileName);
 
-                        log(`[${browser.number}] Critical ${criticalId}: building...`);
-
-                        const result = await critical.generate({
-                            ...config.critical.settings,
-                            css: cssFiles,
-                            src: file,
-                            penthouse: {
-                                puppeteer: {
-                                    getBrowser: () => browser.browser
-                                }
+                    critical.generate({
+                        ...config.critical.settings,
+                        css: cssFiles,
+                        src: file,
+                        penthouse: {
+                            ...(config.critical.settings.penthouse ?? {}),
+                            unstableKeepBrowserAlive: true,
+                            unstableKeepOpenPages: 0,
+                            puppeteer: {
+                                getBrowser: () => browserPromise
                             }
-                        });
-
+                        }
+                    }).then(result => {
                         const css = result.css.replace(/(url\((.+?)\))/gi, (str, offset, s) => {
                             const url = s.replace('../', '');
 
                             if (url.indexOf('data:') !== -1) {
-                                return `url(${url})`;
+                                return `url(${ url })`;
                             }
 
-                            return `url({{ ${config.critical.urlFunction}('${url}') }})`;
+                            return `url({{ ${ config.critical.urlFunction }('${ url }') }})`;
                         });
 
-                        log(`[${browser.number}] Critical ${criticalId}: built.`);
-
-                        fs.promises.writeFile(
-                            `${config.critical.path.blade}/${fileName}`,
-                            `<style>${css}</style>`
+                        fs.writeFileSync(
+                            `${ config.critical.path.blade }/${ fileName }`,
+                            `<style>${ css }</style>`
                         );
 
-                        browser.recycle();
-
-                        return file;
-                    })()
-                        .then(result => callback(null, result))
-                        .catch(error => callback(error, file));
+                        return callback(null, file);
+                    }).catch(err => {
+                        return callback(err, file);
+                    });
                 })
             )
             .pipe(
@@ -139,11 +117,7 @@ gulp.task(
 
 gulp.task(
     'critical:close',
-    async () => {
-        await Promise.all(
-            browsersPool.map(browser => browser.close())
-        );
-    }
+    async () => await lastBrowser?.close()
 );
 
 module.exports = () => gulp.series([
