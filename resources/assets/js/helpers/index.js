@@ -9,6 +9,8 @@ import router from '../routes';
 import vMount from './libs/vMount';
 import vMountLazy from './libs/vMountLazy';
 import vReplace from './libs/vReplace';
+import copyToBuffer from './libs/copyToBuffer';
+import addEventListenerWithDelegation from './libs/addEventListenerWithDelegation';
 
 export {
     arrayHelpers,
@@ -20,7 +22,9 @@ export {
     vMount,
     vMountLazy,
     vReplace,
-    eventEmitter
+    eventEmitter,
+    copyToBuffer,
+    addEventListenerWithDelegation
 };
 
 export const install = {
@@ -31,6 +35,7 @@ export const install = {
             staticAsset,
             http,
             icon,
+            http,
             router
         };
 

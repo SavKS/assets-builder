@@ -6,7 +6,6 @@ const glob = require('glob');
 const FriendlyErrors = require('friendly-errors-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
-const DynamicPublicPathPlugin = require('./plugins/dynamic-public-path-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
@@ -16,8 +15,8 @@ const config = require('../../config');
 const webpackConfig = {
     entry: {
         app: lodash.concat(
-            "../js/index.js",
-            glob.sync("./js/modules/*/index.js")
+            '../js/index.js',
+            glob.sync('./js/modules/*/index.js')
         )
     },
     output: {
@@ -71,10 +70,6 @@ const webpackConfig = {
         new WebpackNotifierPlugin({
             alwaysNotify: true
         }),
-        new DynamicPublicPathPlugin({
-            externalGlobal: 'window.App.cdn',
-            chunkName: 'app'
-        }),
         new VueLoaderPlugin,
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
@@ -86,18 +81,18 @@ const webpackConfig = {
         ],
         modules: [ 'node_modules' ],
         alias: {
-            "@base": path.resolve(__dirname, "../../../../"),
-            "@src": path.resolve(__dirname, "../.."),
-            "@store": path.resolve(__dirname, "../../js/store"),
-            "@plugins": path.resolve(__dirname, "../../js/plugins"),
-            "@components": path.resolve(__dirname, "../../js/components"),
-            "@constants": path.resolve(__dirname, "../../js/constants"),
-            "@routes": path.resolve(__dirname, "../../js/routes"),
-            "@helpers": path.resolve(__dirname, "../../js/helpers"),
-            "@modules": path.resolve(__dirname, "../../js/modules"),
-            "@mixins": path.resolve(__dirname, "../../js/mixins"),
-            "@vendor": path.resolve(__dirname, "../../js/vendor"),
-            "@svg": path.resolve(__dirname, "../../static/src/svg")
+            '@base': path.resolve(__dirname, '../../../../'),
+            '@src': path.resolve(__dirname, '../..'),
+            '@store': path.resolve(__dirname, '../../js/store'),
+            '@plugins': path.resolve(__dirname, '../../js/plugins'),
+            '@components': path.resolve(__dirname, '../../js/components'),
+            '@constants': path.resolve(__dirname, '../../js/constants'),
+            '@routes': path.resolve(__dirname, '../../js/routes'),
+            '@helpers': path.resolve(__dirname, '../../js/helpers'),
+            '@modules': path.resolve(__dirname, '../../js/modules'),
+            '@mixins': path.resolve(__dirname, '../../js/mixins'),
+            '@vendor': path.resolve(__dirname, '../../js/vendor'),
+            '@svg': path.resolve(__dirname, '../../static/src/svg')
         }
     }
 };

@@ -2,7 +2,8 @@ const path = require('path');
 
 const rootPath = path.resolve(__dirname, '../../');
 const srcPath = path.resolve(__dirname, './');
-const outputPath = path.resolve(__dirname, '../../static/build');
+const staticPath = path.resolve(rootPath, './static');
+const outputPath = path.resolve(staticPath, './build');
 
 const fonts = {
     mask: /[\/|\\]fonts[\/|\\].*\.(ttf|woff|woff2|eot|otf|svg)/,
@@ -127,18 +128,20 @@ const critical = {
         penthouse: {
             timeout: 180000
         },
-        dimensions: [{
-            height: 1000,
-            width: 414
-        }, {
-            height: 1300,
-            width: 1440
-        }, {
-            height: 1500,
-            width: 1920
-        }],
+        dimensions: [
+            {
+                height: 1000,
+                width: 414
+            }, {
+                height: 1300,
+                width: 1440
+            }, {
+                height: 1500,
+                width: 1920
+            }
+        ],
         ignore: {
-            atrule: ['@font-face'],
+            atrule: [ '@font-face' ],
             decl: (node, value) => /url\(/.test(value)
         }
     }
@@ -149,7 +152,8 @@ module.exports = {
     path: {
         root: rootPath,
         src: srcPath,
-        output: outputPath
+        output: outputPath,
+        static: staticPath
     },
     fonts,
     images,
@@ -163,7 +167,7 @@ module.exports = {
     },
     current,
     manifest: {
-        output: `${current().basePath}/manifest.json`,
+        output: `${ current().basePath }/manifest.json`,
         files: [
             current().styles.manifest,
             current().scripts.manifest,

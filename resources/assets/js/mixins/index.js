@@ -25,12 +25,15 @@ export const formField = {
         handleInput(e) {
             this.$emit('input', e);
         },
+
         toggleHover(flag = false) {
             this.$data.hover = flag;
         },
+
         toggleFocus(flag = false) {
             this.$data.fillStatus = flag;
         },
+
         isFill() {
             return this.$props.forceFill
                 || (this.$props.value && this.$props.value.length)
