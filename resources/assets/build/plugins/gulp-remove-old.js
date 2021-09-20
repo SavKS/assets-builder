@@ -6,10 +6,11 @@ const through = require('through2');
 const remove = (filePath) => {
     const pathInfo = path.parse(filePath);
     const files = glob.sync(
-        pathInfo.dir + '/' + pathInfo.base.replace(/\.\w{10}\./, '.*.')
+        pathInfo.dir + path.sep + pathInfo.base.replace(/\.\w{10}\./, '.*.')
     );
 
     files
+        .map(file => path.normalize(file))
         .filter(otherFilePath => otherFilePath !== filePath)
         .forEach(
             otherFilePath => fs.unlinkSync(otherFilePath)
