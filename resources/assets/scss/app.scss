@@ -3,14 +3,13 @@
 @import "vars";
 @import "vendor/_bootstrap/variables";
 @import "vendor/_bootstrap/mixins";
-
-@import "vendor/_bootstrap/reboot";
+@import "vendor/bs-components/reboot";
+// @import "vendor/bs-components/";
 
 // Vendor
 @import "~swiper/swiper";
 // @import "~swiper/modules/effect-fade/effect-fade";
 @import "vendor/ps";
-// @import "vendor/bs-components/";
 
 // Tools
 @import "tools/functions";
