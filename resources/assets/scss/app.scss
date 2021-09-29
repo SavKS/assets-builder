@@ -1,30 +1,36 @@
 // Bootstrap
 @import "vendor/_bootstrap/functions";
 @import "vars";
-@import "bs-vars";
+@import "vendor/_bootstrap/variables";
 @import "vendor/_bootstrap/mixins";
 
 @import "vendor/_bootstrap/reboot";
 
 // Vendor
-@import "~swiper/swiper-bundle.css";
+@import "~swiper/swiper";
+// @import "~swiper/modules/effect-fade/effect-fade";
 @import "vendor/ps";
 // @import "vendor/bs-components/";
 
-// Application
-@import "components/functions";
-@import "components/mixins";
-@import "components/type";
-@import "components/buttons";
-@import "components/forms";
+// Tools
+@import "tools/functions";
+@import "tools/mixins";
+@import "tools/icons";
+
+// Base
+@import "base/scaffolding";
+@import "base/type";
+@import "base/buttons";
+@import "base/forms";
+@import "base/banner";
+@import "base/footer";
+
+// Layout
+@import "layout/base";
+
+// Components
 @import "components/misc";
 
-@import "components/grid";
-@import "components/scaffolding";
-
-@import "components/banner";
-@import "components/footer";
-
 // Utilities
-@import "components/utilities";
+@import "tools/utilities";
 @import "vendor/_bootstrap/utilities/api";
