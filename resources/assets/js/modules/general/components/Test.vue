@@ -1,5 +1,8 @@
 <template>
     <h1>Hello world!!!</h1>
+    <!-- <img
+        :src="require('@src/img/**/*').default"
+    > -->
 </template>
 
 <script>
