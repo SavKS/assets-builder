@@ -1,0 +1,9 @@
+.c-product-main {
+    grid-area: main;
+    padding-left: 0;
+    min-width: 0;
+
+    @include breakpoint(xl) {
+        padding-left: 118px;
+    }
+}

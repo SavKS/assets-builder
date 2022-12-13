@@ -1,0 +1,131 @@
+.c-catalog {
+
+    @include breakpoint(lg) {
+        margin-top: 28px;
+    }
+
+    &:not(:last-child) {
+        margin-bottom: 80px;
+    }
+
+    @include breakpoint(lg) {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @include breakpoint(xl) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    &__filter {
+        display: flex;
+        flex-direction: column;
+
+        &:before {
+            content: '';
+            flex-grow: 1;
+        }
+
+        @include breakpoint(lg) {
+            padding-right: 20px;
+            border-right: 1px solid rgba($black, .1);
+        }
+
+        @include breakpoint(2xl) {
+            padding-right: 40px;
+        }
+    }
+
+    &__main {
+
+        @include breakpoint(lg) {
+            grid-column: span 2 / span 2;
+        }
+
+        @include breakpoint(xl) {
+            grid-column: span 3 / span 3;
+        }
+    }
+
+    &__toggle {
+        border: 1px solid rgba($black, .05);
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        padding: 10px 20px;
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+
+        @include breakpoint(lg) {
+            display: none;
+        }
+
+        .i-icon {
+            margin-right: 10px;
+            transition: filter $transition;
+        }
+
+        &:hover {
+            background-color: $black;
+            border-color: $black;
+            color: $white;
+
+            .i-icon {
+                filter: invert(1);
+            }
+        }
+
+        &-count {
+            margin-left: 10px;
+            min-width: 16px;
+            line-height: 16px;
+            color: $white;
+            background-color: $blue;
+            text-align: center;
+            border-radius: 50%;
+            font-size: 10px;
+            margin-bottom: -2px;
+        }
+    }
+
+    &__sorting {
+        display: none;
+        flex-wrap: wrap;
+        line-height: 20px;
+        margin-bottom: 19px;
+
+        @include breakpoint(lg) {
+            display: flex;
+        }
+
+        &-title {
+            font-size: 16px;
+            color: rgba($black, .5);
+            font-weight: 700;
+            margin-right: 24px;
+            margin-bottom: 5px;
+        }
+
+        .c-sorting__list {
+            margin-bottom: 0;
+        }
+    }
+
+    &__selections {
+        margin-bottom: 20px;
+
+        .c-selection {
+
+            &__list {
+
+                @include breakpoint(xl) {
+                    flex-wrap: wrap;
+                }
+            }
+        }
+    }
+}

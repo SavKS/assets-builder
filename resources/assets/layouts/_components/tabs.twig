@@ -1,0 +1,14 @@
+<div class="c-tabs">
+    <div class="c-tabs__scroll">
+        <ul class="c-tabs__list">
+            {% set links = links ?? ['Усі', 'Для нього', 'Для неї', 'Унісекс', 'Для дітей'] %}
+            {% for item in links %}
+                <li class="c-tabs__item {{ loop.index == 1 ? 'is-active' }}">
+                    <a href="#" class="c-tabs__link">
+                        {{ item }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

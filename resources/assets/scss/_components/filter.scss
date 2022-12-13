@@ -1,0 +1,116 @@
+.is-filter-open body {
+    overflow: hidden;
+}
+
+.c-filter {
+    font-size: 16px;
+    position: sticky;
+    bottom: 20px;
+
+    @include breakpoint(false, lg) {
+        display: flex;
+        z-index: $z-fixed;
+        position: fixed;
+        background-color: $white;
+        inset: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity $transition,
+            visibility $transition;
+
+        .is-filter-open & {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    .f-check {
+        padding-left: 61px;
+    }
+
+    &__scroll {
+
+        @include breakpoint(false, lg) {
+            display: flex;
+            width: 100%;
+            overflow-y: auto;
+        }
+    }
+
+    &__inner {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        @include breakpoint(lg) {
+            padding: 0;
+        }
+    }
+
+    &__heading {
+        padding: 20px 0 14px;
+        display: flex;
+        align-items: center;
+
+        @include breakpoint(lg) {
+            display: none;
+        }
+    }
+
+    &__title {
+        font-size: 24px;
+        margin-right: auto;
+        margin-bottom: -4px;
+    }
+
+    &__close {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -10px -10px -10px 10px;
+
+        .i-icon {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    &__clear {
+        opacity: .4;
+        margin-left: 20px;
+        z-index: 1;
+        // border-bottom: 1px solid currentColor;
+    }
+
+    &__results {
+        line-height: 36px;
+        text-align: center;
+        border-top: 1px solid $gray-5;
+        border-bottom: 1px solid $gray-5;
+        margin-bottom: 20px;
+
+        @include breakpoint(lg) {
+            display: none;
+        }
+    }
+
+    &__submit {
+        margin-top: auto;
+        padding: 10px 0 20px;
+        border-top: 1px solid $gray-5;
+        bottom: 0;
+        z-index: 2;
+        position: sticky;
+        background-color: $white;
+
+        @include breakpoint(lg) {
+            display: none;
+        }
+    }
+}
+
+@import "./filter/section.scss";
+@import "./filter/price.scss";

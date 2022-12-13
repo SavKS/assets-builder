@@ -1,0 +1,8 @@
+{
+    "name": "@assets-builder/dynamic-entries-preset",
+    "private": true,
+    "main": "index.mjs",
+    "devDependencies": {
+        "webpack-better-entries": "^0.1.1"
+    }
+}

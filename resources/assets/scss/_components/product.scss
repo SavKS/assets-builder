@@ -1,0 +1,34 @@
+.c-product {
+    padding-top: 10px;
+
+    &-grid {
+        padding-top: 20px;
+
+        @include breakpoint(lg) {
+            padding-top: 28px;
+            display: grid;
+            grid-template-rows: 2;
+            grid-template-columns: 2fr minmax(440px, 1fr);
+            grid-template-areas:
+                "media controls"
+                "main controls"
+            ;
+        }
+    }
+}
+
+@import "./product/props.scss";
+@import "./product/nav.scss";
+@import "./product/media.scss";
+@import "./product/badge.scss";
+@import "./product/favourite.scss";
+@import "./product/colors.scss";
+@import "./product/controls.scss";
+@import "./product/price.scss";
+@import "./product/sizes.scss";
+@import "./product/ruler.scss";
+@import "./product/availability.scss";
+@import "./product/main.scss";
+@import "./product/section.scss";
+@import "./product/details.scss";
+@import "./product/characteristics.scss";

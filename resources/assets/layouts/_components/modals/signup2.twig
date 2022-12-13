@@ -1,0 +1,57 @@
+<div class="m-modal"
+    id="signup2Modal"
+    tabindex="-1"
+    aria-hidden="true"
+    aria-labelledby="signup2ModalTitle"
+>
+    <div class="m-dialog m-dialog--lg m-dialog--centered">
+        <div class="m-content m-content--bg">
+            <div class="m-bg">
+                <picture class="m-bg__img">
+                    <source srcset="../img/demo/modal/bg-2_236x600.jpg, ../img/demo/modal/bg-2_236x600@2x.jpg 2x" type="image/jpeg">
+                    <img src="../img/demo/modal/bg-2_236x600.jpg" width="236" height="600" alt="Bg">
+                </picture>
+
+                <div class="m-bg__logo">
+                    <img src="../img/logo-white.svg" width="185" height="40" alt="Parkas">
+                </div>
+            </div>
+
+            <div class="m-header">
+                <button type="button" class="m-back f-btn--link" data-modal-target="#signupModal" data-modal-dismiss="">
+                    <i class="i-icon i-arrow i-icon--left"></i>
+                    Назад
+                </button>
+
+                <button type="button" class="m-close f-btn--link" data-modal-dismiss="" aria-label="Закрити">
+                    <i class="i-icon i-close"></i>
+                </button>
+            </div>
+
+            <div class="m-body">
+                <div class="mx-auto f-box">
+                    <div class="m-title c-title c-title--3" id="signup2ModalTitle">Вхід</div>
+
+                    <div class="f-group">
+                        <label for="signupCode1" class="f-label">Код із СМС</label>
+
+                        <div class="grid grid-cols-6 gap-5">
+                            {% for i in 1..6 %}
+                                <input type="text" id="signupCode{{ i }}" placeholder="X" class="text-center f-input">
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="f-submit">
+                        <button type="button" data-modal-target="#signup3Modal" data-modal-dismiss="" class="f-btn f-btn--dark f-btn--block">
+                            Підтвердити
+                        </button>
+
+                        <div class="f-submit__text">Надіслати повторно <b>59 сек</b></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

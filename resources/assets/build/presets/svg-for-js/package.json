@@ -1,0 +1,8 @@
+{
+    "name": "@assets-builder/svg-for-js-preset",
+    "private": true,
+    "main": "index.mjs",
+    "dependencies": {
+        "svg-loader": "^0.0.2"
+    }
+}

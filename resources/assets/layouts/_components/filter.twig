@@ -1,0 +1,50 @@
+<div class="c-filter js-filter">
+    <div class="c-filter__scroll">
+        <div class="c-filter__inner l-box">
+            <div class="c-filter__heading">
+                <h2 class="c-filter__title c-title">Фільтр</h2>
+
+                <button class="c-filter__clear f-btn--link">Очистити всі</button>
+
+                <button class="c-filter__close f-btn--link js-filter-close">
+                    <span class="sr-only">Закрити</span>
+                    <i class="i-icon i-close"></i>
+                </button>
+            </div>
+
+            <div class="c-filter__results">84 з 125 товарів</div>
+
+            {% include "./filter/sorting.twig" %}
+
+            {% for title in [
+                'Категорія',
+                'Бренд',
+                'Розмір',
+            ] %}
+                {% include "./filter/section.twig" with {
+                    isSelection: loop.index == 1,
+                    isOpen: true,
+                    title: title,
+                    index: loop.index
+                } %}
+            {% endfor %}
+
+            {% include "./filter/price.twig" %}
+
+            {% for title in [
+                'Колір',
+                'Знижка',
+                'Стать',
+            ] %}
+                {% include "./filter/section.twig" with {
+                    title: title,
+                    index: 5 + loop.index
+                } %}
+            {% endfor %}
+
+            <div class="c-filter__submit">
+                <button class="f-btn f-btn--dark f-btn--block js-filter-close">Застосувати</button>
+            </div>
+        </div>
+    </div>
+</div>

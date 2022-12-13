@@ -1,0 +1,18 @@
+//# Fonts
+//
+//*
+
+//** Font weight hint
+// 100 – thin
+// 200 – extra light
+// 300 – light
+// 400 – regular (normal)
+// 500 – medium
+// 600 – semibold
+// 700 – bold
+// 800 – extrabold
+// 900 – black
+
+@include font-face('FormularI', '../fonts/Formular-Regular', 400);
+@include font-face('FormularI', '../fonts/Formular-Bold', 700);
+@include font-face('ArtegraSansExAltI', '../fonts/ArtegraSansExAltBold', 700);

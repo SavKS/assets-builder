@@ -1,0 +1,105 @@
+.c-product-colors {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba($black, .1);
+
+    @include breakpoint(lg) {
+        text-align: center;
+    }
+
+    picture {
+        display: block;
+        position: relative;
+
+        &:before {
+            content: '';
+            display: block;
+            width: 100%;
+            padding-bottom: 100%;
+        }
+    }
+
+    &__title {
+        line-height: 2;
+        margin-bottom: 10px;
+        font-size: 16px;
+
+        @include breakpoint(lg) {
+            font-weight: 700;
+        }
+    }
+
+    &__list {
+        display: grid;
+        gap: 8px;
+        grid-template-columns: repeat(auto-fit, minmax(0, 60px));
+
+        @include breakpoint(lg) {
+            justify-content: center;
+        }
+    }
+
+    &__card {
+        position: relative;
+        transition: background-color $transition;
+
+        &:before {
+            content: '';
+            inset: 0;
+            display: block;
+            position: absolute;
+            border: 1px solid $gray-6;
+        }
+
+        &:after {
+            content: '';
+            display: block;
+            width: 100%;
+            position: absolute;
+            height: 0;
+            bottom: 0;
+            left: 0;
+            background-color: $black;
+            transition: height $transition;
+        }
+
+        &:hover {
+            background-color: $gray-6;
+        }
+
+        .is-active & {
+            pointer-events: none;
+            background-color: $gray-6;
+
+            &:after {
+                height: 3px;
+            }
+        }
+
+        &-icon {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: $black;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity $transition;
+
+            .i-icon {
+                width: 16px;
+                height: 16px;
+                margin-bottom: -1px;
+                filter: invert(1);
+            }
+
+            .is-active & {
+                opacity: 1;
+            }
+        }
+    }
+}

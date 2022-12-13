@@ -1,0 +1,91 @@
+// Application variables
+//
+//
+
+
+// Paths
+//
+//
+$PATH_SVG: '../icons/';
+
+
+// Grid
+//
+//
+$breakpoints-xs:    0;
+$breakpoints-sm:    576px;
+$breakpoints-md:    768px;
+$breakpoints-lg:    992px;
+$breakpoints-xl:    1260px;
+$breakpoints-2xl:   1440px;
+$breakpoints-3xl:   1600px;
+$breakpoints-4xl:   1921px;
+
+$grid-breakpoints: (
+    xs: $breakpoints-xs,
+    sm: $breakpoints-sm,
+    md: $breakpoints-md,
+    lg: $breakpoints-lg,
+    xl: $breakpoints-xl,
+    2xl: $breakpoints-2xl,
+    3xl: $breakpoints-3xl,
+    4xl: $breakpoints-4xl,
+);
+
+$box-xs:   375px;
+$box-sm:   576px;
+$box-md:   768px;
+$box-lg:   992px;
+$box-xl:   1260px;
+$box-2xl:   1440px;
+$box-3xl:   1600px;
+
+$box-max-widths: (
+    xs: $box-xs,
+    sm: $box-sm,
+    md: $box-md,
+    lg: $box-lg,
+    xl: $box-xl,
+    2xl: $box-2xl,
+    3xl: $box-3xl,
+);
+
+
+// Fonts
+//
+//
+$text-base: 18px;
+
+$leading-base: 1.4;
+$leading-tight: 1.2;
+
+$font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-family-base:            FormularI, $font-family-sans-serif;
+$font-family-secondary:       ArtegraSansExAltI, $font-family-sans-serif;
+
+
+// Z Index
+//
+//
+$z-dropdown: 8;
+$z-sticky: 18;
+$z-fixed: 28;
+$z-modal-backdrop: 38;
+$z-modal: 48;
+$z-popover: 58;
+$z-tooltip: 68;
+
+
+// Header
+//
+//
+$header-h: 80px;
+$header-h-mobile: 70px;
+
+
+// Components
+//
+//
+$cubic-bezier:     cubic-bezier(0.25, 0.1, 0.25, 1);
+$transition:       .3s $cubic-bezier;
+$transition-base:  $transition;

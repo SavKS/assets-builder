@@ -1,0 +1,21 @@
+.c-product-favourite {
+    position: absolute;
+    top: 11px;
+    right: 11px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    opacity: .2;
+
+    .i-icon {
+        width: 26px;
+        height: 26px;
+    }
+
+    &.is-active {
+        opacity: 1;
+    }
+}

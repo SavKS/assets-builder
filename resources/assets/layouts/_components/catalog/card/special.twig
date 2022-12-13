@@ -1,0 +1,47 @@
+{% set item = item ?? {
+    image: '../img/demo/catalog/1_375x568',
+    title: 'Бомбер Alfa Industries MA-1 W Flight AW22',
+    price: '9499 грн'
+} %}
+
+{% set image = image ?? item.image %}
+{% set title = title ?? item.title %}
+{% set price = price ?? item.price %}
+{% set isDiscount = isDiscount ?? item.isDiscount %}
+{% set isBadge = isBadge ?? item.isBadge %}
+
+<div class="c-card c-card--special {{ isDeleted ? 'is-deleted' }}">
+    <picture class="c-card__img">
+        <source srcset="{{ image }}.jpg, {{ image }}@2x.jpg 2x" type="image/jpeg">
+        <img src="{{ image }}.jpg" width="375" height="568" alt="{{ title }}">
+    </picture>
+
+    {% if isFavourite %}
+        <button class="c-card__favourite f-btn--link" type="button">
+            <i class="i-icon i-favourite-light"></i>
+            <i class="i-icon i-favourite-fill"></i>
+        </button>
+    {% endif %}
+
+    {% if isDiscount %}
+        <div class="c-card__badge">
+            <div class="c-card__discount">−50%</div>
+        </div>
+    {% endif %}
+
+    {% if isBadge %}
+        <div class="c-card__badge">
+            <div class="c-card__badge-item">Новинка</div>
+        </div>
+    {% endif %}
+
+    <div class="c-card__info">
+        <div class="c-card__price">
+            <div class="c-card__price-current c-title">{{ price }}</div>
+        </div>
+
+        <div class="c-card__title">
+            <a href="product.html" class="c-card__link f-btn--overlay">{{ title }}</a>
+        </div>
+    </div>
+</div>

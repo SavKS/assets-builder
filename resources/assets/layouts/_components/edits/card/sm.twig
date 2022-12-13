@@ -1,0 +1,28 @@
+{% set item = item ?? {
+    title: 'Літні речі від Alpha Industries',
+    tag: 'Наш вибір',
+    image: '../img/demo/edits/1_770x435'
+} %}
+
+{% set title = title ?? item.title %}
+{% set link = link ?? item.link %}
+{% set tag = tag ?? item.tag %}
+{% set image = image ?? item.image %}
+
+
+<div class="c-edits-card c-edits-card--sm">
+    <picture class="c-edits-card__img">
+        <source srcset="{{ image }}.jpg, {{ image }}@2x.jpg 2x" type="image/jpeg">
+        <img src="{{ image }}.jpg" width="770" height="435" alt="{{ title }}">
+    </picture>
+
+    <div class="c-edits-card__overlay">
+        <div class="c-edits-card__tag">{{ tag }}</div>
+
+        <a href="{{ link ?? 'edits.html' }}" class="c-edits-card__title c-title c-title--4 f-btn--link f-btn--overlay">{{ title }}</a>
+
+        <div class="c-edits-card__btn">
+            <a href="{{ link ?? 'edits.html' }}" class="f-btn f-btn--dark">Дивитися</a>
+        </div>
+    </div>
+</div>

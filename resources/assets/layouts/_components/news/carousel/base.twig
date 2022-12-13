@@ -1,0 +1,53 @@
+{% set title = title ?? 'Догляд за парками і бомберами' %}
+
+<div class="c-news-carousel c-carousel c-carousel--list c-carousel--4 js-carousel" data-space-between="20">
+    <div class="l-box">
+        <div class="c-carousel-inner">
+            <h2 class="c-carousel-title c-title c-title--3">{{ title }}</h2>
+
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    {% for i in 1..3 %}
+                        {% for item in [
+                            {
+                                title: 'Вчимося правильно прати парку',
+                                image: '../img/demo/news/1_375x202'
+                            },
+                            {
+                                title: 'Як доглядати за паркою з бавовни',
+                            },
+                            {
+                                title: 'Як прати куртку в пральній машині',
+                                image: '../img/demo/news/2_375x202'
+                            },
+                            {
+                                title: 'Як доглядати за пуховиком?',
+                                isAuthor: true
+                            },
+                        ] %}
+                            <div class="swiper-slide">
+                                {% include "../card/base.twig" with item only %}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
+                <div class="swiper-control">
+                    <button class="swiper-button-prev">
+                        <span class="sr-only">Попередній слайд</span>
+                        <i class="i-icon i-arrow i-icon--left"></i>
+                    </button>
+
+                    <button class="swiper-button-next">
+                        <span class="sr-only">наступний слайд</span>
+                        <i class="i-icon i-arrow i-icon--right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="c-more">
+                <a href="news.html" class="f-btn f-btn--outline-light f-btn--rounded">Усі поради</a>
+            </div>
+        </div>
+    </div>
+</div>

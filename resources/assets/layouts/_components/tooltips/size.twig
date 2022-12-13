@@ -1,0 +1,33 @@
+<div class="c-tooltip" id="sizeTooltip">
+    <div class="c-tooltip__inner">
+        <dl>
+            {% for item in [
+                {
+                    title: 'Український розмір',
+                    description: '48'
+                },
+                {
+                    title: 'Обхват грудей, в см',
+                    description: '102–106'
+                },
+                {
+                    title: 'Обхват талії, в см',
+                    description: '90–94'
+                },
+                {
+                    title: 'Обхват стегон, в см',
+                    description: '108–112'
+                },
+                {
+                    title: 'Довжина рукава, в см',
+                    description: '85'
+                },
+            ] %}
+                <dt>{{ item.title }}</dt>
+                <dd>{{ item.description }}</dd>
+            {% endfor %}
+        </dl>
+    </div>
+
+    <div class="c-tooltip__arrow"></div>
+</div>

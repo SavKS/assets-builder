@@ -1,0 +1,17 @@
+//# Functions
+//
+//*
+
+@use "sass:math";
+
+@function number($value) {
+    @if type-of($value) == 'number' and not unitless($value) {
+        @return $value / ($value * 0 + 1);
+    }
+
+    @return $value;
+}
+
+@function unit($value, $factor: 1) {
+    @return math.div($value * 100 * $factor, 1024);
+}

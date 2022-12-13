@@ -1,0 +1,36 @@
+//# Utilities
+.sr-only {
+    @include sr-only;
+}
+
+.u-ellipsis {
+    @include ellipsis;
+}
+
+.u-clear {
+    @include clear;
+}
+
+.u-cover,
+.u-contain,
+.u-scale-down {
+    @include cover;
+}
+
+.u-cover {
+    img {
+        object-fit: cover;
+    }
+}
+
+.u-contain {
+    img {
+        object-fit: contain;
+    }
+}
+
+.u-scale-down {
+    img {
+        object-fit: scale-down;
+    }
+}

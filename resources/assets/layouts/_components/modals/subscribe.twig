@@ -1,0 +1,69 @@
+<div class="m-modal"
+    id="subscribeModal"
+    tabindex="-1"
+    aria-hidden="true"
+    aria-labelledby="subscribeModalTitle"
+>
+    <div class="m-dialog m-dialog--xl m-dialog--centered">
+        <div class="m-content m-content--bg">
+            <div class="m-bg">
+                <picture class="m-bg__img">
+                    <source srcset="../img/demo/modal/bg-1_470x600.jpg, ../img/demo/modal/bg-1_470x600@2x.jpg 2x" type="image/jpeg">
+                    <img src="../img/demo/modal/bg-1_470x600.jpg" width="470" height="600" alt="Bg">
+                </picture>
+
+                <div class="m-bg__logo">
+                    <img src="../img/logo-white.svg" width="185" height="40" alt="Parkas">
+                </div>
+            </div>
+
+            <div class="m-header">
+                <button type="button" class="m-close f-btn--link" data-modal-dismiss="" aria-label="Закрити">
+                    <i class="i-icon i-close"></i>
+                </button>
+            </div>
+
+            <div class="m-body">
+                <div class="m-title c-title c-title--3" id="subscribeModalTitle">Підпишись та отримай знижку 10% на першу покупку</div>
+
+                <div class="f-box">
+                    <div class="f-group">
+                        <label for="subscribeFormEmail" class="f-label">Електронна адреса*</label>
+                        <input type="text" id="subscribeFormEmail" placeholder="email@mail.com" class="f-input">
+                    </div>
+
+                    <div class="f-group">
+                        <label for="subscribeFormGender1" class="f-label">Стать</label>
+                        <div class="f-layout">
+                            <div class="f-layout__item f-layout__item--auto">
+                                <div class="f-check">
+                                    <input id="subscribeFormGender1" name="subscribeFormGender" type="radio" class="f-check-input">
+                                    <label for="subscribeFormGender1" class="f-check-label">
+                                        Чоловік
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="f-layout__item f-layout__item--auto">
+                                <div class="f-check">
+                                    <input id="subscribeFormGender2" name="subscribeFormGender" type="radio" class="f-check-input">
+                                    <label for="subscribeFormGender2" class="f-check-label">
+                                        Жінка
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="f-submit">
+                        <button type="button" data-modal-dismiss="" class="f-btn f-btn--dark f-btn--block">
+                            Підписатись
+                        </button>
+
+                        <div class="f-submit__text f-submit__text--check"><i class="i-icon i-check"></i>Погоджуюся з <a href="#" class="f-btn--link">Правилами користування</a> онлайн-магазином Parkas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html class="no-js">
-    {% include '../_parts/app-head.twig' %}
-
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Hello world!</title>
+    </head>
     <body>
-        <header class="c-banner">
-            {% include '../_parts/app-banner.twig' %}
-        </header>
-
-        <main>
-            {% block content %}{% endblock %}
-        </main>
-
-        <footer class="c-footer">
-            {% include '../_parts/app-footer.twig' %}
-        </footer>
-
-        {% include '../_parts/app-js.twig' %}
+        {% block content %}
+        {% endblock %}
     </body>
 </html>

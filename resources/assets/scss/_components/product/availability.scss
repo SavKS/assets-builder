@@ -1,0 +1,16 @@
+.c-product-availability {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+
+    .i-icon {
+        margin-right: 10px;
+    }
+
+    .i-check {
+        position: relative;
+        padding: 3px;
+        border-radius: 50%;
+        border: 2px solid $black;
+    }
+}

@@ -1,0 +1,21 @@
+{% set item = item ?? {
+    title: 'Аксесуари',
+    tag: 'Наш вибір',
+    image: '../img/demo/edits/1_507x286'
+} %}
+
+{% set title = title ?? item.title %}
+{% set link = link ?? item.link %}
+{% set image = image ?? item.image %}
+
+
+<div class="c-edits-card c-edits-card--category">
+    <picture class="c-edits-card__img">
+        <source srcset="{{ image }}.jpg, {{ image }}@2x.jpg 2x" type="image/jpeg">
+        <img src="{{ image }}.jpg" width="507" height="286" alt="{{ title }}">
+    </picture>
+
+    <div class="c-edits-card__overlay">
+        <a href="#" class="c-edits-card__title c-title c-title--4 f-btn--link f-btn--overlay">{{ title }}</a>
+    </div>
+</div>

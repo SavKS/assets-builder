@@ -1,0 +1,38 @@
+{% set item = item ?? {
+    title: 'Вчимося правильно прати парку',
+    category: 'Поради'
+} %}
+
+{% set image = image ?? item.image %}
+{% set title = title ?? item.title %}
+{% set category = category ?? item.category %}
+{% set isAuthor = isAuthor ?? item.isAuthor %}
+{% set isList = isList ?? item.isList %}
+
+<article class="c-news-card {{ isList ? 'c-news-card--list' }}">
+    {% if image %}
+        <div class="c-news-card__img">
+            <source srcset="{{ image }}.jpg, {{ image }}@2x.jpg 2x" type="image/jpeg">
+            <img src="{{ image }}.jpg" width="375" height="202" alt="{{ title }}">
+        </div>
+    {% endif %}
+
+    <div class="c-news-card__info">
+        <a href="#" class="c-news-card__category">{{ category ?? 'Поради' }}</a>
+
+        <p class="c-news-card__title">
+            <a href="#" class="c-news-card__link f-btn--overlay f-btn--link"><b>{{ title ?? 'Вчимося правильно прати парку' }}</b></a>
+        </p>
+
+        {% if isAuthor %}
+            <div class="c-news-card__author">
+                <picture class="c-news-card__author-img">
+                    <source srcset="../img/demo/news/author_40x40.jpg, ../img/demo/news/author_40x40@2x.jpg 2x" type="image/jpeg">
+                    <img src="../img/demo/news/author_40x40.jpg" width="40" height="40" alt="Настя Крилова">
+                </picture>
+
+                <p class="c-news-card__author-name">Настя Крилова</p>
+            </div>
+        {% endif %}
+    </div>
+</article>

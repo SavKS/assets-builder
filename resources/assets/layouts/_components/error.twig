@@ -1,0 +1,25 @@
+<div class="c-error__inner">
+    <div class="c-error__code c-title">
+        {{ code }}
+    </div>
+
+    <div class="l-box l-box--sm">
+        {% if isLogo %}
+            <div class="c-error__logo">
+                <a href="home.html">
+                    <img src="../img/logo.svg" width="69" height="69" alt="{{ brandName }}">
+                </a>
+            </div>
+        {% endif %}
+
+        <div class="c-error__title c-title c-title--1">
+            {{ title }}
+        </div>
+
+        <div class="c-error__text">{{ text }}</div>
+
+        <a href="home.html" class="f-btn f-btn--dark">
+            Повернутися на головну
+        </a>
+    </div>
+</div>

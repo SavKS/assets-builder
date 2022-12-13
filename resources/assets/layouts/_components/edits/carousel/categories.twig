@@ -1,0 +1,46 @@
+<div class="c-edits-carousel c-carousel c-carousel--list c-carousel--3 js-carousel" data-space-between="20">
+    <div class="l-box">
+        <div class="c-carousel-inner">
+            <h2 class="c-carousel-title c-title c-title--3">Категорії</h2>
+
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    {% for i in 1..2 %}
+                        {% for item in [
+                            {
+                                title: 'Аксесуари',
+                                image: '../img/demo/edits/1_507x286'
+                            },
+                            {
+                                title: 'Світшоти і худі',
+                                image: '../img/demo/edits/2_507x286'
+                            },
+                            {
+                                title: 'Футболки',
+                                image: '../img/demo/edits/3_507x286'
+                            },
+                        ] %}
+                            <div class="swiper-slide">
+                                {% include "../card/category.twig" with {
+                                    item: item,
+                                } only %}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
+                <div class="swiper-control">
+                    <button class="swiper-button-prev">
+                        <span class="sr-only">Попередній слайд</span>
+                        <i class="i-icon i-arrow i-icon--left"></i>
+                    </button>
+
+                    <button class="swiper-button-next">
+                        <span class="sr-only">наступний слайд</span>
+                        <i class="i-icon i-arrow i-icon--right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+{% set item = item ?? {
+    image: '../img/demo/catalog/1_375x375',
+    title: 'Парка AirBoss Shuttle Parka',
+    price: '12 440 грн',
+    props: [
+        {
+            title: 'Колір:',
+            desc: 'синій'
+        },
+        {
+            title: 'Розмір:',
+            desc: 'M (44)'
+        }
+    ]
+} %}
+
+{% set image = image ?? item.image %}
+{% set title = title ?? item.title %}
+{% set price = price ?? item.price %}
+{% set props = props ?? item.props %}
+{% set isLast = isLast ?? item.isLast %}
+
+<div class="c-cart-card">
+    <picture class="c-cart-card__img">
+        <source srcset="{{ image }}.png, {{ image }}@2x.png 2x" type="image/png">
+        <img src="{{ image }}.png" width="118" height="148" alt="{{ title }}">
+    </picture>
+
+    <div class="c-cart-card__content">
+        <div class="c-cart-card__info">
+            <div class="c-cart-card__title">
+                <a href="product.html" class="c-cart-card__link f-btn--link">{{ title }}</a>
+            </div>
+
+            <dl class="c-cart-card__props">
+                {% for item in props %}
+                    <div class="c-cart-card__props-item">
+                        <dt>{{ item.title }}</dt>
+                        <dd>{{ item.desc }}</dd>
+                    </div>
+                {% endfor %}
+            </dl>
+        </div>
+
+        <div class="c-cart-card__count">
+            <div class="f-counter">
+                <div class="f-counter__inner">
+                    <button
+                        class="f-counter__btn f-btn--link"
+                        type="button"
+                        disabled
+                        data-type="minus"
+                    >
+                        <i class="i-icon i-minus"></i>
+                    </button>
+                    <input type="text" class="f-input" aria-label="Кількість" value="1">
+                    <button
+                        class="f-counter__btn f-btn--link"
+                        type="button"
+                        data-type="plus"
+                    >
+                        <i class="i-icon i-plus"></i>
+                    </button>
+                </div>
+
+                {% if isLast %}
+                    <div class="f-info text-red">Останній товар</div>
+                {% endif %}
+            </div>
+
+            <button class="c-cart-card__delete f-btn--link">
+                <i class="i-icon i-close"></i>
+            </button>
+        </div>
+
+        <div class="c-cart-card__price">{{ item.price }}</div>
+    </div>
+</div>

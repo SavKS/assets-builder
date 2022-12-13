@@ -1,70 +1,73 @@
 {
-    "root": true,
-    "parser": "vue-eslint-parser",
     "extends": [
-        "crockford",
-        "plugin:vue/base",
-        "plugin:vue/essential",
-        "plugin:vue/recommended"
+        "@tarik02/eslint-config-type-1",
+        "@tarik02/eslint-config-type-1-import"
+        // TODO: React eslint
+        // "@tarik02/eslint-config-type-1-react"
     ],
-    "parserOptions": {
-        "parser": "babel-eslint",
-        "ecmaFeatures": {
-            "modules": true
+    "settings": {
+        "import/resolver": {
+            "typescript": {
+                "project": "./tsconfig.json"
+            }
         }
+        // TODO: React eslint
+        // "react": {
+        //     "version": "18"
+        // }
     },
     "rules": {
-        "no-plusplus": 0,
-        "no-underscore-dangle": 0,
-        "one-var": [
-            0
-        ],
-        "no-continue": [
-            0
-        ],
-        "no-constant-condition": [
-            0
-        ],
-        "array-bracket-spacing": [
-            0
-        ],
-        "indent": 0,
-        "vue/html-indent": [
-            "error",
-            4
-        ],
-        "vue/max-attributes-per-line": [
-            2,
-            {
-                "multiline": {
-                    "allowFirstLine": false
-                }
-            }
-        ],
-        "vue/html-closing-bracket-newline": [
-            2,
-            {
-                "multiline": "always"
-            }
-        ],
-        "vue/v-slot-style": [
+        "import/order": [
             "error",
             {
-                "atComponent": "shorthand",
-                "default": "shorthand",
-                "named": "shorthand"
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                },
+                "newlines-between": "always",
+                "groups": [
+                    [
+                        "builtin",
+                        "external"
+                    ],
+                    "internal",
+                    "parent",
+                    [
+                        "sibling",
+                        "index"
+                    ]
+                ],
+                "pathGroups": [
+                    {
+                        "pattern": "@/**",
+                        "group": "internal"
+                    },
+                    {
+                        "pattern": "@assets/**",
+                        "group": "internal"
+                    },
+                    {
+                        "pattern": "@assets-preset/**",
+                        "group": "internal"
+                    }
+                ],
+                "pathGroupsExcludedImportTypes": [
+                    "builtin"
+                ]
             }
         ]
+        // TODO: React eslint
+        // "react-hooks/exhaustive-deps": [
+        //     "error",
+        //     {
+        //         "additionalHooks": "useMemoCompare"
+        //     }
+        // ]
     },
-    "globals": {
-        "$": false,
-        "require": false,
-        "__dirname": true,
-        "process": true,
-        "exports": true,
-        "module": false
-    },
-    "plugins": [
-        "vue"
-    ]
+    "ignorePatterns": [
+        "*.twig"
+    ],
+    "env": {
+        "browser": true
+    }
 }

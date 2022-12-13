@@ -1,0 +1,60 @@
+.c-order-cart {
+
+    .c-cart-card {
+
+        @include breakpoint(xl) {
+
+            &__title {
+                font-size: 20px;
+            }
+
+            &__content {
+                flex-wrap: nowrap;
+                align-items: flex-start;
+            }
+
+            &__info {
+                width: 40%;
+            }
+
+            &__count {
+                padding-right: 42px;
+                position: relative;
+                margin-right: auto;
+            }
+
+            &__delete {
+                right: 0;
+                top: 4px;
+                opacity: 0;
+
+                .i-icon {
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+
+            &__price {
+                font-size: 22px;
+            }
+        }
+
+        @include breakpoint(2xl) {
+
+            &__title {
+                font-size: 22px;
+            }
+
+            &__price {
+                font-size: 24px;
+            }
+        }
+
+        &:hover {
+
+            .c-cart-card__delete {
+                opacity: 1;
+            }
+        }
+    }
+}

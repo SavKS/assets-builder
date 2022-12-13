@@ -1,0 +1,77 @@
+//## Typography
+.c-title {
+    font-family: $font-family-secondary;
+    font-weight: 700;
+    line-height: 1.2;
+
+    sup {
+        font-size: 50%;
+        top: 0;
+        font-weight: 900;
+        vertical-align: super;
+    }
+
+    &--1 {
+        font-size: 32px;
+
+        @include breakpoint(md) {
+            font-size: 36px;
+        }
+
+        @include breakpoint(lg) {
+            font-size: 42px;
+        }
+
+        @include breakpoint(xl) {
+            font-size: 48px;
+        }
+    }
+
+    &--2 {
+        font-size: 30px;
+
+        @include breakpoint(md) {
+            font-size: 34px;
+        }
+
+        @include breakpoint(lg) {
+            font-size: 38px;
+        }
+
+        @include breakpoint(xl) {
+            font-size: 42px;
+        }
+    }
+
+    &--3 {
+        font-size: 24px;
+
+        @include breakpoint(md) {
+            font-size: 28px;
+        }
+
+        @include breakpoint(lg) {
+            font-size: 32px;
+        }
+
+        @include breakpoint(xl) {
+            font-size: 36px;
+        }
+    }
+
+    &--4 {
+        font-size: 18px;
+
+        @include breakpoint(md) {
+            font-size: 22px;
+        }
+
+        @include breakpoint(lg) {
+            font-size: 26px;
+        }
+
+        @include breakpoint(xl) {
+            font-size: 30px;
+        }
+    }
+}

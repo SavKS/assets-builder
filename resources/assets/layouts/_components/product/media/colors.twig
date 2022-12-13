@@ -1,0 +1,22 @@
+<div class="c-product-colors">
+    <div class="c-product-colors__title">Доступні кольори: 2</div>
+
+    <ul class="c-product-colors__list">
+        {% for i in 1..2 %}
+            <li class="c-product-colors__list {{ i == 2 ? 'is-active' }}">
+                <a href="#" class="c-product-colors__card">
+                    <span class="sr-only">Чорний</span>
+
+                    <picture>
+                        <source srcset="../img/demo/product/{{ i }}.png, ../img/demo/product/{{ i }}@2x.png 2x" type="image/png">
+                        <img src="../img/demo/product/{{ i }}.png" width="60" height="60" alt="">
+                    </picture>
+
+                    <div class="c-product-colors__card-icon">
+                        <i class="i-icon i-check"></i>
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

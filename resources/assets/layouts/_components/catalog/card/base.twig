@@ -1,0 +1,63 @@
+{% set item = item ?? {
+    image: '../img/demo/catalog/1_375x375',
+    title: 'Essential Pocket Tee',
+    brand: 'Alpha Industries',
+    type: 'Футболки',
+    priceCurrent: '675 грн'
+} %}
+
+{% set image = image ?? item.image %}
+{% set title = title ?? item.title %}
+{% set brand = brand ?? item.brand %}
+{% set type = type ?? item.type %}
+{% set priceCurrent = priceCurrent ?? item.priceCurrent %}
+{% set priceOld = priceOld ?? item.priceOld %}
+{% set isDiscount = isDiscount ?? item.isDiscount %}
+{% set isBadge = isBadge ?? item.isBadge %}
+{% set isFavourite = isFavourite ?? item.isFavourite %}
+{% set isDeleted = isDeleted ?? item.isDeleted %}
+
+<div class="c-card {{ isDeleted ? 'is-deleted' }}">
+    <picture class="c-card__img">
+        <source srcset="{{ image }}.png, {{ image }}@2x.png 2x" type="image/png">
+        <img src="{{ image }}.png" width="375" height="375" alt="{{ title }}">
+    </picture>
+
+    {% if isFavourite %}
+        <button class="c-card__favourite f-btn--link" type="button">
+            <i class="i-icon i-favourite-light"></i>
+            <i class="i-icon i-favourite-fill"></i>
+        </button>
+    {% endif %}
+
+    {% if isDiscount %}
+        <div class="c-card__badge">
+            <div class="c-card__discount">−50%</div>
+        </div>
+    {% endif %}
+
+    {% if isBadge %}
+        <div class="c-card__badge">
+            <div class="c-card__badge-item">Новинка</div>
+        </div>
+    {% endif %}
+
+    <div class="c-card__info">
+        <div class="c-card__brand">{{ brand }}</div>
+        <div class="c-card__title">
+            <a href="product.html" class="c-card__link f-btn--overlay">{{ title }}</a>
+        </div>
+        <div class="c-card__type">{{ type }}</div>
+        <div class="c-card__price">
+            <div class="c-card__price-current c-title">{{ priceCurrent }}</div>
+            {% if priceOld %}
+                <div class="c-card__price-old">{{ priceOld }}</div>
+            {% endif %}
+        </div>
+        <div class="c-card__sizes">
+            <a href="#" class="c-card__sizes-link">M</a>
+            <a href="#" class="c-card__sizes-link">L</a>
+            <a href="#" class="c-card__sizes-link">3XL</a>
+        </div>
+    </div>
+</div>

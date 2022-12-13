@@ -1,0 +1,81 @@
+.c-pagination {
+    text-align: center;
+    margin-top: 20px;
+
+    &__list {
+        display: inline-flex;
+        flex-wrap: wrap;
+        vertical-align: middle;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__item {
+        padding-left: 5px;
+        padding-right: 5px;
+
+        &.is-disabled {
+            pointer-events: none;
+            opacity: .2;
+        }
+
+        &.is-active {
+            pointer-events: none;
+        }
+
+        &.is-prev,
+        &.is-next {
+            display: none;
+
+            @include breakpoint(lg) {
+                display: block;
+            }
+
+            .i-icon {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        &.is-prev {
+            padding-left: 0;
+            margin-right: 16px;
+
+            .i-icon {
+                margin-left: -4px;
+            }
+        }
+
+        &.is-next {
+            padding-right: 0;
+            margin-left: 16px;
+
+            .i-icon {
+                margin-right: -4px;
+            }
+        }
+    }
+
+    &__link {
+        font-weight: 700;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        @at-root {
+            a#{&} {
+                &:hover {
+                    background-color: rgba($black, .1);
+                }
+            }
+        }
+
+        .is-active & {
+            background-color: $black;
+            color: $white;
+        }
+    }
+}

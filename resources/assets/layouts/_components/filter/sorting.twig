@@ -1,0 +1,22 @@
+<div class="c-filter-section c-filter-section--sorting">
+    <div class="c-filter-section__heading">
+        <h3 class="c-filter-section__title c-title">Сортування</h3>
+    </div>
+
+    <div class="c-filter-section__inner l-box">
+        <ul class="c-sorting__list">
+            {% for text in [
+                'Популярні',
+                'Новинки',
+                'Від дешевих',
+                'Від дорогих',
+                'Акційні',
+                'За рейтингом',
+            ] %}
+                <li class="c-sorting__item {{ loop.index == 1 ? 'is-active' }}">
+                    <a href="#" class="c-sorting__link f-btn--link">{{ text }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

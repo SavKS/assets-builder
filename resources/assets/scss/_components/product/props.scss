@@ -1,0 +1,11 @@
+.c-product-props {
+    font-size: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+
+    &__item {
+        margin-bottom: 10px;
+        margin-right: 24px;
+    }
+}

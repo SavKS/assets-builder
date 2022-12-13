@@ -1,0 +1,203 @@
+//## Font
+@mixin font-face($family, $filepath, $weight: normal, $style: normal) {
+    @font-face {
+        font-family: $family;
+        font-display: swap;
+        src: local($family),
+            url('#{$filepath}.woff2') format('woff2');
+        font-weight: $weight;
+        font-style: $style;
+    }
+}
+
+//## Media
+@mixin breakpoint($minValue: false, $maxValue: false) {
+    @if $minValue {
+        $minValue: map-get($grid-breakpoints, $minValue)
+    }
+
+    @if $maxValue {
+        $maxValue: map-get($grid-breakpoints, $maxValue) - 0.02
+    }
+
+    @if $minValue and $maxValue {
+        @media (min-width: $minValue) and (max-width: $maxValue) {
+            @content;
+        }
+    } @else if $minValue {
+        @media (min-width: $minValue) {
+            @content;
+        }
+    } @else if $maxValue {
+        @media (max-width: $maxValue) {
+            @content;
+        }
+    } @else {
+        @content;
+    }
+}
+
+//## Scroll
+@mixin scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    flex-grow: 1;
+    margin: 0 -20px;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &:after,
+    &:before {
+        content: '';
+        display: block;
+        flex-shrink: 0;
+        width: 20px;
+    }
+
+    @include breakpoint(lg) {
+
+        &::-webkit-scrollbar {
+            display: block;
+        }
+    }
+}
+@mixin scroll-shadow {
+    position: relative;
+
+    &:after,
+    &:before {
+        content: '';
+        z-index: 2;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+        width: 20px;
+        background-image: linear-gradient(to left, rgba($white, 0), rgba($white, 1));
+    }
+
+    &:before {
+        left: -20px;
+    }
+
+    &:after {
+        right: -20px;
+        transform: rotate(180deg);
+    }
+}
+
+//## Prose
+@mixin prose-ignore($selectors) {
+    #{$selectors}:not(:where([class~="c-prose--ignore"] *)) {
+        @content;
+    }
+}
+
+//## SVG
+@mixin i-svg-content($file, $width, $height, $color) {
+    background-image: svg-load($file, fill=if($color, $color, $black));
+}
+@mixin i-svg(
+    $name,
+    $pseudoEl: null,
+    $width: null,
+    $height: null,
+    $color: null
+) {
+    $file: $PATH_SVG + $name + '.svg';
+    $selector: '.i-' + $name;
+    $pseudoEl: if($pseudoEl, $pseudoEl, before);
+
+    #{$selector}:#{$pseudoEl} {
+        @include i-svg-content($file, $width, $height, $color);
+    }
+}
+
+
+//## Utilites
+@mixin sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+@mixin line-clamp($count: 3) {
+    display: -webkit-box;
+    -webkit-line-clamp: $count;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+@mixin ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+@mixin clamp($minWidth, $maxWidth, $minFontSize, $maxFontSize, $update: false, $rem: 10, $fallback: false) {
+    $slope: math.div(strip-unit($maxFontSize - $minFontSize), strip-unit(math.div($maxWidth, $rem) - math.div($minWidth, $rem)));
+    $yAxisIntersection: strip-unit(math.div(-$minWidth * $slope, $rem)) + strip-unit($minFontSize);
+
+    @supports (font-size: clamp(1rem, 1vw, 2rem)) {
+        font-size: clamp($minFontSize, $yAxisIntersection + rem #{' + '} $slope * 100 + vw , $maxFontSize);
+
+        @if not $update {
+            min-height: 0vw;
+        }
+    }
+
+    @supports not (font-size: clamp(1rem, 1vw, 2rem)) {
+        font-size: $minFontSize;
+
+        @media (min-width: $minWidth) {
+            @if ($fallback) {
+                font-size: $fallback;
+            }
+            font-size: calcFluidFontSize($minWidth, $maxWidth, $minFontSize, $maxFontSize, $rem: 10);
+        }
+
+        @media (min-width: $maxWidth) {
+            font-size: $maxFontSize;
+        }
+    }
+}
+@mixin clear {
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+@mixin cover {
+    display: block;
+    position: relative;
+    overflow: hidden;
+
+    &:before {
+        content: '';
+        display: block;
+    }
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+@mixin wrap($offset: $g-sm) {
+    padding-left: unquote('max(#{$offset}, env(safe-area-inset-left))');
+    padding-right: unquote('max(#{$offset}, env(safe-area-inset-right))');
+}
+@mixin unwrap($offset: $g-sm) {
+    margin-left: unquote('min(#{-$offset}, calc(env(safe-area-inset-left) * -1))');
+    margin-right: unquote('min(#{-$offset}, calc(env(safe-area-inset-right) * -1))');
+}

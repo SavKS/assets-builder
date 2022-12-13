@@ -1,0 +1,56 @@
+.f-select {
+
+    .f-select {
+
+        &__control {
+            border: 1px solid rgba($black, 0.1);
+            border-radius: 0;
+            min-height: 50px;
+            font-weight: 700;
+
+            &:hover {
+                border-color: $black;
+            }
+
+            &--is-focused {
+                border-color: $black;
+                box-shadow: 0 0 0 1px $black;
+            }
+        }
+
+        &__placeholder {
+            color: rgba($black, 0.15);
+        }
+
+        &__indicator {
+
+            &-separator {
+                display: none;
+            }
+        }
+
+        &__menu {
+            margin: 1px 0;
+            border-radius: 0;
+
+            &-notice {
+                font-weight: 700;
+            }
+        }
+
+        &__option {
+            line-height: 1.2;
+
+            &--is-focused,
+            &--is-focused:active {
+                background-color: rgba($black, 0.1);
+            }
+
+            &--is-selected,
+            &--is-selected:active {
+                background-color: $black;
+                color: $white;
+            }
+        }
+    }
+}

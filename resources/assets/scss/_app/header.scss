@@ -1,0 +1,368 @@
+.c-header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: $z-fixed;
+    font-size: 18px;
+
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-color: rgba($white, .55);
+        backdrop-filter: blur(16px);
+    }
+
+    &:after {
+        content: '';
+        background-color: rgba($black, .5);
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        transition: opacity $transition,
+            visibility $transition;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .is-menu-open & {
+
+        &:after {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    &__inner {
+        display: flex;
+        align-items: center;
+        max-width: 100%;
+        min-height: var(--header-height);
+    }
+
+    &__left,
+    &__right {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    &__right {
+        justify-content: flex-end;
+    }
+
+    &__burger {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 11;
+        margin-left: -7px;
+        width: 44px;
+        height: 44px;
+        margin-right: 12px;
+
+        &-icon {
+            position: relative;
+            width: 30px;
+            height: 20px;
+
+            &:before,
+            &:after {
+                content: '';
+                display: block;
+                width: 30px;
+                height: 4px;
+                left: 0;
+                flex-shrink: 0;
+                background: $black;
+                position: absolute;
+                transform-origin: center;
+                transition: transform $transition,
+                    top $transition,
+                    bottom $transition,
+                    left $transition;
+                will-change: transform;
+            }
+
+            &:before {
+                top: 0;
+            }
+
+            &:after {
+                bottom: 0;
+            }
+
+            .is-menu-open & {
+
+                &:before {
+                    top: calc(50% - 2px);
+                    transform: rotate(45deg);
+                }
+
+                &:after {
+                    bottom: calc(50% - 2px);
+                    transform: rotate(-45deg);
+                }
+            }
+        }
+    }
+
+    &__logo {
+        line-height: 0;
+        margin-right: 30px;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 11;
+
+        @include breakpoint(md) {
+            margin-right: 40px;
+        }
+
+        img {
+            width: auto;
+            height: 32px;
+        }
+
+        @include breakpoint(md) {
+
+            img {
+                height: 40px;
+            }
+        }
+    }
+
+    &__btn {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        position: relative;
+
+        &-text {
+            display: none;
+
+            @include breakpoint(lg) {
+                display: block;
+
+                .i-icon + & {
+                    margin-left: 10px;
+                }
+            }
+        }
+
+        &-counter {
+            background-color: $red;
+            color: $white;
+            font-weight: 700;
+            font-size: 11px;
+            border-radius: 999px;
+            min-width: 16px;
+            line-height: 16px;
+            padding: 0 4px;
+            position: absolute;
+            left: 27px;
+            top: 6px;
+        }
+    }
+
+    &__nav {
+        display: none;
+        flex-grow: 1;
+        transition: opacity $transition;
+        will-change: opacity;
+
+        @include breakpoint(xl) {
+            display: block;
+            text-align: center;
+        }
+
+        .is-search-open & {
+            opacity: .1;
+        }
+
+        &-link {
+            text-transform: uppercase;
+            padding: 5px 16px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        &-list {
+            flex-grow: 1;
+            justify-content: flex-end;
+            display: inline-flex;
+            white-space: nowrap;
+        }
+    }
+
+    &__favourite {
+
+        &-btn {
+            opacity: .1;
+        }
+    }
+
+    &__cart {
+
+        @include breakpoint(lg) {
+            margin-left: 10px;
+        }
+    }
+
+    &__search {
+        margin-right: -10px;
+
+        @include breakpoint(lg) {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+
+        &-dropdown {
+            width: 100%;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            opacity: 0;
+            z-index: -2;
+            background-color: $white;
+            visibility: hidden;
+            transition: opacity $transition,
+                visibility $transition;
+
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 0;
+                z-index: 1;
+                left: 20px;
+                right: 20px;
+                border-top: 1px solid rgba($black, .1);
+            }
+
+            .is-search-open & {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        .f-input {
+            border: none;
+            height: 64px;
+            width: 100%;
+            font-size: 24px;
+            padding-left: 44px;
+            padding-right: 44px;
+            outline: none;
+
+            @include breakpoint(lg) {
+                padding-left: 60px;
+                padding-right: 60px;
+            }
+        }
+
+        &-form {
+            position: relative;
+            transform: translateY(-10px);
+            transition: transform $transition;
+            will-change: transform;
+
+            @include breakpoint(false, lg) {
+                max-width: none;
+            }
+
+            .is-search-open & {
+                transform: none;
+            }
+        }
+
+        &-icon,
+        &-close {
+            position: absolute;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 100%;
+
+            @include breakpoint(lg) {
+                width: 60px;
+            }
+        }
+
+        &-icon {
+            left: 20px;
+
+            @include breakpoint(false, lg) {
+                justify-content: flex-start;
+            }
+        }
+
+        &-close {
+            right: 20px;
+
+            @include breakpoint(false, lg) {
+                justify-content: flex-end;
+            }
+        }
+    }
+
+    &__languages {
+        position: relative;
+        display: none;
+        margin-right: -10px;
+
+        @include breakpoint(lg) {
+            display: block;
+        }
+
+        &-btn {
+            display: flex;
+            text-transform: uppercase;
+            opacity: .2;
+        }
+
+        &-dropdown {
+            position: absolute;
+            top: calc(100% - 5px);
+            right: -6px;
+            background-color: $white;
+            padding: 10px 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 0px 4px 48px rgb($black, .15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity $transition,
+                visibility $transition,
+                transform $transition;
+
+            .c-header__languages:hover & {
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+        }
+
+        &-link {
+            padding: 5px 16px;
+        }
+
+        &-item {
+            &:not(:last-child) {
+                margin-bottom: 5px;
+            }
+        }
+    }
+}

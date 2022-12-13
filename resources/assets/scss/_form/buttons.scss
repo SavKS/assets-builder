@@ -1,0 +1,171 @@
+.f-btn {
+    -webkit-appearance: none;
+    height: 50px;
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    padding: 13px 32px;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 700;
+    color: $primary;
+    outline-offset: 0 !important;
+    transition: background-color $transition,
+        color $transition,
+        border-color $transition,
+        box-shadow $transition;
+
+    &:disabled,
+    &.is-disabled {
+        opacity: 0.2;
+        pointer-events: none;
+    }
+
+    .i-icon {
+        margin-right: 8px;
+        transition: filter $transition;
+    }
+
+    &--dark {
+        border-color: $black;
+        background-color: $black;
+        color: $white;
+        outline: none;
+
+        &:hover,
+        &:focus {
+            border-color: $black;
+            background-color: $white;
+            color: $black;
+        }
+
+        &:focus,
+        &:focus-within {
+            outline: 1px solid $black;
+        }
+
+        &:active {
+            // background-color: $primary;
+            // color: $white;
+        }
+    }
+
+    &--outline-dark {
+        border-color: $black;
+        background-color: transparent;
+        color: $black;
+        outline: none;
+
+        &:hover,
+        &:focus {
+            border-color: $black;
+            background-color: $black;
+            color: $white;
+
+            .i-icon {
+                filter: invert(1);
+            }
+        }
+
+        &:focus,
+        &:focus-within {
+            outline: 1px solid $black;
+        }
+    }
+
+    &--outline-gray {
+        border-color: rgba($black, .2);
+        background-color: transparent;
+        color: $black;
+        outline: none;
+
+        &:hover,
+        &:focus {
+            border-color: $black;
+            background-color: $black;
+            color: $white;
+
+            .i-icon {
+                filter: invert(1);
+            }
+        }
+
+        &:focus,
+        &:focus-within {
+            outline: 1px solid $black;
+        }
+    }
+
+    &--outline-light {
+        border-color: $white;
+        background-color: transparent;
+        color: $white;
+
+        &:hover,
+        &:focus {
+            border-color: $white;
+            background-color: $white;
+            color: $black;
+        }
+
+        &:focus,
+        &:focus-within {
+            outline: 1px solid $white;
+        }
+    }
+
+    &--rounded {
+        text-transform: uppercase;
+        height: 40px;
+        padding: 8px 32px;
+        border-radius: 999px;
+    }
+
+    &--link {
+        transition: opacity $transition;
+        will-change: opacity;
+
+        &:hover {
+            opacity: .75;
+        }
+    }
+
+    &--overlay {
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+    }
+
+    &--circle {
+        width: 48px;
+        padding: 12px;
+        border-radius: 50%;
+
+        &.f-btn--lg {
+            width: 64px;
+            height: 64px;
+        }
+
+        .i-icon {
+            margin-right: 0;
+        }
+    }
+
+    &--block {
+        width: 100%;
+    }
+
+    &--disabled {
+        pointer-events: none;
+        opacity: 0.2;
+    }
+}

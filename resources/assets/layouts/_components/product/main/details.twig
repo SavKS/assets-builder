@@ -1,0 +1,30 @@
+<div class="c-product-section">
+    {% for item in [
+        {
+            icon: 'details-delivery',
+            title: 'Доставка',
+            desc: 'Безкоштовно по всій Україні. Відправимо Новою Поштою того ж дня, якщо замовлення оформлено <b>до 14:00</b>. Самовивіз із <a href="#">пунктів видачі</a>.'
+        },
+        {
+            icon: 'details-payment',
+            title: 'Оплата',
+            desc: 'Оплата при отриманні товару, картою онлайн, Google Pay, безготівкою для юр. і фізичних осіб, Apple Pay, PrivatPay.'
+        },
+        {
+            icon: 'details-warranty',
+            title: 'Гарантія',
+            desc: 'Повернення цього товару передбачене <a href="#">Законом про захист прав споживачів</a>.'
+        },
+    ] %}
+        <div class="c-product-details">
+            <div class="c-product-details__icon">
+                <i class="i-icon i-{{ item.icon }}"></i>
+            </div>
+
+            <div class="c-product-details__info">
+                <div class="c-product-details__title">{{ item.title }}</div>
+                <div class="c-product-details__desc">{{ item.desc }}</div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

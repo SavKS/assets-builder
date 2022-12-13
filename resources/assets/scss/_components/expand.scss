@@ -1,0 +1,101 @@
+.c-expand {
+
+    &__collapse {
+        height: 270px;
+        overflow: hidden;
+        transition: height $transition;
+        text-overflow: ellipsis;
+        position: relative;
+
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 32px;
+            pointer-events: none;
+            background: linear-gradient(
+                to top,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transition: opacity $transition;
+        }
+
+        .c-expand.is-open & {
+
+            &:after {
+                opacity: 0;
+            }
+        }
+
+        ul,
+        ol {
+            margin-bottom: 20px;
+        }
+
+        p:last-child,
+        ol:last-child,
+        ul:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__toggle {
+        position: relative;
+        margin-top: 20px;
+        width: 220px;
+
+        &-icon {
+            display: block;
+            position: absolute;
+            top: 12px;
+            left: 16px;
+            width: 14px;
+            height: 14px;
+
+            &:before,
+            &:after {
+                content: '';
+                display: block;
+                width: 100%;
+                position: absolute;
+                background-color: currentColor;
+                height: 2px;
+                top: calc(50% - 1px);
+                left: 0;
+                transform-origin: center;
+            }
+
+            &:after {
+                transform: rotate(90deg);
+                transition: transform $transition;
+            }
+
+            .c-expand.is-open & {
+
+                &::after {
+                    transform: none;
+                }
+            }
+        }
+
+        &-hide {
+            display: none;
+
+            .c-expand.is-open & {
+                display: inline;
+            }
+        }
+
+        &-show {
+            display: inline;
+
+            .c-expand.is-open & {
+                display: none;
+            }
+        }
+    }
+}

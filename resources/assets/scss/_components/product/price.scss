@@ -1,0 +1,25 @@
+.c-product-price {
+    line-height: 1.2;
+
+    &:not(:last-child) {
+        margin-bottom: 20px;
+
+        @include breakpoint(lg) {
+            margin-bottom: 40px;
+        }
+    }
+
+    &__title {
+        font-size: 24px;
+        line-height: 1.5;
+    }
+
+    &__old {
+        color: $gray;
+        text-decoration: line-through;
+    }
+
+    &__current {
+        line-height: 1;
+    }
+}

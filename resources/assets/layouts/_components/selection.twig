@@ -1,0 +1,23 @@
+<div class="c-selection">
+    <div class="c-selection__scroll">
+        <ul class="c-selection__list">
+            {% set links = links ?? [
+                'M',
+                'Alpha Industries',
+                'Пуховики'
+            ] %}
+            {% for i in 1..5 %}
+                {% for text in links %}
+                    <li class="c-selection__item">
+                        <div class="c-selection__card">
+                            {{ text }}
+                            <button class="c-selection__card-delete">
+                                <i class="i-icon i-close"></i>
+                            </button>
+                        </div>
+                    </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+</div>

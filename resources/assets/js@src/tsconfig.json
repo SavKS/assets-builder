@@ -1,0 +1,20 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": "./",
+        "paths": {
+            "@": [
+                "./"
+            ],
+            "@/*": [
+                "./*"
+            ],
+            "@img/*": [
+                "../img/*"
+            ]
+        }
+    },
+    "include": [
+        "./**/*"
+    ]
+}

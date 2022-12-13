@@ -1,0 +1,30 @@
+{
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:react-redux/recommended"
+    ],
+    "rules": {
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": [
+            "error",
+            {
+                "additionalHooks": "useMemoCompare"
+            }
+        ],
+        "react/prop-types": [
+            0
+        ],
+        "react-redux/no-unused-prop-types": [
+            0
+        ]
+    },
+    "plugins": [
+        "react-redux"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    }
+}

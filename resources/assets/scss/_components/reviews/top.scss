@@ -1,0 +1,25 @@
+.c-reviews-top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .c-title {
+        margin: 0;
+        margin-right: auto;
+        padding-right: 16px;
+    }
+
+    .f-btn {
+
+        @include breakpoint(false, sm) {
+            height: 40px;
+            padding: 0 10px;
+
+            .i-icon {
+                width: 28px;
+                height: 28px;
+                margin: 0;
+            }
+        }
+    }
+}

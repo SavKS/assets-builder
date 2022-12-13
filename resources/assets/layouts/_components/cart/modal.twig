@@ -1,0 +1,79 @@
+<div class="c-cart js-cart">
+    <div class="c-cart-dialog">
+        <div class="c-cart-content">
+            <div class="c-cart-header">
+                <h3 class="c-cart-title c-title c-title--4">Додано в кошик!</h3>
+
+                <button class="c-cart-close f-btn--link js-cart-toggle">
+                    <i class="i-icon i-close"></i>
+                </button>
+            </div>
+
+            <div class="c-cart-body">
+                <div class="c-cart-empty">
+                    <div class="c-cart-empty__icon">
+                        <img src="../img/svg/cart-empty.svg" alt="">
+                    </div>
+                    <div class="c-cart-empty__title c-title">В кошику немає жодного товару</div>
+                    <div class="c-cart-empty__title">
+                        <button class="f-btn f-btn--dark">Продовжити покупки</button>
+                    </div>
+                </div>
+
+                <div class="c-cart-progress" style="--progress: 60%;">
+                    450 грн до безкоштовної доставки
+                </div>
+
+                {% for i in 1..5 %}
+                    {% for item in [
+                        {
+                            image: '../img/demo/catalog/1_375x375',
+                            title: 'Парка AirBoss Shuttle Parka',
+                            price: '12 440 грн',
+                            isLast: true,
+                            props: [
+                                {
+                                    title: 'Колір:',
+                                    desc: 'синій'
+                                },
+                                {
+                                    title: 'Розмір:',
+                                    desc: 'M (44)'
+                                },
+                            ]
+                        },
+                        {
+                            image: '../img/demo/catalog/2_375x375',
+                            title: 'Бомбер Alpha Industries',
+                            price: '5 070 грн',
+                            props: [
+                                {
+                                    title: 'Колір:',
+                                    desc: 'чорний'
+                                },
+                                {
+                                    title: 'Розмір:',
+                                    desc: 'M (44)'
+                                },
+                            ]
+                        },
+                    ] %}
+                        {% include "./card.twig" with item %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+
+            <div class="c-cart-footer">
+                <dl class="c-cart-total">
+                    <dt class="c-title">Всього</dt>
+                    <dd class="c-title c-title--4">16 810 грн</dd>
+                </dl>
+
+                <div class="c-cart-btns">
+                    <a href="cart.html" class="f-btn f-btn--dark f-btn--block">Оформити замовлення</a>
+                    <button class="f-btn f-btn--outline-dark f-btn--block js-cart-toggle">Продовжити покупки</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

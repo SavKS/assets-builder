@@ -1,30 +1,36 @@
-// Bootstrap
-@import "vendor/_bootstrap/functions";
-@import "vars";
-@import "bs-vars";
-@import "vendor/_bootstrap/mixins";
+//## Set
+@import "_set/set";
 
-@import "vendor/_bootstrap/reboot";
+@tailwind base;
 
-// Vendor
-@import "~swiper/swiper-bundle.css";
-@import "vendor/ps";
-// @import "vendor/bs-components/";
+//## Base
+@import "_app/fonts";
+@import "_app/icons";
+@import "_app/reset";
+@import "_app/measure";
 
-// Application
-@import "components/functions";
-@import "components/mixins";
-@import "components/type";
-@import "components/buttons";
-@import "components/forms";
-@import "components/misc";
+//## Utilites
+@import '_utilities/base';
 
-@import "components/grid";
-@import "components/scaffolding";
+//## Layouts
+@import '_layouts/base';
 
-@import "components/banner";
-@import "components/footer";
+//## Typography
+@import '_utilities/typography';
 
-// Utilities
-@import "components/utilities";
-@import "vendor/_bootstrap/utilities/api";
+//## Forms
+@import '_form/buttons';
+@import '_form/forms';
+
+//## Application
+@import "_app/header";
+@import "_app/menu";
+@import "_app/footer";
+
+//## Components
+@import "./_components/breadcrumbs.scss";
+@import "./_components/subscribe.scss";
+@import "./_components/modal.scss";
+@import "./_components/carousel.scss";
+@import "./_components/more.scss";
+@import "./_components/loading.scss";

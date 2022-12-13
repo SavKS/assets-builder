@@ -1,0 +1,60 @@
+.c-tabs {
+    @include scroll-shadow;
+    position: relative;
+    display: flex;
+    font-weight: 700;
+    line-height: 22px;
+
+    @include breakpoint(lg) {
+        border-bottom: 1px solid rgba($black, .1);
+        margin-bottom: 20px;
+    }
+
+    &__scroll {
+        @include scroll;
+    }
+
+    &__list {
+        white-space: nowrap;
+        flex-grow: 1;
+        padding: 10px 0 20px;
+        display: flex;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        &.is-active {
+            pointer-events: none;
+        }
+    }
+
+    &__link {
+        display: flex;
+        height: 38px;
+        padding: 6px 15px 8px;
+        align-items: center;
+        border: 1px solid rgba($black, .1);
+        border-radius: 99px;
+        transition: background-color $transition,
+            color $transition,
+            border-color $transition;
+
+        &:hover {
+            border-color: $black;
+            background-color: $black;
+            color: $white;
+        }
+
+        .c-tabs__item.is-active & {
+            background-color: $black;
+            color: $white;
+            border-color: $black;
+        }
+    }
+}

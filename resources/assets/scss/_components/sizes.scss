@@ -1,0 +1,76 @@
+.c-sizes {
+    @include scroll-shadow;
+    position: relative;
+    margin-bottom: -10px;
+
+    &__scroll {
+        @include scroll;
+    }
+
+    &__list {
+        white-space: nowrap;
+        flex-grow: 1;
+        display: flex;
+
+        @include breakpoint(lg) {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__item {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    &__card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-width: 42px;
+        height: 50px;
+        border: 1px solid rgba($black, .1);
+        border-radius: 10px;
+        line-height: 1.4;
+
+        &:hover {
+            background-color: $gray-6;
+            border-color: $gray-6;
+
+            .c-sizes__card-value {
+                opacity: 1;
+            }
+        }
+
+        &.is-active {
+            background-color: $black;
+            border-color: $black;
+            color: $white;
+
+            .c-sizes__card-value {
+                opacity: 1;
+            }
+        }
+
+        &:disabled,
+        &.is-disabled {
+            opacity: .5;
+            pointer-events: none;
+
+            .c-sizes__card-value {
+                opacity: 1;
+            }
+        }
+
+        &-title {
+            font-size: 14px;
+        }
+
+        &-value {
+            font-size: 12px;
+            opacity: .2;
+            transition: opacity $transition;
+        }
+    }
+}

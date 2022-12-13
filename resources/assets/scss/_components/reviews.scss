@@ -1,0 +1,56 @@
+.c-reviews {
+    font-size: 18px;
+
+    &.c-carousel {
+
+        .swiper {
+
+            &:after {
+                content: '';
+                display: block;
+                height: 100%;
+                width: 20px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 1;
+                background: linear-gradient(to right, rgba($white, 0), rgba($white, 1));
+            }
+
+            &-slide {
+                width: 336px;
+                max-width: 80%;
+            }
+        }
+    }
+
+    .c-rating {
+        row-gap: 10px;
+        width: 100%;
+
+        .i-icon {
+            width: 24px;
+            height: 24px;
+
+            &:not(:last-child) {
+                margin-right: 5px;
+            }
+        }
+
+        &-value {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        &-reviews {
+            font-size: 18px;
+        }
+    }
+}
+
+@import './reviews/heading.scss';
+@import './reviews/top.scss';
+@import './reviews/create.scss';
+@import './reviews/product.scss';
+@import './reviews/vote.scss';
+@import './reviews/item.scss';

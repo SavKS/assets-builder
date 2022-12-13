@@ -1,0 +1,9 @@
+{
+    "name": "@assets-builder/vanilla-js-preset",
+    "private": true,
+    "main": "index.mjs",
+    "devDependencies": {
+        "@swc/core": "^1.3.22",
+        "swc-loader": "^0.2.3"
+    }
+}

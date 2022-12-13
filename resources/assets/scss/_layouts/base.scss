@@ -1,0 +1,26 @@
+//## Layouts
+.l-box {
+    width: 100%;
+    padding: 0 20px;
+    margin: 0 auto;
+
+    @each $key, $value in $grid-breakpoints {
+        @include breakpoint($key) {
+            max-width: map-get($box-max-widths, $key);
+        }
+    }
+
+    &--sm {
+
+        @include breakpoint(xl) {
+            max-width: 966px;
+        }
+    }
+
+    &--xs {
+
+        @include breakpoint(lg) {
+            max-width: 730px;
+        }
+    }
+}

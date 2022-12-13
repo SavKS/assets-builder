@@ -1,1 +1,0 @@
-window.__manifest = {"src/js/app.js":"src/js/app.js","src/vendor/js/vue.js":"src/vendor/js/vue.js","src/vendor/js/vuex.js":"src/vendor/js/vuex.js","src/vendor/js/lodash.js":"src/vendor/js/lodash.js","src/vendor/js/focus-visible.js":"src/vendor/js/focus-visible.js"};
