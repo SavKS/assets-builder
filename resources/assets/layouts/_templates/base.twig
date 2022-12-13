@@ -6,9 +6,24 @@
               content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Hello world!</title>
+
+        <!-- Styles -->
+        {% if runtimeOptions.serve or runtimeOptions.watch %}
+            <script src="../js/css/runtime.js"></script>
+        {% endif %}
+
+        {% for link in ['app'] | merge(styleLinks ?? []) | merge(['utilities']) %}
+            {% if runtimeOptions.serve or runtimeOptions.watch %}
+                <script src="../js/css/{{ link }}.js"></script>
+            {% else %}
+            <link rel="stylesheet" href="../css/{{ link }}.css">
+            {% endif %}
+        {% endfor %}
     </head>
     <body>
         {% block content %}
         {% endblock %}
+
+        <script src="../js/app.js"></script>
     </body>
 </html>
