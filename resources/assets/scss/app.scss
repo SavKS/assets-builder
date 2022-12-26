@@ -1,36 +1,3 @@
-//## Set
-@import "_set/set";
-
 @tailwind base;
-
-//## Base
-@import "_app/fonts";
-@import "_app/icons";
-@import "_app/reset";
-@import "_app/measure";
-
-//## Utilites
-@import '_utilities/base';
-
-//## Layouts
-@import '_layouts/base';
-
-//## Typography
-@import '_utilities/typography';
-
-//## Forms
-@import '_form/buttons';
-@import '_form/forms';
-
-//## Application
-@import "_app/header";
-@import "_app/menu";
-@import "_app/footer";
-
-//## Components
-@import "./_components/breadcrumbs.scss";
-@import "./_components/subscribe.scss";
-@import "./_components/modal.scss";
-@import "./_components/carousel.scss";
-@import "./_components/more.scss";
-@import "./_components/loading.scss";
+@tailwind components;
+@tailwind utilities;
