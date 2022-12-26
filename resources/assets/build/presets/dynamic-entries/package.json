@@ -4,5 +4,8 @@
     "main": "index.mjs",
     "devDependencies": {
         "webpack-better-entries": "^0.1.1"
+    },
+    "peerDependencies": {
+        "webpack": "*"
     }
 }
