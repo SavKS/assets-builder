@@ -4,5 +4,8 @@
     "main": "index.mjs",
     "dependencies": {
         "svg-loader": "^0.0.2"
+    },
+    "peerDependencies": {
+        "webpack": "*"
     }
 }

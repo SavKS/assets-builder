@@ -3,5 +3,11 @@
     "private": true,
     "devDependencies": {
         "terser-webpack-plugin": "^5.3.6"
+    },
+    "peerDependencies": {
+        "@babel/core": "*",
+        "@savks/not-need-lodash": "*",
+        "eslint": "*",
+        "webpack": "*"
     }
 }

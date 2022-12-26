@@ -4,7 +4,10 @@
     "main": "index.mjs",
     "devDependencies": {
         "twing": "^5.1.2",
-        "twing-render-loader": "^0.2.1",
-        "webpack-html-builder": "^0.3.0"
+        "twing-render-loader": "^0.2.2",
+        "webpack-html-builder": "^0.3.1"
+    },
+    "peerDependencies": {
+        "webpack": "*"
     }
 }

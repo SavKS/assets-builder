@@ -3,7 +3,10 @@
     "private": true,
     "main": "index.mjs",
     "devDependencies": {
-        "@swc/core": "^1.3.22",
+        "@swc/core": "^1.3.24",
         "swc-loader": "^0.2.3"
+    },
+    "peerDependencies": {
+        "webpack": "*"
     }
 }
