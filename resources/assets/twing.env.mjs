@@ -2,7 +2,6 @@ import { globby } from 'globby';
 import lodash from 'lodash';
 import fs from 'node:fs';
 import nodePath from 'node:path';
-import { TwingLoaderChain, TwingLoaderRelativeFilesystem } from 'twing';
 
 import config from './config.mjs';
 
@@ -12,6 +11,21 @@ export const options = {
     autoescape: false
 };
 
+async function loadJson(file) {
+    let contents;
+    try {
+        contents = await fs.promises.readFile(file, 'utf8');
+    } catch (e) {
+        if (e.code !== 'ENOENT') {
+            throw e;
+        } else {
+            return null;
+        }
+    }
+
+    return JSON.parse(contents);
+}
+
 /**
  * @param {import('webpack').LoaderContext<{}>} loader
  * @param {import('twing').TwingEnvironment} env
@@ -19,19 +33,12 @@ export const options = {
 export async function configure({ loader, env }) {
     loader.addContextDependency(config.layouts.dataFilesPath);
 
-    if (fs.existsSync(`${ config.layouts.dataFilesPath }/_global.json`)) {
-        const globalVars = fs.existsSync(`${ config.layouts.dataFilesPath }/_global.json`) ?
-            JSON.parse(
-                fs.readFileSync(`${ config.layouts.dataFilesPath }/_global.json`, 'utf8')
-            ) :
-            {};
-
-        Object.entries(globalVars).forEach(([ key, value ]) => {
-            env.addGlobal(key, value);
-        });
-
-        loader.addDependency(`${ config.layouts.dataFilesPath }/_global.json`);
-    }
+    loader.addDependency(`${ config.layouts.dataFilesPath }/_global.json`);
+    Object.entries(
+        await loadJson(`${ config.layouts.dataFilesPath }/_global.json`) ?? {}
+    ).forEach(([ key, value ]) => {
+        env.addGlobal(key, value);
+    });
 
     const [ scopedVars, scopedPaths ] = await resolveScopedVars(config.layouts.dataFilesPath);
 
@@ -50,13 +57,6 @@ export async function configure({ loader, env }) {
     });
 
     env.enableDebug();
-
-    env.setLoader(
-        new TwingLoaderChain([
-            env.getLoader(),
-            new TwingLoaderRelativeFilesystem()
-        ])
-    );
 }
 
 /**
@@ -72,16 +72,18 @@ async function resolveScopedVars(srcPath) {
     );
 
     return [
-        relativePaths.reduce((carry, relativePath) => {
-            const data = JSON.parse(
-                fs.readFileSync(
-                    nodePath.resolve(srcPath, relativePath),
-                    'utf8'
-                )
-            );
+        (await Promise.all(
+            relativePaths.map(async relativePath => {
+                const data = await loadJson(
+                    nodePath.resolve(srcPath, relativePath)
+                );
 
-            const query = relativePath.replace(/\.json$/, '').replaceAll('/', '.');
-
+                return [
+                    relativePath.replace(/\.json$/, '').replaceAll('/', '.'),
+                    data
+                ];
+            })
+        )).reduce((carry, [query, data]) => {
             lodash.set(carry, query, data);
 
             return carry;
